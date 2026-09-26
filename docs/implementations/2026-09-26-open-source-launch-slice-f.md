@@ -279,10 +279,25 @@ Whether an outside, signed-in user is offered a blank issue was not
 checked: the chooser page needs a signed-in session, and the engineer signs
 into nothing.
 
-**Not met at this record:** 11.6's last line, private vulnerability
-reporting, reads `false`, so `SECURITY.md`'s reporting route does not work
-yet; and P-41 11.1 to 11.3 and 11.10's rejection test stay NOT RUN, their
-token file absent. Both are owner actions (D-584, D-588).
+**Not met at that record:** 11.6's last line, private vulnerability
+reporting, read `false`; and P-41 11.1 to 11.3 and 11.10's rejection test
+were NOT RUN, their token file absent. Both are owner actions (D-584,
+D-588).
+
+**Later the same day (D-598).** The owner enabled private vulnerability
+reporting in the GitHub UI; `gh api
+repos/mertefesensoy/ONFLY/private-vulnerability-reporting` then read
+`{"enabled":true}`, so `SECURITY.md`'s route works and 11.6's last line
+passes. For the name scans, the owner wrote a token file with the
+hidden-prompt command; it held 8 letters or digits where the guard's
+`TOKEN_LEN` is 6, and `python tools/lint_name.py --self-test` with it failed
+`real: stored digest is the token's` (20 of 60 checks), so it was not the
+protected name. The value itself was never printed. The owner then paused
+slice F to revisit D-479 in a later session. **Slice F's exit is therefore
+not met:** 11.10's rejection test and P-41 11.1 to 11.3 are NOT RUN, and
+the community profile's `issue_template` reads `null`. The owner's token
+file outside the repository still holds the wrong value; deleting it is the
+owner's call.
 
 ## 7. Related docs
 
