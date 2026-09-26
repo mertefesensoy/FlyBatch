@@ -1,0 +1,56 @@
+2026-09-26T23:08:46Z
+mvsrun: network srext, jobs ONFEREQ/ONFERUN, ONFREQ HERC01.ONFLY.EREQ
+mvsrun: reader 010C loaded with C:/hercules-lab/mvs-tk5/tape/onfnet-srext-cards.bin
+mvsrun: BUZZ (FR-BAT-01 three steps, srext), 67 cards
+mvsrun: BUZZ finished in 730.4 s
+ 0.08.47 JOB  410  $HASP373 BUZZ     STARTED - INIT  1 - CLASS A - SYS TK5R
+ 0.20.57 JOB  410  $HASP395 BUZZ     ENDED
+IEF142I BUZZ SCRATCH - STEP WAS EXECUTED - COND CODE 0000
+IEF142I BUZZ STEP1 - STEP WAS EXECUTED - COND CODE 0000
+IEF142I BUZZ STEP2 - STEP WAS EXECUTED - COND CODE 0000
+IEF142I BUZZ STEP3 - STEP WAS EXECUTED - COND CODE 0000
+ONF302I STEP SUMMARY: 0005 OK, 0000 ERROR, 0000 ECHOED
+ONF302I STEP SUMMARY: 5 OK, 0 WARN, 0 ERROR
+ONF302I STEP SUMMARY: 0000 OK, 0000 ERROR, 0005 ECHOED
+
+=== step times, from the job's own accounting ===
+  SCRATCH  CPU 0 min 00.00 s   VIRT 4K
+  STEP1    CPU 0 min 00.01 s   VIRT 52K
+  STEP2    CPU 12 min 07.70 s   VIRT 1044K
+  STEP3    CPU 0 min 00.01 s   VIRT 52K
+  host CPU charged to Hercules: 741.8 s over 730.6 s elapsed => 102% of one core
+  the host executed the guest throughout, so the times above are real elapsed work
+mvsrun: NFR-PERF-02 context -- host CPU 13th Gen Intel(R) Core(TM) i7-13650HX; Hercules 4.9.1.11612-SDL-gee86c4de; highest observed MIPS since the last query 544.34472
+
+=== BUZZ end to end (ACC-7) ===
+  SCRATCH  COND CODE 0
+  STEP1    COND CODE 0
+  STEP2    COND CODE 0
+  STEP3    COND CODE 0
+
+=== the report BUZZ printed (FR-BAT-04) ===
+ONFLY REPORT (FR-BAT-04)
+REQUEST    1 CODE=SUGR     RATE=    0 MS=1000 SEED=        1 RC=   0 OUT=   2 STEPS=    10000
+  ONF301I  REQUEST COMPLETE                                 FP=6C3F7272
+  READOUT      1 ID=        9 MN9-10331                          LAT-US=        -1 SPIKES=   0 HZ=      0.0
+  READOUT      2 ID=       88 MN9-16949                          LAT-US=        -1 SPIKES=   0 HZ=      0.0
+REQUEST    2 CODE=SUGR     RATE=   40 MS=1000 SEED=        1 RC=   0 OUT=   2 STEPS=    10000
+  ONF301I  REQUEST COMPLETE                                 FP=BAF81D91
+  READOUT      1 ID=        9 MN9-10331                          LAT-US=     25800 SPIKES=  27 HZ=     27.0
+  READOUT      2 ID=       88 MN9-16949                          LAT-US=        -1 SPIKES=   0 HZ=      0.0
+REQUEST    3 CODE=SUGR     RATE=  200 MS=1000 SEED=        1 RC=   0 OUT=   2 STEPS=    10000
+  ONF301I  REQUEST COMPLETE                                 FP=F9C7EE77
+  READOUT      1 ID=        9 MN9-10331                          LAT-US=      8600 SPIKES= 165 HZ=    165.0
+  READOUT      2 ID=       88 MN9-16949                          LAT-US=     43400 SPIKES=  15 HZ=     15.0
+REQUEST    4 CODE=SUGR     RATE= 9999 MS=1000 SEED=        1 RC=   0 OUT=   2 STEPS=    10000
+  ONF301I  REQUEST COMPLETE                                 FP=4FD0ED1E
+  READOUT      1 ID=        9 MN9-10331                          LAT-US=      8500 SPIKES= 189 HZ=    189.0
+  READOUT      2 ID=       88 MN9-16949                          LAT-US=     41100 SPIKES=  24 HZ=     24.0
+REQUEST    5 CODE=SUGR     RATE=  100 MS=1000 SEED=        1 RC=   0 OUT=   2 STEPS=    10000
+  ONF301I  REQUEST COMPLETE                                 FP=C4C320BC
+  READOUT      1 ID=        9 MN9-10331                          LAT-US=     12100 SPIKES= 100 HZ=    100.0
+  READOUT      2 ID=       88 MN9-16949                          LAT-US=        -1 SPIKES=   0 HZ=      0.0
+
+mvsrun: ACC-7 PASS -- three steps all executed, worst COND CODE 0, 21 report line(s)
+EXIT=0
+2026-09-26T23:20:58Z

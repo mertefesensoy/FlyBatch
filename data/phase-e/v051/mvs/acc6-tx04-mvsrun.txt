@@ -1,0 +1,50 @@
+2026-09-26T23:05:19Z
+mvsrun: network srext, jobs ONFEREQ/ONFERUN, ONFREQ HERC01.ONFLY.EREQ
+mvsrun: reader 010C loaded with C:/hercules-lab/mvs-tk5/tape/onfnet-srext-cards.bin
+mvsrun: ONFTX04 (FR-BAT-01 three steps, srext), 63 cards
+mvsrun: ONFTX04 finished in 165.2 s
+ 0.05.20 JOB  409  $HASP373 ONFTX04  STARTED - INIT  1 - CLASS A - SYS TK5R
+ 0.08.02 JOB  409  $HASP395 ONFTX04  ENDED
+IEF142I ONFTX04 SCRATCH - STEP WAS EXECUTED - COND CODE 0000
+IEF142I ONFTX04 STEP1 - STEP WAS EXECUTED - COND CODE 0000
+IEF142I ONFTX04 STEP2 - STEP WAS EXECUTED - COND CODE 0000
+IEF142I ONFTX04 STEP3 - STEP WAS EXECUTED - COND CODE 0000
+ONF302I STEP SUMMARY: 0001 OK, 0000 ERROR, 0000 ECHOED
+ONF302I STEP SUMMARY: 1 OK, 0 WARN, 0 ERROR
+ONF302I STEP SUMMARY: 0000 OK, 0000 ERROR, 0001 ECHOED
+
+=== step times, from the job's own accounting ===
+  SCRATCH  CPU 0 min 00.00 s   VIRT 4K
+  STEP1    CPU 0 min 00.01 s   VIRT 52K
+  STEP2    CPU 2 min 41.99 s   VIRT 1044K
+  STEP3    CPU 0 min 00.01 s   VIRT 52K
+mvsrun: NFR-PERF-02 context -- host CPU 13th Gen Intel(R) Core(TM) i7-13650HX; Hercules 4.9.1.11612-SDL-gee86c4de; highest observed MIPS since the last query 375.235518
+
+=== ONFTX04 end to end ===
+  SCRATCH  COND CODE 0
+  STEP1    COND CODE 0
+  STEP2    COND CODE 0
+  STEP3    COND CODE 0
+
+=== the report BUZZ printed (FR-BAT-04) ===
+ONFLY REPORT (FR-BAT-04)
+REQUEST    1 CODE=SUGR     RATE=  200 MS=1000 SEED=        1 RC=   0 OUT=   2 STEPS=    10000
+  ONF301I  REQUEST COMPLETE                                 FP=F9C7EE77
+  READOUT      1 ID=        9 MN9-10331                          LAT-US=      8600 SPIKES= 165 HZ=    165.0
+  READOUT      2 ID=       88 MN9-16949                          LAT-US=     43400 SPIKES=  15 HZ=     15.0
+
+=== TX-04 / ACC-6 vs NFR-PERF-01 ===
+  one SUGR request, 200 Hz, 1000 ms, seed 1, srext (501 neurons)
+  STEP2 CPU     161.99 s
+  STEP2 elapsed 162 s
+  bound         600 s (NFR-PERF-01, D-133)
+
+  external clock (D-312, mvsprf.trust):
+  Host CPU charged to Hercules: 165.3 s over 165.4 s elapsed
+  => 100% of one core sustained
+  Certified: the host executed the guest throughout.
+  ACC-6 PASS
+
+mvsrun: ONFTX04 -- three steps all executed, worst COND CODE 0
+EXIT=0
+2026-09-26T23:08:05Z

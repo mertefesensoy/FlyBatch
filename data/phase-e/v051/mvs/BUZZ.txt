@@ -1,0 +1,281 @@
+START  JOB  410  BUZZ      ONFLY BUZZ            ROOM       12.20.57 AM 27 SEP 26  PRINTER1  SYS TK5R  JOB  410  START  A****
+****A  START  JOB  410  BUZZ      ONFLY BUZZ            ROOM       12.20.57 AM 27 SEP 26  PRINTER1  SYS TK5R  JOB  410  START  A****
+****A  START  JOB  410  BUZZ      ONFLY BUZZ            ROOM       12.20.57 AM 27 SEP 26  PRINTER1  SYS TK5R  JOB  410  START  A****
+****A  START  JOB  410  BUZZ      ONFLY BUZZ            ROOM       12.20.57 AM 27 SEP 26  PRINTER1  SYS TK5R  JOB  410  START  A****
+                                                J E S 2   J O B   L O G
+
+
+ 0.08.47 JOB  410  $HASP373 BUZZ     STARTED - INIT  1 - CLASS A - SYS TK5R
+ 0.08.47 JOB  410  IEF403I BUZZ - STARTED - TIME=00.08.47
+ 0.08.47 JOB  410  IEFACTRT - Stepname  Procstep  Program   Retcode
+ 0.08.47 JOB  410  BUZZ       SCRATCH             IEFBR14   RC= 0000
+ 0.08.48 JOB  410  BUZZ       STEP1               ONFLYDRV  RC= 0000
+ 0.08.48 JOB  410  IEF236I ALLOC. FOR BUZZ STEP2
+ 0.08.48 JOB  410  IEF237I 10C  ALLOCATED TO ONFNET
+ 0.20.57 JOB  410  BUZZ       STEP2               ONFLYENG  RC= 0000
+ 0.20.57 JOB  410  BUZZ       STEP3               ONFLYDRV  RC= 0000
+ 0.20.57 JOB  410  IEF404I BUZZ - ENDED - TIME=00.20.57
+ 0.20.57 JOB  410  $HASP395 BUZZ     ENDED
+
+
+------ JES2 JOB STATISTICS ------
+
+
+ 27 SEP 26 JOB EXECUTION DATE
+
+
+        67 CARDS READ
+
+
+       221 SYSOUT PRINT RECORDS
+
+
+         0 SYSOUT PUNCH RECORDS
+
+
+     12.16 MINUTES EXECUTION TIME
+    1     //BUZZ     JOB (001),'ONFLY BUZZ',CLASS=A,MSGCLASS=A,                   JOB  410
+          //             USER=HERC01,PASSWORD=,
+          //             REGION=8M,TIME=1440,MSGLEVEL=(1,1)
+          ***
+    2     //SCRATCH  EXEC PGM=IEFBR14
+    3     //D1       DD DSN=HERC01.ONFLY.BREQ,DISP=(MOD,DELETE),
+          //            UNIT=SYSDA,SPACE=(TRK,(1,1))
+    4     //D2       DD DSN=HERC01.ONFLY.BRSP,DISP=(MOD,DELETE),
+          //            UNIT=SYSDA,SPACE=(TRK,(1,1))
+          ***
+    5     //STEP1    EXEC PGM=ONFLYDRV
+    6     //STEPLIB  DD DSN=HERC01.ONFLY.LOADLIB,DISP=SHR
+    7     //SYSOUT   DD SYSOUT=*
+    8     //SYSPRINT DD SYSOUT=*
+    9     //ONFREQ   DD DSN=HERC01.ONFLY.BREQ,DISP=(,CATLG,DELETE),
+          //            UNIT=SYSDA,SPACE=(TRK,(2,1)),
+          //            DCB=(RECFM=FB,LRECL=412,BLKSIZE=4120)
+   10     //ONFCTL   DD *
+          ***
+   11     //STEP2    EXEC PGM=ONFLYENG,COND=(8,LE,STEP1)
+   12     //STEPLIB  DD DSN=HERC01.ONFLY.LOADLIB,DISP=SHR
+   13     //SYSPRINT DD SYSOUT=*
+   14     //SYSTERM  DD SYSOUT=*
+   15     //SYSIN    DD DUMMY
+   16     //ONFNET   DD UNIT=10C,
+          //            DCB=(RECFM=F,LRECL=80,BLKSIZE=80)
+   17     //ONFREQ   DD DSN=HERC01.ONFLY.BREQ,DISP=SHR
+   18     //ONFRSP   DD DSN=HERC01.ONFLY.BRSP,DISP=(,CATLG,DELETE),
+          //            UNIT=SYSDA,SPACE=(TRK,(2,1)),
+          //            DCB=(RECFM=FB,LRECL=412,BLKSIZE=4120)
+          ***
+   19     //STEP3    EXEC PGM=ONFLYDRV,COND=(12,LE,STEP2)
+   20     //STEPLIB  DD DSN=HERC01.ONFLY.LOADLIB,DISP=SHR
+   21     //SYSOUT   DD SYSOUT=*
+   22     //SYSPRINT DD SYSOUT=*
+   23     //ONFRSP   DD DSN=HERC01.ONFLY.BRSP,DISP=SHR
+   24     //ONFNAM   DD *
+   25     //ONFRPT   DD SYSOUT=*,DCB=(RECFM=FBA,LRECL=133,BLKSIZE=133)
+   26     //ONFCTL   DD *
+          //
+IEF236I ALLOC. FOR BUZZ SCRATCH
+IEF237I 191  ALLOCATED TO D1
+IEF237I 190  ALLOCATED TO SYS00115
+IEF237I 190  ALLOCATED TO D2
+IEF142I BUZZ SCRATCH - STEP WAS EXECUTED - COND CODE 0000
+IEF285I   HERC01.ONFLY.BREQ                            UNCATALOGED   *--------0
+IEF285I   VOL SER NOS= TSO002.
+IEF285I   HERC01.ONFLY.BREQ                            DELETED       *--------0
+IEF285I   VOL SER NOS= TSO002.
+IEF285I   SYS1.UCAT.TSO                                KEPT          *--------0
+IEF285I   VOL SER NOS= TSO001.
+IEF285I   HERC01.ONFLY.BRSP                            UNCATALOGED   *--------0
+IEF285I   VOL SER NOS= TSO001.
+IEF285I   HERC01.ONFLY.BRSP                            DELETED       *--------0
+IEF285I   VOL SER NOS= TSO001.
+IEF373I STEP /SCRATCH / START 26270.0008
+IEF374I STEP /SCRATCH / STOP  26270.0008 CPU    0MIN 00.00SEC SRB    0MIN 00.00SEC VIRT     4K SYS   180K
+IEF236I ALLOC. FOR BUZZ STEP1
+IEF237I 192  ALLOCATED TO STEPLIB
+IEF237I 190  ALLOCATED TO SYS00117
+IEF237I JES2 ALLOCATED TO SYSOUT
+IEF237I JES2 ALLOCATED TO SYSPRINT
+IEF237I 191  ALLOCATED TO ONFREQ
+IEF237I JES2 ALLOCATED TO ONFCTL
+IEF142I BUZZ STEP1 - STEP WAS EXECUTED - COND CODE 0000
+IEF285I   HERC01.ONFLY.LOADLIB                         KEPT          *--------0
+IEF285I   VOL SER NOS= TSO003.
+IEF285I   SYS1.UCAT.TSO                                KEPT          *--------0
+IEF285I   VOL SER NOS= TSO001.
+IEF285I   JES2.JOB00410.SO0104                         SYSOUT
+IEF285I   JES2.JOB00410.SO0105                         SYSOUT
+IEF285I   HERC01.ONFLY.BREQ                            CATALOGED     *--------1
+IEF285I   VOL SER NOS= TSO002.
+IEF285I   JES2.JOB00410.SI0101                         SYSIN
+IEF373I STEP /STEP1   / START 26270.0008
+IEF374I STEP /STEP1   / STOP  26270.0008 CPU    0MIN 00.01SEC SRB    0MIN 00.00SEC VIRT    52K SYS   200K
+************************************************************************************************************************************
+*     2. Jobstep of job: BUZZ        Stepname: STEP1       Program name: ONFLYDRV   Executed on 27.09.26 from 00.08.47 to 00.08.48 *
+*         elapsed time  00:00:00,06                      CPU-Identifier:  TK5R           Page-in:      0                           *
+*             CPU time  00:00:00,01               Virtual Storage used:     52K         Page-out:      0                           *
+*           corr. CPU:  00:00:00,01   CPU time has been corrected by  1 / 1,0  multiplier                                          *
+*                                                                                                                                  *
+*     I/O Operation                                                                                                                *
+*     Number of records read via DD * or DD DATA:      7                                                                           *
+*     192.......0 190.......0 DMY.......0 DMY.......0 191.......1 DMY.......0                                                      *
+*                                                                                                                                  *
+*                                          Charge for step (w/o SYSOUT):          0,01                                             *
+************************************************************************************************************************************
+IEF236I ALLOC. FOR BUZZ STEP2
+IEF237I 192  ALLOCATED TO STEPLIB
+IEF237I 190  ALLOCATED TO SYS00119
+IEF237I JES2 ALLOCATED TO SYSPRINT
+IEF237I JES2 ALLOCATED TO SYSTERM
+IEF237I DMY  ALLOCATED TO SYSIN
+IEF237I 10C  ALLOCATED TO ONFNET
+IEF237I 191  ALLOCATED TO ONFREQ
+IEF237I 190  ALLOCATED TO ONFRSP
+IEF142I BUZZ STEP2 - STEP WAS EXECUTED - COND CODE 0000
+IEF285I   HERC01.ONFLY.LOADLIB                         KEPT          *--------0
+IEF285I   VOL SER NOS= TSO003.
+IEF285I   SYS1.UCAT.TSO                                KEPT          *--------0
+IEF285I   VOL SER NOS= TSO001.
+IEF285I   JES2.JOB00410.SO0106                         SYSOUT
+IEF285I   JES2.JOB00410.SO0107                         SYSOUT
+IEF285I   HERC01.ONFLY.BREQ                            KEPT          *--------3
+IEF285I   VOL SER NOS= TSO002.
+IEF285I   HERC01.ONFLY.BRSP                            CATALOGED     *--------1
+IEF285I   VOL SER NOS= TSO001.
+IEF373I STEP /STEP2   / START 26270.0008
+IEF374I STEP /STEP2   / STOP  26270.0020 CPU   12MIN 07.70SEC SRB    0MIN 00.08SEC VIRT  1044K SYS   200K
+************************************************************************************************************************************
+*     3. Jobstep of job: BUZZ        Stepname: STEP2       Program name: ONFLYENG   Executed on 27.09.26 from 00.08.48 to 00.20.57 *
+*         elapsed time  00:12:09,72                      CPU-Identifier:  TK5R           Page-in:      0                           *
+*             CPU time  00:12:07,78               Virtual Storage used:   1044K         Page-out:      0                           *
+*           corr. CPU:  00:12:07,78   CPU time has been corrected by  1 / 1,0  multiplier                                          *
+*                                                                                                                                  *
+*     I/O Operation                                                                                                                *
+*     Number of records read via DD * or DD DATA:      0                                                                           *
+*     192.......0 190.......0 DMY.......0 DMY.......0 DMY.......0 10C....2148 191.......3 190.......1                              *
+*                                                                                                                                  *
+*                                          Charge for step (w/o SYSOUT):      1.212,96                                             *
+************************************************************************************************************************************
+IEF236I ALLOC. FOR BUZZ STEP3
+IEF237I 192  ALLOCATED TO STEPLIB
+IEF237I 190  ALLOCATED TO SYS00121
+IEF237I JES2 ALLOCATED TO SYSOUT
+IEF237I JES2 ALLOCATED TO SYSPRINT
+IEF237I 190  ALLOCATED TO ONFRSP
+IEF237I JES2 ALLOCATED TO ONFNAM
+IEF237I JES2 ALLOCATED TO ONFRPT
+IEF237I JES2 ALLOCATED TO ONFCTL
+IEF142I BUZZ STEP3 - STEP WAS EXECUTED - COND CODE 0000
+IEF285I   HERC01.ONFLY.LOADLIB                         KEPT          *--------0
+IEF285I   VOL SER NOS= TSO003.
+IEF285I   SYS1.UCAT.TSO                                KEPT          *--------0
+IEF285I   VOL SER NOS= TSO001.
+IEF285I   JES2.JOB00410.SO0108                         SYSOUT
+IEF285I   JES2.JOB00410.SO0109                         SYSOUT
+IEF285I   HERC01.ONFLY.BRSP                            KEPT          *--------2
+IEF285I   VOL SER NOS= TSO001.
+IEF285I   JES2.JOB00410.SI0102                         SYSIN
+IEF285I   JES2.JOB00410.SO0110                         SYSOUT
+IEF285I   JES2.JOB00410.SI0103                         SYSIN
+IEF373I STEP /STEP3   / START 26270.0020
+IEF374I STEP /STEP3   / STOP  26270.0020 CPU    0MIN 00.01SEC SRB    0MIN 00.00SEC VIRT    52K SYS   216K
+************************************************************************************************************************************
+*     4. Jobstep of job: BUZZ        Stepname: STEP3       Program name: ONFLYDRV   Executed on 27.09.26 from 00.20.57 to 00.20.57 *
+*         elapsed time  00:00:00,04                      CPU-Identifier:  TK5R           Page-in:      1                           *
+*             CPU time  00:00:00,01               Virtual Storage used:     52K         Page-out:      0                           *
+*           corr. CPU:  00:00:00,01   CPU time has been corrected by  1 / 1,0  multiplier                                          *
+*                                                                                                                                  *
+*     I/O Operation                                                                                                                *
+*     Number of records read via DD * or DD DATA:     17                                                                           *
+*     192.......0 190.......0 DMY.......0 DMY.......0 190.......2 DMY.......0 DMY.......0 DMY.......0                              *
+*                                                                                                                                  *
+*                                          Charge for step (w/o SYSOUT):          0,01                                             *
+************************************************************************************************************************************
+IEF375I  JOB /BUZZ    / START 26270.0008
+IEF376I  JOB /BUZZ    / STOP  26270.0020 CPU   12MIN 07.72SEC SRB    0MIN 00.08SEC
+
+ONF302I STEP SUMMARY: 0005 OK, 0000 ERROR, 0000 ECHOED
+
+
+ONF001I NETWORK LOADED N=501 E=10783 CRC=4577D74E
+ONF002I RUN MANIFEST
+ONF002I   ENGINE VERSION  0.5.1
+ONF002I   FLOAT BACKEND   SOFT2C
+ONF002I   COMPILER        GCC
+ONF002I   PLATFORM        MVS38J
+ONF002I   MODE            SIMULATE
+ONF002I   NET FORMAT      1.1
+ONF002I   HEADER CRC      B05B9E6A
+ONF002I   PAYLOAD CRC     4577D74E
+ONF002I   N               501
+ONF002I   E               10783
+ONF002I   NS NR           14 2
+ONF002I   DT              100 US
+ONF002I   DT BITS         3FB999999999999A
+ONF002I   DELAY REFRACT   18 22 STEPS
+ONF002I   BIAS ROWS       9
+ONF002I   BYTES NEED      171768 255688
+ONF301I REQUEST 1 COMPLETE FP=6C3F7272
+ONF301I REQUEST 2 COMPLETE FP=BAF81D91
+ONF301I REQUEST 3 COMPLETE FP=F9C7EE77
+ONF301I REQUEST 4 COMPLETE FP=4FD0ED1E
+ONF301I REQUEST 5 COMPLETE FP=C4C320BC
+ONF302I STEP SUMMARY: 5 OK, 0 WARN, 0 ERROR
+
+ONF302I STEP SUMMARY: 0000 OK, 0000 ERROR, 0005 ECHOED
+
+
+1ONFLY REPORT (FR-BAT-04)
+ REQUEST    1 CODE=SUGR     RATE=    0 MS=1000 SEED=        1 RC=   0 OUT=   2 STEPS=    10000
+   ONF301I  REQUEST COMPLETE                                 FP=6C3F7272
+   READOUT      1 ID=        9 MN9-10331                          LAT-US=        -1 SPIKES=   0 HZ=      0.0
+   READOUT      2 ID=       88 MN9-16949                          LAT-US=        -1 SPIKES=   0 HZ=      0.0
+ REQUEST    2 CODE=SUGR     RATE=   40 MS=1000 SEED=        1 RC=   0 OUT=   2 STEPS=    10000
+   ONF301I  REQUEST COMPLETE                                 FP=BAF81D91
+   READOUT      1 ID=        9 MN9-10331                          LAT-US=     25800 SPIKES=  27 HZ=     27.0
+   READOUT      2 ID=       88 MN9-16949                          LAT-US=        -1 SPIKES=   0 HZ=      0.0
+ REQUEST    3 CODE=SUGR     RATE=  200 MS=1000 SEED=        1 RC=   0 OUT=   2 STEPS=    10000
+   ONF301I  REQUEST COMPLETE                                 FP=F9C7EE77
+   READOUT      1 ID=        9 MN9-10331                          LAT-US=      8600 SPIKES= 165 HZ=    165.0
+   READOUT      2 ID=       88 MN9-16949                          LAT-US=     43400 SPIKES=  15 HZ=     15.0
+ REQUEST    4 CODE=SUGR     RATE= 9999 MS=1000 SEED=        1 RC=   0 OUT=   2 STEPS=    10000
+   ONF301I  REQUEST COMPLETE                                 FP=4FD0ED1E
+   READOUT      1 ID=        9 MN9-10331                          LAT-US=      8500 SPIKES= 189 HZ=    189.0
+   READOUT      2 ID=       88 MN9-16949                          LAT-US=     41100 SPIKES=  24 HZ=     24.0
+ REQUEST    5 CODE=SUGR     RATE=  100 MS=1000 SEED=        1 RC=   0 OUT=   2 STEPS=    10000
+   ONF301I  REQUEST COMPLETE                                 FP=C4C320BC
+   READOUT      1 ID=        9 MN9-10331                          LAT-US=     12100 SPIKES= 100 HZ=    100.0
+   READOUT      2 ID=       88 MN9-16949                          LAT-US=        -1 SPIKES=   0 HZ=      0.0
+                                             BBBBBBBBBBB   UU        UU  ZZZZZZZZZZZZ  ZZZZZZZZZZZZ
+                                            BBBBBBBBBBBB  UU        UU  ZZZZZZZZZZZZ  ZZZZZZZZZZZZ
+                                           BB        BB  UU        UU           ZZ            ZZ
+                                          BB        BB  UU        UU          ZZ            ZZ
+                                         BB       BB   UU        UU         ZZ            ZZ
+                                        BBBBBBBBBB    UU        UU     ZZZZZZZ       ZZZZZZZ
+                                       BBBBBBBBBB    UU        UU     ZZZZZZZ       ZZZZZZZ
+                                      BB       BB   UU        UU      ZZ            ZZ
+                                     BB        BB  UU        UU     ZZ            ZZ
+                                    BB        BB  UU        UU    ZZ            ZZ
+                                   BBBBBBBBBBBB  UUUUUUUUUUUU   ZZZZZZZZZZZ   ZZZZZZZZZZZ
+                                  BBBBBBBBBBB    UUUUUUUUUU   ZZZZZZZZZZZZ  ZZZZZZZZZZZZ
+
+
+
+                    JJJJJJJJJJ        444          11         00000000                                 AAAAAAAAAA
+                    JJJJJJJJJJ       4444         111        0000000000                               AAAAAAAAAAAA
+                        JJ          44 44        1111       00      0000                              AA        AA
+                        JJ         44  44          11       00     00 00                              AA        AA
+                        JJ        44   44          11       00    00  00                              AA        AA
+                        JJ       44444444444       11       00   00   00                              AAAAAAAAAAAA
+                        JJ      444444444444       11       00  00    00                              AAAAAAAAAAAA
+                        JJ             44          11       00 00     00                              AA        AA
+                  JJ    JJ             44          11       0000      00                              AA        AA
+                  JJ    JJ             44          11       000       00                              AA        AA
+                  JJJJJJJJ             44      1111111111    0000000000                               AA        AA
+                   JJJJJJ              44      1111111111     00000000                                AA        AA
+
+
+****A   END   JOB  410  BUZZ      ONFLY BUZZ            ROOM       12.20.57 AM 27 SEP 26  PRINTER1  SYS TK5R  JOB  410   END   A****
+****A   END   JOB  410  BUZZ      ONFLY BUZZ            ROOM       12.20.57 AM 27 SEP 26  PRINTER1  SYS TK5R  JOB  410   END   A****
+****A   END   JOB  410  BUZZ      ONFLY BUZZ            ROOM       12.20.57 AM 27 SEP 26  PRINTER1  SYS TK5R  JOB  410   END   A****
+****A   END   JOB  410  BUZZ

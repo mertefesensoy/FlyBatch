@@ -1,0 +1,261 @@
+START  JOB  409  ONFTX04   ONFLY TX-04           ROOM       12.08.02 AM 27 SEP 26  PRINTER1  SYS TK5R  JOB  409  START  A****
+****A  START  JOB  409  ONFTX04   ONFLY TX-04           ROOM       12.08.02 AM 27 SEP 26  PRINTER1  SYS TK5R  JOB  409  START  A****
+****A  START  JOB  409  ONFTX04   ONFLY TX-04           ROOM       12.08.02 AM 27 SEP 26  PRINTER1  SYS TK5R  JOB  409  START  A****
+****A  START  JOB  409  ONFTX04   ONFLY TX-04           ROOM       12.08.02 AM 27 SEP 26  PRINTER1  SYS TK5R  JOB  409  START  A****
+                                                J E S 2   J O B   L O G
+
+
+ 0.05.20 JOB  409  $HASP373 ONFTX04  STARTED - INIT  1 - CLASS A - SYS TK5R
+ 0.05.20 JOB  409  IEF403I ONFTX04 - STARTED - TIME=00.05.20
+ 0.05.20 JOB  409  IEFACTRT - Stepname  Procstep  Program   Retcode
+ 0.05.20 JOB  409  ONFTX04    SCRATCH             IEFBR14   RC= 0000
+ 0.05.20 JOB  409  ONFTX04    STEP1               ONFLYDRV  RC= 0000
+ 0.05.20 JOB  409  IEF236I ALLOC. FOR ONFTX04 STEP2
+ 0.05.20 JOB  409  IEF237I 10C  ALLOCATED TO ONFNET
+ 0.08.02 JOB  409  ONFTX04    STEP2               ONFLYENG  RC= 0000
+ 0.08.02 JOB  409  ONFTX04    STEP3               ONFLYDRV  RC= 0000
+ 0.08.02 JOB  409  IEF404I ONFTX04 - ENDED - TIME=00.08.02
+ 0.08.02 JOB  409  $HASP395 ONFTX04  ENDED
+
+
+------ JES2 JOB STATISTICS ------
+
+
+ 27 SEP 26 JOB EXECUTION DATE
+
+
+        63 CARDS READ
+
+
+       201 SYSOUT PRINT RECORDS
+
+
+         0 SYSOUT PUNCH RECORDS
+
+
+      2.71 MINUTES EXECUTION TIME
+    1     //ONFTX04  JOB (001),'ONFLY TX-04',CLASS=A,MSGCLASS=A,                  JOB  409
+          //             USER=HERC01,PASSWORD=,
+          //             REGION=8M,TIME=1440,MSGLEVEL=(1,1)
+          ***
+    2     //SCRATCH  EXEC PGM=IEFBR14
+    3     //D1       DD DSN=HERC01.ONFLY.TREQ,DISP=(MOD,DELETE),
+          //            UNIT=SYSDA,SPACE=(TRK,(1,1))
+    4     //D2       DD DSN=HERC01.ONFLY.TRSP,DISP=(MOD,DELETE),
+          //            UNIT=SYSDA,SPACE=(TRK,(1,1))
+          ***
+    5     //STEP1    EXEC PGM=ONFLYDRV
+    6     //STEPLIB  DD DSN=HERC01.ONFLY.LOADLIB,DISP=SHR
+    7     //SYSOUT   DD SYSOUT=*
+    8     //SYSPRINT DD SYSOUT=*
+    9     //ONFREQ   DD DSN=HERC01.ONFLY.TREQ,DISP=(,CATLG,DELETE),
+          //            UNIT=SYSDA,SPACE=(TRK,(2,1)),
+          //            DCB=(RECFM=FB,LRECL=412,BLKSIZE=4120)
+   10     //ONFCTL   DD *
+          ***
+   11     //STEP2    EXEC PGM=ONFLYENG,COND=(8,LE,STEP1)
+   12     //STEPLIB  DD DSN=HERC01.ONFLY.LOADLIB,DISP=SHR
+   13     //SYSPRINT DD SYSOUT=*
+   14     //SYSTERM  DD SYSOUT=*
+   15     //SYSIN    DD DUMMY
+   16     //ONFNET   DD UNIT=10C,
+          //            DCB=(RECFM=F,LRECL=80,BLKSIZE=80)
+   17     //ONFREQ   DD DSN=HERC01.ONFLY.TREQ,DISP=SHR
+   18     //ONFRSP   DD DSN=HERC01.ONFLY.TRSP,DISP=(,CATLG,DELETE),
+          //            UNIT=SYSDA,SPACE=(TRK,(2,1)),
+          //            DCB=(RECFM=FB,LRECL=412,BLKSIZE=4120)
+          ***
+   19     //STEP3    EXEC PGM=ONFLYDRV,COND=(12,LE,STEP2)
+   20     //STEPLIB  DD DSN=HERC01.ONFLY.LOADLIB,DISP=SHR
+   21     //SYSOUT   DD SYSOUT=*
+   22     //SYSPRINT DD SYSOUT=*
+   23     //ONFRSP   DD DSN=HERC01.ONFLY.TRSP,DISP=SHR
+   24     //ONFNAM   DD *
+   25     //ONFRPT   DD SYSOUT=*,DCB=(RECFM=FBA,LRECL=133,BLKSIZE=133)
+   26     //ONFCTL   DD *
+          //
+IEF236I ALLOC. FOR ONFTX04 SCRATCH
+IEF237I 191  ALLOCATED TO D1
+IEF237I 190  ALLOCATED TO SYS00107
+IEF237I 191  ALLOCATED TO D2
+IEF142I ONFTX04 SCRATCH - STEP WAS EXECUTED - COND CODE 0000
+IEF285I   HERC01.ONFLY.TREQ                            UNCATALOGED   *--------0
+IEF285I   VOL SER NOS= TSO002.
+IEF285I   HERC01.ONFLY.TREQ                            DELETED       *--------0
+IEF285I   VOL SER NOS= TSO002.
+IEF285I   SYS1.UCAT.TSO                                KEPT          *--------0
+IEF285I   VOL SER NOS= TSO001.
+IEF285I   HERC01.ONFLY.TRSP                            UNCATALOGED   *--------0
+IEF285I   VOL SER NOS= TSO002.
+IEF285I   HERC01.ONFLY.TRSP                            DELETED       *--------0
+IEF285I   VOL SER NOS= TSO002.
+IEF373I STEP /SCRATCH / START 26270.0005
+IEF374I STEP /SCRATCH / STOP  26270.0005 CPU    0MIN 00.00SEC SRB    0MIN 00.00SEC VIRT     4K SYS   180K
+IEF236I ALLOC. FOR ONFTX04 STEP1
+IEF237I 192  ALLOCATED TO STEPLIB
+IEF237I 190  ALLOCATED TO SYS00109
+IEF237I JES2 ALLOCATED TO SYSOUT
+IEF237I JES2 ALLOCATED TO SYSPRINT
+IEF237I 191  ALLOCATED TO ONFREQ
+IEF237I JES2 ALLOCATED TO ONFCTL
+IEF142I ONFTX04 STEP1 - STEP WAS EXECUTED - COND CODE 0000
+IEF285I   HERC01.ONFLY.LOADLIB                         KEPT          *--------0
+IEF285I   VOL SER NOS= TSO003.
+IEF285I   SYS1.UCAT.TSO                                KEPT          *--------0
+IEF285I   VOL SER NOS= TSO001.
+IEF285I   JES2.JOB00409.SO0104                         SYSOUT
+IEF285I   JES2.JOB00409.SO0105                         SYSOUT
+IEF285I   HERC01.ONFLY.TREQ                            CATALOGED     *--------1
+IEF285I   VOL SER NOS= TSO002.
+IEF285I   JES2.JOB00409.SI0101                         SYSIN
+IEF373I STEP /STEP1   / START 26270.0005
+IEF374I STEP /STEP1   / STOP  26270.0005 CPU    0MIN 00.01SEC SRB    0MIN 00.00SEC VIRT    52K SYS   200K
+************************************************************************************************************************************
+*     2. Jobstep of job: ONFTX04     Stepname: STEP1       Program name: ONFLYDRV   Executed on 27.09.26 from 00.05.20 to 00.05.20 *
+*         elapsed time  00:00:00,06                      CPU-Identifier:  TK5R           Page-in:      0                           *
+*             CPU time  00:00:00,01               Virtual Storage used:     52K         Page-out:      0                           *
+*           corr. CPU:  00:00:00,01   CPU time has been corrected by  1 / 1,0  multiplier                                          *
+*                                                                                                                                  *
+*     I/O Operation                                                                                                                *
+*     Number of records read via DD * or DD DATA:      3                                                                           *
+*     192.......0 190.......0 DMY.......0 DMY.......0 191.......1 DMY.......0                                                      *
+*                                                                                                                                  *
+*                                          Charge for step (w/o SYSOUT):          0,01                                             *
+************************************************************************************************************************************
+IEF236I ALLOC. FOR ONFTX04 STEP2
+IEF237I 192  ALLOCATED TO STEPLIB
+IEF237I 190  ALLOCATED TO SYS00111
+IEF237I JES2 ALLOCATED TO SYSPRINT
+IEF237I JES2 ALLOCATED TO SYSTERM
+IEF237I DMY  ALLOCATED TO SYSIN
+IEF237I 10C  ALLOCATED TO ONFNET
+IEF237I 191  ALLOCATED TO ONFREQ
+IEF237I 190  ALLOCATED TO ONFRSP
+IEF142I ONFTX04 STEP2 - STEP WAS EXECUTED - COND CODE 0000
+IEF285I   HERC01.ONFLY.LOADLIB                         KEPT          *--------0
+IEF285I   VOL SER NOS= TSO003.
+IEF285I   SYS1.UCAT.TSO                                KEPT          *--------0
+IEF285I   VOL SER NOS= TSO001.
+IEF285I   JES2.JOB00409.SO0106                         SYSOUT
+IEF285I   JES2.JOB00409.SO0107                         SYSOUT
+IEF285I   HERC01.ONFLY.TREQ                            KEPT          *--------3
+IEF285I   VOL SER NOS= TSO002.
+IEF285I   HERC01.ONFLY.TRSP                            CATALOGED     *--------1
+IEF285I   VOL SER NOS= TSO001.
+IEF373I STEP /STEP2   / START 26270.0005
+IEF374I STEP /STEP2   / STOP  26270.0008 CPU    2MIN 41.99SEC SRB    0MIN 00.09SEC VIRT  1044K SYS   200K
+************************************************************************************************************************************
+*     3. Jobstep of job: ONFTX04     Stepname: STEP2       Program name: ONFLYENG   Executed on 27.09.26 from 00.05.20 to 00.08.02 *
+*         elapsed time  00:02:42,61                      CPU-Identifier:  TK5R           Page-in:      0                           *
+*             CPU time  00:02:42,08               Virtual Storage used:   1044K         Page-out:      0                           *
+*           corr. CPU:  00:02:42,08   CPU time has been corrected by  1 / 1,0  multiplier                                          *
+*                                                                                                                                  *
+*     I/O Operation                                                                                                                *
+*     Number of records read via DD * or DD DATA:      0                                                                           *
+*     192.......0 190.......0 DMY.......0 DMY.......0 DMY.......0 10C....2148 191.......3 190.......1                              *
+*                                                                                                                                  *
+*                                          Charge for step (w/o SYSOUT):        270,13                                             *
+************************************************************************************************************************************
+IEF236I ALLOC. FOR ONFTX04 STEP3
+IEF237I 192  ALLOCATED TO STEPLIB
+IEF237I 190  ALLOCATED TO SYS00113
+IEF237I JES2 ALLOCATED TO SYSOUT
+IEF237I JES2 ALLOCATED TO SYSPRINT
+IEF237I 190  ALLOCATED TO ONFRSP
+IEF237I JES2 ALLOCATED TO ONFNAM
+IEF237I JES2 ALLOCATED TO ONFRPT
+IEF237I JES2 ALLOCATED TO ONFCTL
+IEF142I ONFTX04 STEP3 - STEP WAS EXECUTED - COND CODE 0000
+IEF285I   HERC01.ONFLY.LOADLIB                         KEPT          *--------0
+IEF285I   VOL SER NOS= TSO003.
+IEF285I   SYS1.UCAT.TSO                                KEPT          *--------0
+IEF285I   VOL SER NOS= TSO001.
+IEF285I   JES2.JOB00409.SO0108                         SYSOUT
+IEF285I   JES2.JOB00409.SO0109                         SYSOUT
+IEF285I   HERC01.ONFLY.TRSP                            KEPT          *--------2
+IEF285I   VOL SER NOS= TSO001.
+IEF285I   JES2.JOB00409.SI0102                         SYSIN
+IEF285I   JES2.JOB00409.SO0110                         SYSOUT
+IEF285I   JES2.JOB00409.SI0103                         SYSIN
+IEF373I STEP /STEP3   / START 26270.0008
+IEF374I STEP /STEP3   / STOP  26270.0008 CPU    0MIN 00.01SEC SRB    0MIN 00.00SEC VIRT    52K SYS   216K
+************************************************************************************************************************************
+*     4. Jobstep of job: ONFTX04     Stepname: STEP3       Program name: ONFLYDRV   Executed on 27.09.26 from 00.08.02 to 00.08.02 *
+*         elapsed time  00:00:00,04                      CPU-Identifier:  TK5R           Page-in:      0                           *
+*             CPU time  00:00:00,01               Virtual Storage used:     52K         Page-out:      0                           *
+*           corr. CPU:  00:00:00,01   CPU time has been corrected by  1 / 1,0  multiplier                                          *
+*                                                                                                                                  *
+*     I/O Operation                                                                                                                *
+*     Number of records read via DD * or DD DATA:     17                                                                           *
+*     192.......0 190.......0 DMY.......0 DMY.......0 190.......2 DMY.......0 DMY.......0 DMY.......0                              *
+*                                                                                                                                  *
+*                                          Charge for step (w/o SYSOUT):          0,01                                             *
+************************************************************************************************************************************
+IEF375I  JOB /ONFTX04 / START 26270.0005
+IEF376I  JOB /ONFTX04 / STOP  26270.0008 CPU    2MIN 42.01SEC SRB    0MIN 00.09SEC
+
+ONF302I STEP SUMMARY: 0001 OK, 0000 ERROR, 0000 ECHOED
+
+
+ONF001I NETWORK LOADED N=501 E=10783 CRC=4577D74E
+ONF002I RUN MANIFEST
+ONF002I   ENGINE VERSION  0.5.1
+ONF002I   FLOAT BACKEND   SOFT2C
+ONF002I   COMPILER        GCC
+ONF002I   PLATFORM        MVS38J
+ONF002I   MODE            SIMULATE
+ONF002I   NET FORMAT      1.1
+ONF002I   HEADER CRC      B05B9E6A
+ONF002I   PAYLOAD CRC     4577D74E
+ONF002I   N               501
+ONF002I   E               10783
+ONF002I   NS NR           14 2
+ONF002I   DT              100 US
+ONF002I   DT BITS         3FB999999999999A
+ONF002I   DELAY REFRACT   18 22 STEPS
+ONF002I   BIAS ROWS       9
+ONF002I   BYTES NEED      171768 255688
+ONF301I REQUEST 1 COMPLETE FP=F9C7EE77
+ONF302I STEP SUMMARY: 1 OK, 0 WARN, 0 ERROR
+
+ONF302I STEP SUMMARY: 0000 OK, 0000 ERROR, 0001 ECHOED
+
+
+1ONFLY REPORT (FR-BAT-04)
+ REQUEST    1 CODE=SUGR     RATE=  200 MS=1000 SEED=        1 RC=   0 OUT=   2 STEPS=    10000
+   ONF301I  REQUEST COMPLETE                                 FP=F9C7EE77
+   READOUT      1 ID=        9 MN9-10331                          LAT-US=      8600 SPIKES= 165 HZ=    165.0
+   READOUT      2 ID=       88 MN9-16949                          LAT-US=     43400 SPIKES=  15 HZ=     15.0
+                        OOOOOOOOOOOO  NN        NN  FFFFFFFFFFFF  TTTTTTTTTTTT  XX        XX    00000000          444
+                       OOOOOOOOOOOO  NNN       NN  FFFFFFFFFFFF  TTTTTTTTTTTT  XX        XX   0000000000        4444
+                      OO        OO  NNNN      NN  FF                 TT        XX      XX   00      0000      44 44
+                     OO        OO  NN NN     NN  FF                 TT         XX    XX    00     00 00     44  44
+                    OO        OO  NN  NN    NN  FF                 TT          XX  XX     00    00  00    44   44
+                   OO        OO  NN   NN   NN  FFFFFFFF           TT           XXXX      00   00   00   44444444444
+                  OO        OO  NN    NN  NN  FFFFFFFF           TT           XXXX      00  00    00  444444444444
+                 OO        OO  NN     NN NN  FF                 TT          XX  XX     00 00     00         44
+                OO        OO  NN      NNNN  FF                 TT         XX    XX    0000      00         44
+               OO        OO  NN       NNN  FF                 TT        XX      XX   000       00         44
+              OOOOOOOOOOOO  NN        NN  FF                 TT       XX        XX   0000000000          44
+             OOOOOOOOOOOO  NN         N  FF                 TT       XX        XX    00000000           44
+
+
+
+                    JJJJJJJJJJ        444       00000000     9999999999                                AAAAAAAAAA
+                    JJJJJJJJJJ       4444      0000000000   999999999999                              AAAAAAAAAAAA
+                        JJ          44 44     00      0000  99        99                              AA        AA
+                        JJ         44  44     00     00 00  99        99                              AA        AA
+                        JJ        44   44     00    00  00  99        99                              AA        AA
+                        JJ       44444444444  00   00   00  999999999999                              AAAAAAAAAAAA
+                        JJ      444444444444  00  00    00  999999999999                              AAAAAAAAAAAA
+                        JJ             44     00 00     00            99                              AA        AA
+                  JJ    JJ             44     0000      00            99                              AA        AA
+                  JJ    JJ             44     000       00  99        99                              AA        AA
+                  JJJJJJJJ             44      0000000000   999999999999                              AA        AA
+                   JJJJJJ              44       00000000     9999999999                               AA        AA
+
+
+****A   END   JOB  409  ONFTX04   ONFLY TX-04           ROOM       12.08.02 AM 27 SEP 26  PRINTER1  SYS TK5R  JOB  409   END   A****
+****A   END   JOB  409  ONFTX04   ONFLY TX-04           ROOM       12.08.02 AM 27 SEP 26  PRINTER1  SYS TK5R  JOB  409   END   A****
+****A   END   JOB  409  ONFTX04   ONFLY TX-04           ROOM       12.08.02 AM 27 SEP 26  PRINTER1  SYS TK5R  JOB  409   END   A****
+****A   END   JOB  409  ONFTX04
