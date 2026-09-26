@@ -5,7 +5,7 @@
 | Date | 2026-09-26 |
 | Author | Mert Efe Şensoy (owner); drafted by the engineering agent under the owner's decisions |
 | Phase / gate | None. D-576: P-41's slice F is not a Section 9 phase; its exit is P-41's own |
-| Owner decisions relied on | D-576 to D-596 (this session); earlier D-24 and D-126 (TBD-15), D-478, D-479, D-484 to D-486, D-504, D-505, D-518, D-520, D-530, D-544, D-545, D-548, D-554, D-558, D-562, D-573 |
+| Owner decisions relied on | D-576 to D-604 (this session); earlier D-24 and D-126 (TBD-15), D-478, D-479, D-484 to D-486, D-504, D-505, D-518, D-520, D-530, D-544, D-545, D-548, D-554, D-558, D-562, D-573 |
 | Plan of record | P-46, `docs/plan/2026-09-26-open-source-slice-f.md`, approved as drafted by D-579 |
 | Requirements touched | NFR-LIC-01 (the register gains the CI tools, `tools/lint_ntc.py` holds it); NR-04 and NR-05 by way of the `shim` target's build flags on `x86w` (D-596); no requirement text changed |
 | Open items closed | none in SRS Appendix B; P-41 items 7 (CI half), 12, 24 and 25 closed by D-586, D-580, D-581 and D-582 |
@@ -131,6 +131,12 @@ L = 0.2126 R + 0.7152 G + 0.0722 B over linearised sRGB channels
 | Social preview | Built from ONFLY's own frame | Defer to H0; the whole-brain image offered | D-594, D-595 |
 | gcc 16 on `x86w` | `-std=gnu11` | A CI-only variable; guard `stdbool.h` | D-596 |
 | pip hashes | Not in this slice | A generated lock file | D-579 |
+| The batch to `main` | Pushed at `85645e0` after the evidence | Scans first; `main` untouched | D-597 |
+| Pause, then resume | Paused, then resumed the same day | Close with scans NOT RUN; stay paused | D-598, D-599 |
+| D-479's reach | Public text only; the name may be said in the working conversation | Retire the scans; relax the rule in the repository | D-600 |
+| The independent name scans | Retired for slice F, the guard standing in | Run them from the name given | D-601 |
+| The profile's `issue_template` | Met on health 100 with the forms on `main` | Add a legacy template file | D-602 |
+| Slice F | Marked COMPLETE; the record pushed to `main` too | Leave it open; record on the branch only | D-603, D-604 |
 
 ## 6. Verification
 
@@ -298,6 +304,25 @@ not met:** 11.10's rejection test and P-41 11.1 to 11.3 are NOT RUN, and
 the community profile's `issue_template` reads `null`. The owner's token
 file outside the repository still holds the wrong value; deleting it is the
 owner's call.
+
+**Resumed and closed the same day (D-599 to D-604).** The owner resumed the
+slice to settle the naming rule (D-599) and narrowed D-479 to public text,
+leaving the repository's rule, wording and guard unchanged (D-600). The
+owner then retired P-41's independent name scans for this slice, the
+committed guard standing in (D-601), and judged the profile line met on
+health 100 with the forms on `main` (D-602). No token file was built.
+
+**Final evidence, read in the closing turn:**
+
+| Check | Command | Result |
+|---|---|---|
+| Full suite, strict | `ONFLY_NOSKIP=1 mingw32-make test` at `fd3d136` (code identical to `537ef72`), x86-64 Windows, MinGW.org gcc 6.3.0, SOFT3E, SOFT2C and NATIVE | exit 0 in 754 s, `ONFLY test: 28 PASS, 0 SKIP, 0 PENDING, 5 EXEMPT`; `cmpgld: SOFT3E, NATIVE, SOFT2C agree on all 19 golden requests across 2 networks`; `shim` built with `-std=gnu11` |
+| 11.5 | `gh api repos/mertefesensoy/ONFLY/license --jq .license.spdx_id` | `MIT` |
+| 11.6 | the four `gh api` reads | `README.md`; health 100; every profile file present but `issue_template` (D-602); description, topics, Discussions on, wiki and projects off; private vulnerability reporting `true` |
+| 11.10 | `gh run view 36265602013`; `python tools/lint_name.py --self-test`; `git config --get-all core.hooksPath` | four jobs success at `85645e0` on `main`; 40 checks, 0 failed; no output |
+
+Slice F is marked COMPLETE by D-603, and this record reaches `main` under
+D-604.
 
 ## 7. Related docs
 

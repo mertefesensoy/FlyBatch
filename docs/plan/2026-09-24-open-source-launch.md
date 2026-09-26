@@ -3,7 +3,8 @@
 **APPROVED as drafted on 2026-09-24 (D-488) and published in full at the
 owner's choice (D-489). Slice A COMPLETE 2026-09-25 (D-494). Slice B
 COMPLETE 2026-09-25 (D-500 to D-512). Slices C and D COMPLETE 2026-09-26
-(D-513 to D-541). Slice E COMPLETE 2026-09-26 (D-542 to D-563).** This file is
+(D-513 to D-541). Slice E COMPLETE 2026-09-26 (D-542 to D-563). Slice F
+COMPLETE 2026-09-26 (D-576 to D-604).** This file is
 the proposal P-41 records; Appendix A.2 carries it, struck as approved. Until
 the renumbering of 2026-09-24 it called itself P-40; that number went to
 D-480's proposal, so the pushed commits f2e4b2f, 4b1de9f, f8d2a05 and 11c074d
@@ -14,7 +15,7 @@ recorded as a D-row.
 | Field | Value |
 |---|---|
 | Date | 2026-09-24 |
-| Status | APPROVED 2026-09-24 (D-488); slice A COMPLETE 2026-09-25 (D-494); slice B COMPLETE 2026-09-25 (D-500 to D-512); slices C and D COMPLETE 2026-09-26 (D-513 to D-541); slice E COMPLETE 2026-09-26 (D-542 to D-563); all on working branches until D-504's batch; slice F under way from 2026-09-26 (D-576), plan of record P-46 (D-579); D-504's batch of slices C to F pushed to `main` at `85645e0` (D-597); slice F paused with its exit not met, the name scans NOT RUN and D-479 to be revisited (D-598) |
+| Status | APPROVED 2026-09-24 (D-488); slice A COMPLETE 2026-09-25 (D-494); slice B COMPLETE 2026-09-25 (D-500 to D-512); slices C and D COMPLETE 2026-09-26 (D-513 to D-541); slice E COMPLETE 2026-09-26 (D-542 to D-563); all on working branches until D-504's batch; slice F under way from 2026-09-26 (D-576), plan of record P-46 (D-579); D-504's batch of slices C to F pushed to `main` at `85645e0` (D-597); slice F paused (D-598), resumed (D-599), and **COMPLETE 2026-09-26 (D-576 to D-604)**, its record on `main` (D-604); slice G is next |
 | Proposal | P-41, confirmed at slice A3 on 2026-09-25 (D-494); P-40 until the renumbering of 2026-09-24 |
 | Scope | Launching the already public repository github.com/mertefesensoy/ONFLY so that other people can find it, understand it truthfully and replicate what it claims, **before** Phase F. Not a phase: no phase opens or closes here. Phases A to E and G stay COMPLETE; Phase F stays blocked on IBM Z access the project does not have; Phase H stays blocked on TBD-13 |
 | Authorising owner answers | recorded as D-484 to D-493: OA-1 (scrub forward only), OA-2 (rewrite the IBM summary as a public overview), OA-3 (neutral term plus a decision row), OA-4 (all four audiences, sequenced by this plan), OA-5 (plan approved), OA-6 (published in full), OA-7 (commit and push the working branch), OA-8 and OA-9 (the two no-access confirmations of 3.2), OA-10 (Wave -1 scope for the IBM Community post); see 0.1 |
@@ -532,7 +533,7 @@ download half of E3 and of 11.9 waits for slice G's release, itself gated on
 item 8. The record is
 `docs/implementations/2026-09-26-open-source-launch-slice-e.md`.
 
-### Slice F: community infrastructure
+### Slice F: community infrastructure (COMPLETE 2026-09-26, D-576 to D-604)
 
 | Step | Work |
 |---|---|
@@ -546,6 +547,13 @@ item 8. The record is
 
 **Exit:** the community profile lists every file; the four named jobs exist
 and pass on `main`. **Verify:** 11.6 and 11.10 after push.
+
+**Met 2026-09-26 (D-603)** on `main` at `85645e0`, as D-601 and D-602 judge
+it: 11.10's independent name scans are retired with the committed guard
+standing in (D-601), and 11.6's `issue_template`, `null` for a forms
+folder, is read under D-602. Carried: the allowed-actions list, the
+fork-workflow approval and the ruleset on `main` (owner settings in F7),
+and pip hash pinning (D-579).
 
 ### Slice G: release (first irreversible step)
 
