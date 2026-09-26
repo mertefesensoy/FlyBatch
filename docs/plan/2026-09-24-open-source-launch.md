@@ -14,7 +14,7 @@ recorded as a D-row.
 | Field | Value |
 |---|---|
 | Date | 2026-09-24 |
-| Status | APPROVED 2026-09-24 (D-488); slice A COMPLETE 2026-09-25 (D-494); slice B COMPLETE 2026-09-25 (D-500 to D-512); slices C and D COMPLETE 2026-09-26 (D-513 to D-541); slice E COMPLETE 2026-09-26 (D-542 to D-563); all on working branches until D-504's batch; slice F under way from 2026-09-26 (D-576), plan of record P-46 (D-579) |
+| Status | APPROVED 2026-09-24 (D-488); slice A COMPLETE 2026-09-25 (D-494); slice B COMPLETE 2026-09-25 (D-500 to D-512); slices C and D COMPLETE 2026-09-26 (D-513 to D-541); slice E COMPLETE 2026-09-26 (D-542 to D-563); all on working branches until D-504's batch; slice F under way from 2026-09-26 (D-576), plan of record P-46 (D-579); D-504's batch of slices C to F pushed to `main` at `85645e0` (D-597) |
 | Proposal | P-41, confirmed at slice A3 on 2026-09-25 (D-494); P-40 until the renumbering of 2026-09-24 |
 | Scope | Launching the already public repository github.com/mertefesensoy/ONFLY so that other people can find it, understand it truthfully and replicate what it claims, **before** Phase F. Not a phase: no phase opens or closes here. Phases A to E and G stay COMPLETE; Phase F stays blocked on IBM Z access the project does not have; Phase H stays blocked on TBD-13 |
 | Authorising owner answers | recorded as D-484 to D-493: OA-1 (scrub forward only), OA-2 (rewrite the IBM summary as a public overview), OA-3 (neutral term plus a decision row), OA-4 (all four audiences, sequenced by this plan), OA-5 (plan approved), OA-6 (published in full), OA-7 (commit and push the working branch), OA-8 and OA-9 (the two no-access confirmations of 3.2), OA-10 (Wave -1 scope for the IBM Community post); see 0.1 |

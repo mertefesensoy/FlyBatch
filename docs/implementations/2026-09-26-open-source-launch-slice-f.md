@@ -236,8 +236,53 @@ vulnerability reporting `{"enabled":false}`, `allowed_actions: all`, fork
 approval `first_time_contributors`, rulesets `[]`. None of D-584's
 owner-only settings reads as applied at this commit.
 
-**Still to be shown**, after this commit: the batch to `main` (D-583), then
-11.6 and CI on `main`.
+**The batch to `main` (D-597).** With the evidence above put to the owner
+first (D-583), `git push origin 85645e0:main` fast-forwarded `main` from
+`cb20a28` to `85645e0`, 21 commits: slices C, D, E and F and the FR-LOD-04
+work. The commits after `85645e0`, this record's among them, stay on the
+working branch.
+
+**CI on `main`:** run 36265602013, push event at `85645e0`, all four jobs
+success; `name-guard` over `cb20a28..85645e0`: `21 commit messages checked,
+0 with findings`, `tree clean, 1113 tracked files`; `nonet-linux` and
+`nonet-windows` each `ONFLY test: 23 PASS, 0 SKIP, 0 PENDING, 2 EXEMPT`.
+The `dependabot.yml` on `main` started run 36265603730, "Dependabot
+Updates", which succeeded and opened no pull request: the three actions are
+at their latest releases.
+
+**P-41 11.5 on `main`:** `gh api repos/mertefesensoy/ONFLY/license --jq
+.license.spdx_id` gives `MIT`, where it gave `NOASSERTION` while `main`
+lagged (D-514).
+
+**P-41 11.6 on `main`:**
+
+| Read | Result |
+|---|---|
+| `.../readme --jq .path` | `README.md` |
+| `.../community/profile` | `health_percentage` 100; `code_of_conduct` (key `other`, as D-585 expected for a file adopting the Covenant by reference), `code_of_conduct_file`, `contributing`, `license` (MIT), `pull_request_template` and `readme` present; `issue_template` `null` |
+| `.../ONFLY --jq '{description, topics, has_discussions, has_wiki, has_projects}'` | description ending with the short no-access form (D-540); the 11 topics of D-593; Discussions on, wiki and projects off |
+| `.../private-vulnerability-reporting --jq .enabled` | `false` |
+
+`issue_template` is `null` although the four forms are on `main`
+(`.../contents/.github/ISSUE_TEMPLATE?ref=main` lists `bug_report.yml`,
+`config.yml`, `proposal.yml` and `replication_report.yml`) and health is
+100. GitHub's own documentation of the endpoint does not say which template
+layouts the field detects; a public report against GitHub's REST
+description, github/rest-api-description issue 7187, records the field as
+non-null only for the single legacy file `.github/ISSUE_TEMPLATE.md`, while
+the community page and `health_percentage` count a
+`.github/ISSUE_TEMPLATE/` folder. That report is a third party's reading,
+not verified here beyond this repository's own figures. GraphQL, asked as
+the owner, gives `contactLinks` with both of `config.yml`'s links, so the
+file is read, `issueTemplates` empty, and `isBlankIssuesEnabled` true.
+Whether an outside, signed-in user is offered a blank issue was not
+checked: the chooser page needs a signed-in session, and the engineer signs
+into nothing.
+
+**Not met at this record:** 11.6's last line, private vulnerability
+reporting, reads `false`, so `SECURITY.md`'s reporting route does not work
+yet; and P-41 11.1 to 11.3 and 11.10's rejection test stay NOT RUN, their
+token file absent. Both are owner actions (D-584, D-588).
 
 ## 7. Related docs
 
