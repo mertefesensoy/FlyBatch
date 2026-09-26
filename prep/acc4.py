@@ -40,6 +40,7 @@ stimulus list (the weights are unchanged), and the result goes to
 Run (repository root, after calibrate.py --refine):
 
     python prep/acc4.py [--jobs 9] [--w-syn 0.2345] [--variant right]
+                        [--out acc4-v051.json]            (D-612)
 """
 import argparse
 import io
@@ -111,6 +112,36 @@ def record_path(arg):
     if os.path.isabs(arg) or os.path.isfile(arg):
         return arg
     return os.path.join(cal.CAL_DIR, arg)
+
+
+def output_path(out, variant):
+    """The record a measuring run writes (D-612).
+
+    Contract: returns the path main() writes its JSON to.  Without `out`
+    it is what it always was, `acc4.json`, or `acc4-<variant>.json` for a
+    variant.  With `out`, a bare name is a name under data/calibration/
+    and a path carrying a directory is used as given; `out` wins over
+    the variant default.  No side effects.
+
+    Raises SystemExit, before any run starts, when `out` names the file
+    D-526 keeps as written (VL-97's record) or a directory that does not
+    exist.  The second check is here rather than left to the final
+    write because a full-brain run is two hours long, and a typo in a
+    directory name would otherwise be found only at its end.
+    """
+    if out is None:
+        if variant:
+            return os.path.join(cal.CAL_DIR, "acc4-%s.json" % variant)
+        return OUT
+    path = out if os.path.dirname(out) else os.path.join(cal.CAL_DIR, out)
+    if os.path.normcase(os.path.abspath(path)) == \
+            os.path.normcase(os.path.abspath(OUT)):
+        raise SystemExit("--out %s names acc4.json, which D-526 keeps as "
+                         "written; name a new record" % out)
+    parent = os.path.dirname(os.path.abspath(path))
+    if not os.path.isdir(parent):
+        raise SystemExit("--out %s: no such directory %s" % (out, parent))
+    return path
 
 
 def reeval(path):
@@ -265,7 +296,7 @@ def stats(values):
     return mean, sd, sd / math.sqrt(n)
 
 
-def main():
+def build_parser():
     ap = argparse.ArgumentParser()
     ap.add_argument("--jobs", type=int, default=9)
     ap.add_argument("--w-syn", type=float, default=None,
@@ -281,10 +312,15 @@ def main():
                          "under ACC-4 as amended (D-341); runs nothing")
     ap.add_argument("--variant", default=None,
                     help="stimulus-set variant: right, phg9 or tpgrn (D-176)")
-    a = ap.parse_args()
-    out_path = OUT
-    if a.variant:
-        out_path = os.path.join(cal.CAL_DIR, "acc4-%s.json" % a.variant)
+    ap.add_argument("--out", default=None, metavar="JSON",
+                    help="write the record here instead of acc4.json; a "
+                         "bare name is under data/calibration/ (D-612)")
+    return ap
+
+
+def main():
+    a = build_parser().parse_args()
+    out_path = output_path(a.out, a.variant)
 
     log = cal.load_log()
     if a.w_syn is None:

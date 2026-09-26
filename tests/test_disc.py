@@ -146,5 +146,65 @@ class RecordPath(unittest.TestCase):
                          os.path.join(self.cal.CAL_DIR, "no-such.json"))
 
 
+class OutPath(unittest.TestCase):
+    """D-612: `--out` names the record a measuring run writes.
+
+    D-609 re-measures ACC-4 on the full brain, and before this option
+    the tool wrote `data/calibration/acc4.json` unconditionally -- the
+    record VL-97 wrote and D-526 keeps as written, `"pass": false` and
+    all.  `--out` sends a new measurement elsewhere, is settled before
+    the run starts rather than two hours into it, and will not name the
+    record D-526 keeps."""
+
+    def setUp(self):
+        import calibrate as cal
+        self.cal = cal
+        self.here = os.getcwd()
+        os.chdir(ROOT)
+        self.dir = tempfile.mkdtemp(prefix="onfly-out-")
+
+    def tearDown(self):
+        os.chdir(self.here)
+        shutil.rmtree(self.dir, ignore_errors=True)
+
+    def test_without_out_the_record_is_acc4_json_as_before(self):
+        self.assertEqual(acc4.output_path(None, None), acc4.OUT)
+
+    def test_without_out_a_variant_keeps_its_own_record(self):
+        self.assertEqual(acc4.output_path(None, "right"),
+                         os.path.join(self.cal.CAL_DIR, "acc4-right.json"))
+
+    def test_a_bare_name_is_under_the_calibration_directory(self):
+        self.assertEqual(acc4.output_path("acc4-v051.json", None),
+                         os.path.join(self.cal.CAL_DIR, "acc4-v051.json"))
+
+    def test_a_path_with_a_directory_is_used_as_given(self):
+        p = os.path.join(self.dir, "acc4-x.json")
+        self.assertEqual(acc4.output_path(p, None), p)
+
+    def test_out_wins_over_the_variant_default(self):
+        self.assertEqual(acc4.output_path("acc4-v051.json", "right"),
+                         os.path.join(self.cal.CAL_DIR, "acc4-v051.json"))
+
+    def test_out_refuses_the_record_d526_keeps(self):
+        for spelling in ("acc4.json",
+                         os.path.join("data", "calibration", "acc4.json"),
+                         acc4.OUT):
+            with self.assertRaises(SystemExit) as cm:
+                acc4.output_path(spelling, None)
+            self.assertIn("D-526", str(cm.exception))
+
+    def test_out_refuses_a_directory_that_does_not_exist(self):
+        # Refused before the run, not when the JSON is written at its end.
+        p = os.path.join(self.dir, "no-such-dir", "acc4-x.json")
+        with self.assertRaises(SystemExit):
+            acc4.output_path(p, None)
+
+    def test_the_command_line_accepts_out(self):
+        a = acc4.build_parser().parse_args(["--out", "acc4-v051.json"])
+        self.assertEqual(a.out, "acc4-v051.json")
+        self.assertIsNone(acc4.build_parser().parse_args([]).out)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
