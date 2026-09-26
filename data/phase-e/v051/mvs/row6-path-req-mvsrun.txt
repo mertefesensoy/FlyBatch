@@ -1,0 +1,50 @@
+mvsrun: network path, jobs ONFPREQ/ONFPRUN, ONFREQ HERC01.ONFLY.PREQ
+progress window opened, watching until the job finishes
+mvsrun: ONFPREQ, 832 cards, longest 72 columns
+mvsrun: ONFPREQ finished in 5.2 s
+ 0.48.17 JOB  414  $HASP373 ONFPREQ  STARTED - INIT  1 - CLASS A - SYS TK5R
+ 0.48.17 JOB  414  $HASP395 ONFPREQ  ENDED
+IEF142I ONFPREQ SCRATCH - STEP WAS EXECUTED - COND CODE 0000
+IEF142I ONFPREQ ALLOC - STEP WAS EXECUTED - COND CODE 0000
+IEF142I ONFPREQ WRITEL - STEP WAS EXECUTED - COND CODE 0000
+IEF142I ONFPREQ WRITES - STEP WAS EXECUTED - COND CODE 0000
+IEF142I ONFPREQ COB - STEP WAS EXECUTED - COND CODE 0004
+IEF142I ONFPREQ LKED - STEP WAS EXECUTED - COND CODE 0000
+IEF142I ONFPREQ GO - STEP WAS EXECUTED - COND CODE 0000
+IEF142I ONFPREQ DUMP - STEP WAS EXECUTED - COND CODE 0000
+                      W-ERR-COUNT ' ERROR, ' W-RSP-COUNT ' ECHOED'.
+00403                  W-ERR-COUNT ' ERROR, ' W-RSP-COUNT ' ECHOED'.
+ CARD   ERROR MESSAGE
+ONF302I STEP SUMMARY: 0014 OK, 0000 ERROR, 0000 ECHOED
+
+=== FR-BAT-01 STEP1: ONFREQ vs tools/mkreq.py (D-260) ===
+  note record 1: raw NO   binary(8..411) yes  translated yes
+         chr[0:8] got e2e4c7d940404040 ('SUGR    ' as EBCDIC), want 5355475220202020
+  note record 2: raw NO   binary(8..411) yes  translated yes
+         chr[0:8] got e2e4c7d940404040 ('SUGR    ' as EBCDIC), want 5355475220202020
+  note record 3: raw NO   binary(8..411) yes  translated yes
+         chr[0:8] got e2e4c7d940404040 ('SUGR    ' as EBCDIC), want 5355475220202020
+  note record 4: raw NO   binary(8..411) yes  translated yes
+         chr[0:8] got e2e4c7d940404040 ('SUGR    ' as EBCDIC), want 5355475220202020
+  note record 5: raw NO   binary(8..411) yes  translated yes
+         chr[0:8] got e2e4c7d940404040 ('SUGR    ' as EBCDIC), want 5355475220202020
+  note record 6: raw NO   binary(8..411) yes  translated yes
+         chr[0:8] got e2e4c7d940404040 ('SUGR    ' as EBCDIC), want 5355475220202020
+  note record 7: raw NO   binary(8..411) yes  translated yes
+         chr[0:8] got e2e4c7d940404040 ('SUGR    ' as EBCDIC), want 5355475220202020
+  note record 8: raw NO   binary(8..411) yes  translated yes
+         chr[0:8] got e2e4c7d940404040 ('SUGR    ' as EBCDIC), want 5355475220202020
+  note record 9: raw NO   binary(8..411) yes  translated yes
+         chr[0:8] got e2e4c7d940404040 ('SUGR    ' as EBCDIC), want 5355475220202020
+  note record 10: raw NO   binary(8..411) yes  translated yes
+         chr[0:8] got e2e4c7d940404040 ('SUGR    ' as EBCDIC), want 5355475220202020
+  note record 11: raw NO   binary(8..411) yes  translated yes
+         chr[0:8] got e6c1e3d940404040 ('WATR    ' as EBCDIC), want 5741545220202020
+  note record 12: raw NO   binary(8..411) yes  translated yes
+         chr[0:8] got e7e7e7e740404040 ('XXXX    ' as EBCDIC), want 5858585820202020
+  note record 13: raw NO   binary(8..411) yes  translated yes
+         chr[0:8] got e2e4c7d940404040 ('SUGR    ' as EBCDIC), want 5355475220202020
+  note record 14: raw NO   binary(8..411) yes  translated yes
+         chr[0:8] got e2e4c7d940404040 ('SUGR    ' as EBCDIC), want 5355475220202020
+  raw=False  binary=True  translated=True
+EXIT=0

@@ -1,0 +1,22 @@
+=== ACC-5 row 7: TK5 MVS 3.8j / SOFT2C / JCC ===
+    data/phase-e/v051/jcc\rsp-srext-2c.bin
+    vs data/phase-d/x86w\rsp-srext-2c.bin
+  note record 1: raw NO   binary(8..411) yes  translated yes
+         chr[0:8] got e2e4c7d940404040 ('SUGR    ' as EBCDIC), want 5355475220202020
+  note record 2: raw NO   binary(8..411) yes  translated yes
+         chr[0:8] got e2e4c7d940404040 ('SUGR    ' as EBCDIC), want 5355475220202020
+  note record 3: raw NO   binary(8..411) yes  translated yes
+         chr[0:8] got e2e4c7d940404040 ('SUGR    ' as EBCDIC), want 5355475220202020
+  note record 4: raw NO   binary(8..411) yes  translated yes
+         chr[0:8] got e2e4c7d940404040 ('SUGR    ' as EBCDIC), want 5355475220202020
+  note record 5: raw NO   binary(8..411) yes  translated yes
+         chr[0:8] got e2e4c7d940404040 ('SUGR    ' as EBCDIC), want 5355475220202020
+  raw=False  binary=True  translated=True
+
+=== ACC-5 row 7 vs the Section 8.4 fingerprints ===
+  ok   G-15  fp=6C3F7272  golden=6C3F7272
+  ok   G-16  fp=BAF81D91  golden=BAF81D91
+  ok   G-17  fp=F9C7EE77  golden=F9C7EE77
+  ok   G-18  fp=4FD0ED1E  golden=4FD0ED1E
+  ok   G-19  fp=C4C320BC  golden=C4C320BC
+mvsjcc: ACC-5 row 7 PASS (srext, measured data/phase-e/v051/jcc)
