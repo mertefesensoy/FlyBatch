@@ -1,0 +1,251 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" width="960" height="600" role="img" aria-labelledby="t d">
+  <title id="t">FlyBatch determinism matrix: 19 of 19 golden requests on every filled row</title>
+  <desc id="d">Nine rows of the determinism matrix, SRS Section 8.3. Rows 1 to 3b are x86-64 with the Python reference, native IEEE, SoftFloat 3e and SoftFloat 2c; rows 4 and 5 are Linux s390x under QEMU with SoftFloat 3e and native IEEE; rows 6 and 7 are MVS 3.8j under Hercules with SoftFloat 2c built by GCCMVS and by JCC. Each of these rows reproduces all 19 golden fingerprints. Row 8, z/OS, is empty because the project has no IBM Z access.</desc>
+  <style>
+    text { font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; fill: #1f2933; }
+    .h { font-size: 20px; font-weight: 700; }
+    .s { font-size: 13px; fill: #52606d; }
+    .th { font-size: 12.5px; font-weight: 700; fill: #52606d; }
+    .t { font-size: 13.5px; }
+    .r { font-size: 13.5px; font-weight: 700; }
+    .card { fill: #ffffff; stroke: #cbd2d9; }
+    .x86 { fill: #eff6ff; } .s390 { fill: #f0fdfa; } .mvs { fill: #fffbeb; } .zos { fill: #f8fafc; }
+    .on  { fill: #15803d; }
+    .off { fill: #ffffff; stroke: #9aa5b1; stroke-dasharray: 3 2; }
+  </style>
+  <rect class="card" x="1" y="1" width="958" height="598" rx="14"/>
+  <text class="h" x="28" y="40">Nineteen golden requests, the same fingerprints on every row</text>
+  <text class="s" x="28" y="62">SRS Section 8.3; one square per golden request that reproduces its fingerprint</text>
+  <text class="th" x="40" y="106">Row</text>
+  <text class="th" x="92" y="106">Platform</text>
+  <text class="th" x="282" y="106">Floating point</text>
+  <text class="th" x="432" y="106">Compiler</text>
+  <text class="th" x="592" y="106">G-01 to G-19</text>
+  <rect class="x86" x="28" y="118" width="904" height="40" rx="6"/>
+  <text class="r" x="44" y="143">1</text>
+  <text class="t" x="92" y="143">x86-64</text>
+  <text class="t" x="282" y="143">Python reference</text>
+  <text class="t" x="432" y="143">none</text>
+  <rect class="on" x="592" y="132" width="11" height="11" rx="2"/>
+  <rect class="on" x="607" y="132" width="11" height="11" rx="2"/>
+  <rect class="on" x="622" y="132" width="11" height="11" rx="2"/>
+  <rect class="on" x="637" y="132" width="11" height="11" rx="2"/>
+  <rect class="on" x="652" y="132" width="11" height="11" rx="2"/>
+  <rect class="on" x="667" y="132" width="11" height="11" rx="2"/>
+  <rect class="on" x="682" y="132" width="11" height="11" rx="2"/>
+  <rect class="on" x="697" y="132" width="11" height="11" rx="2"/>
+  <rect class="on" x="712" y="132" width="11" height="11" rx="2"/>
+  <rect class="on" x="727" y="132" width="11" height="11" rx="2"/>
+  <rect class="on" x="742" y="132" width="11" height="11" rx="2"/>
+  <rect class="on" x="757" y="132" width="11" height="11" rx="2"/>
+  <rect class="on" x="772" y="132" width="11" height="11" rx="2"/>
+  <rect class="on" x="787" y="132" width="11" height="11" rx="2"/>
+  <rect class="on" x="802" y="132" width="11" height="11" rx="2"/>
+  <rect class="on" x="817" y="132" width="11" height="11" rx="2"/>
+  <rect class="on" x="832" y="132" width="11" height="11" rx="2"/>
+  <rect class="on" x="847" y="132" width="11" height="11" rx="2"/>
+  <rect class="on" x="862" y="132" width="11" height="11" rx="2"/>
+  <text class="t" x="885" y="143">19/19</text>
+  <rect class="x86" x="28" y="164" width="904" height="40" rx="6"/>
+  <text class="r" x="44" y="189">2</text>
+  <text class="t" x="92" y="189">x86-64</text>
+  <text class="t" x="282" y="189">native IEEE</text>
+  <text class="t" x="432" y="189">MinGW gcc 6.3.0</text>
+  <rect class="on" x="592" y="178" width="11" height="11" rx="2"/>
+  <rect class="on" x="607" y="178" width="11" height="11" rx="2"/>
+  <rect class="on" x="622" y="178" width="11" height="11" rx="2"/>
+  <rect class="on" x="637" y="178" width="11" height="11" rx="2"/>
+  <rect class="on" x="652" y="178" width="11" height="11" rx="2"/>
+  <rect class="on" x="667" y="178" width="11" height="11" rx="2"/>
+  <rect class="on" x="682" y="178" width="11" height="11" rx="2"/>
+  <rect class="on" x="697" y="178" width="11" height="11" rx="2"/>
+  <rect class="on" x="712" y="178" width="11" height="11" rx="2"/>
+  <rect class="on" x="727" y="178" width="11" height="11" rx="2"/>
+  <rect class="on" x="742" y="178" width="11" height="11" rx="2"/>
+  <rect class="on" x="757" y="178" width="11" height="11" rx="2"/>
+  <rect class="on" x="772" y="178" width="11" height="11" rx="2"/>
+  <rect class="on" x="787" y="178" width="11" height="11" rx="2"/>
+  <rect class="on" x="802" y="178" width="11" height="11" rx="2"/>
+  <rect class="on" x="817" y="178" width="11" height="11" rx="2"/>
+  <rect class="on" x="832" y="178" width="11" height="11" rx="2"/>
+  <rect class="on" x="847" y="178" width="11" height="11" rx="2"/>
+  <rect class="on" x="862" y="178" width="11" height="11" rx="2"/>
+  <text class="t" x="885" y="189">19/19</text>
+  <rect class="x86" x="28" y="210" width="904" height="40" rx="6"/>
+  <text class="r" x="44" y="235">3</text>
+  <text class="t" x="92" y="235">x86-64</text>
+  <text class="t" x="282" y="235">SoftFloat 3e</text>
+  <text class="t" x="432" y="235">MinGW gcc 6.3.0</text>
+  <rect class="on" x="592" y="224" width="11" height="11" rx="2"/>
+  <rect class="on" x="607" y="224" width="11" height="11" rx="2"/>
+  <rect class="on" x="622" y="224" width="11" height="11" rx="2"/>
+  <rect class="on" x="637" y="224" width="11" height="11" rx="2"/>
+  <rect class="on" x="652" y="224" width="11" height="11" rx="2"/>
+  <rect class="on" x="667" y="224" width="11" height="11" rx="2"/>
+  <rect class="on" x="682" y="224" width="11" height="11" rx="2"/>
+  <rect class="on" x="697" y="224" width="11" height="11" rx="2"/>
+  <rect class="on" x="712" y="224" width="11" height="11" rx="2"/>
+  <rect class="on" x="727" y="224" width="11" height="11" rx="2"/>
+  <rect class="on" x="742" y="224" width="11" height="11" rx="2"/>
+  <rect class="on" x="757" y="224" width="11" height="11" rx="2"/>
+  <rect class="on" x="772" y="224" width="11" height="11" rx="2"/>
+  <rect class="on" x="787" y="224" width="11" height="11" rx="2"/>
+  <rect class="on" x="802" y="224" width="11" height="11" rx="2"/>
+  <rect class="on" x="817" y="224" width="11" height="11" rx="2"/>
+  <rect class="on" x="832" y="224" width="11" height="11" rx="2"/>
+  <rect class="on" x="847" y="224" width="11" height="11" rx="2"/>
+  <rect class="on" x="862" y="224" width="11" height="11" rx="2"/>
+  <text class="t" x="885" y="235">19/19</text>
+  <rect class="x86" x="28" y="256" width="904" height="40" rx="6"/>
+  <text class="r" x="44" y="281">3b</text>
+  <text class="t" x="92" y="281">x86-64</text>
+  <text class="t" x="282" y="281">SoftFloat 2c</text>
+  <text class="t" x="432" y="281">MinGW gcc 6.3.0</text>
+  <rect class="on" x="592" y="270" width="11" height="11" rx="2"/>
+  <rect class="on" x="607" y="270" width="11" height="11" rx="2"/>
+  <rect class="on" x="622" y="270" width="11" height="11" rx="2"/>
+  <rect class="on" x="637" y="270" width="11" height="11" rx="2"/>
+  <rect class="on" x="652" y="270" width="11" height="11" rx="2"/>
+  <rect class="on" x="667" y="270" width="11" height="11" rx="2"/>
+  <rect class="on" x="682" y="270" width="11" height="11" rx="2"/>
+  <rect class="on" x="697" y="270" width="11" height="11" rx="2"/>
+  <rect class="on" x="712" y="270" width="11" height="11" rx="2"/>
+  <rect class="on" x="727" y="270" width="11" height="11" rx="2"/>
+  <rect class="on" x="742" y="270" width="11" height="11" rx="2"/>
+  <rect class="on" x="757" y="270" width="11" height="11" rx="2"/>
+  <rect class="on" x="772" y="270" width="11" height="11" rx="2"/>
+  <rect class="on" x="787" y="270" width="11" height="11" rx="2"/>
+  <rect class="on" x="802" y="270" width="11" height="11" rx="2"/>
+  <rect class="on" x="817" y="270" width="11" height="11" rx="2"/>
+  <rect class="on" x="832" y="270" width="11" height="11" rx="2"/>
+  <rect class="on" x="847" y="270" width="11" height="11" rx="2"/>
+  <rect class="on" x="862" y="270" width="11" height="11" rx="2"/>
+  <text class="t" x="885" y="281">19/19</text>
+  <rect class="s390" x="28" y="302" width="904" height="40" rx="6"/>
+  <text class="r" x="44" y="327">4</text>
+  <text class="t" x="92" y="327">Linux s390x, QEMU</text>
+  <text class="t" x="282" y="327">SoftFloat 3e</text>
+  <text class="t" x="432" y="327">gcc 13.3.0</text>
+  <rect class="on" x="592" y="316" width="11" height="11" rx="2"/>
+  <rect class="on" x="607" y="316" width="11" height="11" rx="2"/>
+  <rect class="on" x="622" y="316" width="11" height="11" rx="2"/>
+  <rect class="on" x="637" y="316" width="11" height="11" rx="2"/>
+  <rect class="on" x="652" y="316" width="11" height="11" rx="2"/>
+  <rect class="on" x="667" y="316" width="11" height="11" rx="2"/>
+  <rect class="on" x="682" y="316" width="11" height="11" rx="2"/>
+  <rect class="on" x="697" y="316" width="11" height="11" rx="2"/>
+  <rect class="on" x="712" y="316" width="11" height="11" rx="2"/>
+  <rect class="on" x="727" y="316" width="11" height="11" rx="2"/>
+  <rect class="on" x="742" y="316" width="11" height="11" rx="2"/>
+  <rect class="on" x="757" y="316" width="11" height="11" rx="2"/>
+  <rect class="on" x="772" y="316" width="11" height="11" rx="2"/>
+  <rect class="on" x="787" y="316" width="11" height="11" rx="2"/>
+  <rect class="on" x="802" y="316" width="11" height="11" rx="2"/>
+  <rect class="on" x="817" y="316" width="11" height="11" rx="2"/>
+  <rect class="on" x="832" y="316" width="11" height="11" rx="2"/>
+  <rect class="on" x="847" y="316" width="11" height="11" rx="2"/>
+  <rect class="on" x="862" y="316" width="11" height="11" rx="2"/>
+  <text class="t" x="885" y="327">19/19</text>
+  <rect class="s390" x="28" y="348" width="904" height="40" rx="6"/>
+  <text class="r" x="44" y="373">5</text>
+  <text class="t" x="92" y="373">Linux s390x, QEMU</text>
+  <text class="t" x="282" y="373">native IEEE</text>
+  <text class="t" x="432" y="373">gcc 13.3.0</text>
+  <rect class="on" x="592" y="362" width="11" height="11" rx="2"/>
+  <rect class="on" x="607" y="362" width="11" height="11" rx="2"/>
+  <rect class="on" x="622" y="362" width="11" height="11" rx="2"/>
+  <rect class="on" x="637" y="362" width="11" height="11" rx="2"/>
+  <rect class="on" x="652" y="362" width="11" height="11" rx="2"/>
+  <rect class="on" x="667" y="362" width="11" height="11" rx="2"/>
+  <rect class="on" x="682" y="362" width="11" height="11" rx="2"/>
+  <rect class="on" x="697" y="362" width="11" height="11" rx="2"/>
+  <rect class="on" x="712" y="362" width="11" height="11" rx="2"/>
+  <rect class="on" x="727" y="362" width="11" height="11" rx="2"/>
+  <rect class="on" x="742" y="362" width="11" height="11" rx="2"/>
+  <rect class="on" x="757" y="362" width="11" height="11" rx="2"/>
+  <rect class="on" x="772" y="362" width="11" height="11" rx="2"/>
+  <rect class="on" x="787" y="362" width="11" height="11" rx="2"/>
+  <rect class="on" x="802" y="362" width="11" height="11" rx="2"/>
+  <rect class="on" x="817" y="362" width="11" height="11" rx="2"/>
+  <rect class="on" x="832" y="362" width="11" height="11" rx="2"/>
+  <rect class="on" x="847" y="362" width="11" height="11" rx="2"/>
+  <rect class="on" x="862" y="362" width="11" height="11" rx="2"/>
+  <text class="t" x="885" y="373">19/19</text>
+  <rect class="mvs" x="28" y="394" width="904" height="40" rx="6"/>
+  <text class="r" x="44" y="419">6</text>
+  <text class="t" x="92" y="419">MVS 3.8j, Hercules</text>
+  <text class="t" x="282" y="419">SoftFloat 2c</text>
+  <text class="t" x="432" y="419">GCCMVS 3.2.3</text>
+  <rect class="on" x="592" y="408" width="11" height="11" rx="2"/>
+  <rect class="on" x="607" y="408" width="11" height="11" rx="2"/>
+  <rect class="on" x="622" y="408" width="11" height="11" rx="2"/>
+  <rect class="on" x="637" y="408" width="11" height="11" rx="2"/>
+  <rect class="on" x="652" y="408" width="11" height="11" rx="2"/>
+  <rect class="on" x="667" y="408" width="11" height="11" rx="2"/>
+  <rect class="on" x="682" y="408" width="11" height="11" rx="2"/>
+  <rect class="on" x="697" y="408" width="11" height="11" rx="2"/>
+  <rect class="on" x="712" y="408" width="11" height="11" rx="2"/>
+  <rect class="on" x="727" y="408" width="11" height="11" rx="2"/>
+  <rect class="on" x="742" y="408" width="11" height="11" rx="2"/>
+  <rect class="on" x="757" y="408" width="11" height="11" rx="2"/>
+  <rect class="on" x="772" y="408" width="11" height="11" rx="2"/>
+  <rect class="on" x="787" y="408" width="11" height="11" rx="2"/>
+  <rect class="on" x="802" y="408" width="11" height="11" rx="2"/>
+  <rect class="on" x="817" y="408" width="11" height="11" rx="2"/>
+  <rect class="on" x="832" y="408" width="11" height="11" rx="2"/>
+  <rect class="on" x="847" y="408" width="11" height="11" rx="2"/>
+  <rect class="on" x="862" y="408" width="11" height="11" rx="2"/>
+  <text class="t" x="885" y="419">19/19</text>
+  <rect class="mvs" x="28" y="440" width="904" height="40" rx="6"/>
+  <text class="r" x="44" y="465">7</text>
+  <text class="t" x="92" y="465">MVS 3.8j, Hercules</text>
+  <text class="t" x="282" y="465">SoftFloat 2c</text>
+  <text class="t" x="432" y="465">JCC 1.50.00</text>
+  <rect class="on" x="592" y="454" width="11" height="11" rx="2"/>
+  <rect class="on" x="607" y="454" width="11" height="11" rx="2"/>
+  <rect class="on" x="622" y="454" width="11" height="11" rx="2"/>
+  <rect class="on" x="637" y="454" width="11" height="11" rx="2"/>
+  <rect class="on" x="652" y="454" width="11" height="11" rx="2"/>
+  <rect class="on" x="667" y="454" width="11" height="11" rx="2"/>
+  <rect class="on" x="682" y="454" width="11" height="11" rx="2"/>
+  <rect class="on" x="697" y="454" width="11" height="11" rx="2"/>
+  <rect class="on" x="712" y="454" width="11" height="11" rx="2"/>
+  <rect class="on" x="727" y="454" width="11" height="11" rx="2"/>
+  <rect class="on" x="742" y="454" width="11" height="11" rx="2"/>
+  <rect class="on" x="757" y="454" width="11" height="11" rx="2"/>
+  <rect class="on" x="772" y="454" width="11" height="11" rx="2"/>
+  <rect class="on" x="787" y="454" width="11" height="11" rx="2"/>
+  <rect class="on" x="802" y="454" width="11" height="11" rx="2"/>
+  <rect class="on" x="817" y="454" width="11" height="11" rx="2"/>
+  <rect class="on" x="832" y="454" width="11" height="11" rx="2"/>
+  <rect class="on" x="847" y="454" width="11" height="11" rx="2"/>
+  <rect class="on" x="862" y="454" width="11" height="11" rx="2"/>
+  <text class="t" x="885" y="465">19/19</text>
+  <rect class="zos" x="28" y="486" width="904" height="40" rx="6"/>
+  <text class="r" x="44" y="511">8</text>
+  <text class="t" x="92" y="511">z/OS</text>
+  <text class="t" x="282" y="511"></text>
+  <text class="t" x="432" y="511"></text>
+  <rect class="off" x="592" y="500" width="11" height="11" rx="2"/>
+  <rect class="off" x="607" y="500" width="11" height="11" rx="2"/>
+  <rect class="off" x="622" y="500" width="11" height="11" rx="2"/>
+  <rect class="off" x="637" y="500" width="11" height="11" rx="2"/>
+  <rect class="off" x="652" y="500" width="11" height="11" rx="2"/>
+  <rect class="off" x="667" y="500" width="11" height="11" rx="2"/>
+  <rect class="off" x="682" y="500" width="11" height="11" rx="2"/>
+  <rect class="off" x="697" y="500" width="11" height="11" rx="2"/>
+  <rect class="off" x="712" y="500" width="11" height="11" rx="2"/>
+  <rect class="off" x="727" y="500" width="11" height="11" rx="2"/>
+  <rect class="off" x="742" y="500" width="11" height="11" rx="2"/>
+  <rect class="off" x="757" y="500" width="11" height="11" rx="2"/>
+  <rect class="off" x="772" y="500" width="11" height="11" rx="2"/>
+  <rect class="off" x="787" y="500" width="11" height="11" rx="2"/>
+  <rect class="off" x="802" y="500" width="11" height="11" rx="2"/>
+  <rect class="off" x="817" y="500" width="11" height="11" rx="2"/>
+  <rect class="off" x="832" y="500" width="11" height="11" rx="2"/>
+  <rect class="off" x="847" y="500" width="11" height="11" rx="2"/>
+  <rect class="off" x="862" y="500" width="11" height="11" rx="2"/>
+  <text class="t" x="885" y="511" style="fill:#52606d">empty</text>
+  <text class="t" x="28" y="554">On MVS the response records match byte for byte apart from one text field stored in EBCDIC. Identical fingerprints show</text>
+  <text class="t" x="28" y="574">that the platforms agree, not that any of them is right (VL-05). QEMU and Hercules are emulators; nothing here ran on IBM Z hardware.</text>
+</svg>

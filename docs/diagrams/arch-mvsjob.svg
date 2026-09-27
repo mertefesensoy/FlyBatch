@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 640" width="960" height="640" role="img" aria-labelledby="t d">
+  <title id="t">The FlyBatch MVS job: three steps, one COBOL driver, one C engine</title>
+  <desc id="d">On MVS 3.8j emulated by Hercules, the BUZZ job runs three steps. Step 1, the COBOL driver ONFLYDRV in request mode, reads 80-column control cards and writes 412-byte request records. Step 2, the C engine ONFLYENG, reads the network and the requests and writes response records; it runs only if step 1 ended below return code 8. Step 3, ONFLYDRV in report mode, reads the responses and the names file and prints the report; it runs only if step 2 ended below 12. The engine can also stream spike data to the host while it runs, and a 3270 transaction under INTERCOMM can submit the same job.</desc>
+  <style>
+    text { font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; fill: #1f2933; }
+    .h { font-size: 20px; font-weight: 700; }
+    .s { font-size: 13px; fill: #52606d; }
+    .b { font-size: 14px; font-weight: 700; }
+    .t { font-size: 12.5px; }
+    .m { font-family: Consolas, "SFMono-Regular", Menlo, monospace; font-size: 12px; }
+    .card { fill: #ffffff; stroke: #cbd2d9; }
+    .cob  { fill: #fffbeb; stroke: #b45309; stroke-width: 1.5; }
+    .eng  { fill: #f5f3ff; stroke: #7c3aed; stroke-width: 1.5; }
+    .ds   { fill: #f8fafc; stroke: #52606d; }
+    .note { fill: #f8fafc; stroke: #cbd2d9; }
+    .live { fill: #ecfdf5; stroke: #15803d; }
+    .a  { stroke: #52606d; stroke-width: 1.6; fill: none; marker-end: url(#arr); }
+    .c  { font-size: 12px; fill: #b45309; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#52606d"/></marker>
+  </defs>
+  <rect class="card" x="1" y="1" width="958" height="638" rx="14"/>
+  <text class="h" x="28" y="40">The MVS job: three steps, one COBOL driver, one C engine</text>
+  <text class="s" x="28" y="62">MVS 3.8j emulated by Hercules on a laptop; the demonstration job is called BUZZ (SRS FR-BAT-01, IR-JCL-04)</text>
+
+  <!-- STEP 1 -->
+  <rect class="ds" x="28" y="92" width="250" height="72" rx="8"/>
+  <text class="b" x="42" y="114">Control cards</text>
+  <text class="m" x="148" y="114">ONFCTL</text>
+  <text class="m" x="42" y="136">SUGR 0040 1000 000000001</text>
+  <text class="s" x="42" y="154">stimulus, rate Hz, duration ms, seed</text>
+  <path class="a" d="M278 128 L326 128"/>
+
+  <rect class="cob" x="328" y="92" width="300" height="72" rx="10"/>
+  <text class="b" x="344" y="116">STEP1  ONFLYDRV, request mode</text>
+  <text class="t" x="344" y="138">COBOL (MVT COBOL and Enterprise COBOL</text>
+  <text class="t" x="344" y="155">intersection); checks and packs each card</text>
+  <path class="a" d="M628 128 L676 128"/>
+
+  <rect class="ds" x="678" y="92" width="254" height="72" rx="8"/>
+  <text class="b" x="692" y="114">Requests</text>
+  <text class="m" x="764" y="114">ONFREQ</text>
+  <text class="t" x="692" y="136">412-byte records, the COMMAREA</text>
+  <text class="t" x="692" y="154">layout, response part zeroed</text>
+
+  <path class="a" d="M805 164 L805 196 L560 196 L560 222"/>
+  <text class="c" x="574" y="214">runs if STEP1 &lt; 8</text>
+
+  <!-- STEP 2 -->
+  <rect class="ds" x="28" y="224" width="250" height="72" rx="8"/>
+  <text class="b" x="42" y="246">Network</text>
+  <text class="m" x="110" y="246">ONFNET</text>
+  <text class="t" x="42" y="268">binary, 80-byte records; magic,</text>
+  <text class="t" x="42" y="286">byte order and CRCs checked first</text>
+  <path class="a" d="M278 260 L326 260"/>
+
+  <rect class="eng" x="328" y="224" width="300" height="72" rx="10"/>
+  <text class="b" x="344" y="248">STEP2  ONFLYENG</text>
+  <text class="t" x="344" y="270">C89 built by GCCMVS (or JCC), IEEE</text>
+  <text class="t" x="344" y="287">arithmetic in SoftFloat 2c, no HFP</text>
+  <path class="a" d="M628 260 L676 260"/>
+
+  <rect class="ds" x="678" y="224" width="254" height="72" rx="8"/>
+  <text class="b" x="692" y="246">Responses</text>
+  <text class="m" x="774" y="246">ONFRSP</text>
+  <text class="t" x="692" y="268">spike counts, first-spike latency,</text>
+  <text class="t" x="692" y="286">return code, CRC-32 fingerprint</text>
+
+  <path class="a" d="M805 296 L805 328 L560 328 L560 354"/>
+  <text class="c" x="574" y="346">runs if STEP2 &lt; 12</text>
+
+  <!-- STEP 3 -->
+  <rect class="ds" x="28" y="356" width="250" height="72" rx="8"/>
+  <text class="b" x="42" y="378">Names</text>
+  <text class="m" x="96" y="378">ONFNAM</text>
+  <text class="t" x="42" y="400">readout names in EBCDIC; the</text>
+  <text class="t" x="42" y="418">records carry numbers only</text>
+  <path class="a" d="M278 392 L326 392"/>
+
+  <rect class="cob" x="328" y="356" width="300" height="72" rx="10"/>
+  <text class="b" x="344" y="380">STEP3  ONFLYDRV, report mode</text>
+  <text class="t" x="344" y="402">maps identifiers to names, formats</text>
+  <text class="t" x="344" y="419">rates in Hz to one decimal</text>
+  <path class="a" d="M628 392 L676 392"/>
+
+  <rect class="ds" x="678" y="356" width="254" height="72" rx="8"/>
+  <text class="b" x="692" y="378">Printed report</text>
+  <text class="m" x="800" y="378">ONFRPT</text>
+  <text class="t" x="692" y="400">each request, each MN9 neuron,</text>
+  <text class="t" x="692" y="418">its return code and fingerprint</text>
+
+  <!-- return codes -->
+  <rect class="note" x="28" y="452" width="904" height="46" rx="8"/>
+  <text class="b" x="42" y="480">Step return codes</text>
+  <text class="t" x="180" y="480">0 all requests ran · 4 a warning · 8 a request error · 12 the network failed a check · 16 environment or self-test failure</text>
+
+  <!-- side paths -->
+  <rect class="live" x="28" y="514" width="446" height="104" rx="10"/>
+  <text class="b" x="42" y="538">Live stream</text>
+  <text class="m" x="130" y="538">PARM='STREAM=50'</text>
+  <text class="t" x="42" y="560">STEP2 also writes spikes and membrane values to a</text>
+  <text class="t" x="42" y="579">card punch the host reads while the job still runs;</text>
+  <text class="t" x="42" y="598">the answers are identical with or without it</text>
+
+  <rect class="note" x="486" y="514" width="446" height="104" rx="10"/>
+  <text class="b" x="500" y="538">3270 transaction</text>
+  <text class="t" x="500" y="560">typing a request on a 3270 session under INTERCOMM,</text>
+  <text class="t" x="500" y="579">a monitor that is not CICS, submits this job and then</text>
+  <text class="t" x="500" y="598">shows its result; not reproducible from the repository</text>
+</svg>

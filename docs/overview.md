@@ -13,10 +13,10 @@ standing limit (`docs/ONFLY-SRS.md`, VL-139, citing D-491 and D-492).
 
 ## What FlyBatch is
 
-FlyBatch was called ONFLY until 2026-09-27 (`docs/ONFLY-SRS.md`, D-637). The engine and
-the COBOL driver keep their MVS program names, ONFLYENG and ONFLYDRV,
-the messages keep their ONF prefix, and the specification keeps its file
-name, because those names are written into the job control, the
+FlyBatch was called ONFLY until 2026-09-27 (`docs/ONFLY-SRS.md`, D-637).
+The engine and the COBOL driver keep their MVS program names, ONFLYENG and
+ONFLYDRV, the messages keep their ONF prefix, and the specification keeps
+its file name, because those names are written into the job control, the
 requirements and every recorded listing (D-638).
 
 FlyBatch simulates the sugar-to-feeding circuit of the male fruit fly: a
@@ -98,7 +98,7 @@ program has never executed for lack of a licence, and running it
 concurrently is untested.
 
 On the emulated MVS 3.8j lab, typing a request on a 3270 session under
-INTERCOMM, a transaction monitor that is not CICS, starts an FlyBatch batch run
+INTERCOMM, a transaction monitor that is not CICS, starts a FlyBatch batch run
 and then shows its result and golden fingerprint. This part cannot be
 reproduced from the repository, because INTERCOMM's licence keeps its code
 out.

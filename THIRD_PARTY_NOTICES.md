@@ -168,7 +168,7 @@ No raw MaleCNS data is committed. What is committed is derived from it:
 | `data/calibration/` | Full-brain and subcircuit measurements on the MaleCNS network; twelve of these files also embed FlyWire-derived values, see section 6 |
 | `data/phase-d/`, `data/phase-e/` | Request and response records and run listings, which carry network digests and simulated activity |
 | `docs/malecns-*` | The cell-type mapping, the sign assignment and the activity ranking |
-| `docs/media/` | Animations of simulated activity on the subcircuit |
+| `docs/media/` | Animations of simulated activity on the subcircuit, and a still picture of its somata and connections (`srext-network.png`) |
 
 **Modified by FlyBatch:** neurons selected, synapse counts aggregated per pair
 and signed from the predicted neurotransmitter, multiplied by a calibrated
@@ -256,15 +256,17 @@ grants no right to any of them.
 | msys2/setup-msys2 v2.32.0 | The Windows CI job's MSYS2 environment | MIT, as its repository's licence metadata states, read on 2026-09-26 | https://github.com/msys2/setup-msys2 |
 | MSYS2, with its mingw-w64 i686 gcc and make packages | Building and testing in the Windows CI job | The package recipes are BSD-3-Clause, as the MINGW-packages repository states, read on 2026-09-26; each packaged program, gcc among them, keeps its own licence, which this row does not restate | https://github.com/msys2/MINGW-packages |
 | GitHub-hosted runner images (ubuntu-latest, windows-latest) | Where the CI jobs run | The image definitions are MIT, as the runner-images repository states, read on 2026-09-26; the software installed in an image keeps its own terms, which this row does not restate | https://github.com/actions/runner-images |
+| asciinema 3.2.1 and agg 1.9.0 | Recording `docs/media/demo-linux.cast` and drawing `docs/media/demo-linux.gif` (SRS D-641, D-643) | GPL-3.0, as each repository's licence metadata states, read on 2026-09-27 | https://github.com/asciinema/asciinema, https://github.com/asciinema/agg |
+| VHS 0.12.1 (Charm) and ttyd 1.7.7 | Recording `docs/media/demo-windows.gif` (SRS D-641, D-643) | MIT, as each repository's licence metadata states, read on 2026-09-27 | https://github.com/charmbracelet/vhs, https://github.com/tsl0922/ttyd |
+| FFmpeg 8.1.1 (the gyan.dev full build) | VHS's video encoding | GPL-3.0-or-later, as the installed build reports with `ffmpeg -L` on 2026-09-27; FFmpeg's repository states no single licence | https://github.com/FFmpeg/FFmpeg |
 
 ## 8. Trademarks
 
 IBM, IBM Z, z/OS, CICS and MVS are trademarks or registered trademarks of
-International Business Machines Corporation, registered in many
-jurisdictions worldwide; a current list is at
-https://www.ibm.com/legal/copytrade. Linux® is the registered trademark of
-Linus Torvalds in the U.S. and other countries. Other product and company
-names, including Raincode, QIX and INTERCOMM, may be trademarks of their
-owners and are used here only to identify those products. "CICS" appears in
-FlyBatch only descriptively; the identifiers `onfcics`, `Onfly.Cics` and `cics/`
-are internal names, never a product name (SRS C-08).
+International Business Machines Corporation, registered in many jurisdictions
+worldwide; a current list is at https://www.ibm.com/legal/copytrade. Linux® is
+the registered trademark of Linus Torvalds in the U.S. and other countries.
+Other product and company names, including Raincode, QIX and INTERCOMM, may be
+trademarks of their owners and are used here only to identify those products.
+"CICS" appears in FlyBatch only descriptively; the identifiers `onfcics`,
+`Onfly.Cics` and `cics/` are internal names, never a product name (SRS C-08).

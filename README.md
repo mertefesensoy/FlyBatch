@@ -26,6 +26,49 @@ the messages keep their ONF prefix, and the specification keeps its file
 name, because those names are written into the job control, the
 requirements and every recorded listing (D-638).
 
+## What it looks like
+
+![The 501-neuron subcircuit: somata and 10,783 connections, with MN9 and the sugar-sensing neurons marked](docs/media/srext-network.png)
+
+The shipped subcircuit, drawn from its own network file and soma positions
+by `tools/netpic.py`: 501 neurons, 10,783 connections, the two MN9 feeding
+motor neurons as stars and the 14 sugar-sensing neurons as triangles. It
+shows wiring, not activity; the live view below shows activity.
+
+**How it works.** [`docs/architecture.md`](docs/architecture.md) explains the
+system with diagrams: the data flow from the connectome to the three
+platforms, the engine and its float layer, one timestep of the model, the
+MVS job and the determinism matrix.
+
+**One golden request, three floating-point builds.** The same request, G-16,
+through the native, SoftFloat 3e and SoftFloat 2c engines, each printing the
+fingerprint the specification records for it:
+
+![A terminal session: the engine run on G-16 with three floating-point builds, each printing FP=BAF81D91](docs/media/demo-linux.gif)
+
+Recorded on Linux x86-64 under WSL with gcc 15.2.0, by asciinema and agg
+from `tools/demo/demo.sh` (the replayable recording is
+[`docs/media/demo-linux.cast`](docs/media/demo-linux.cast)). The same script
+recorded by VHS on Windows with the recorded MinGW gcc 6.3.0 toolchain is
+[`docs/media/demo-windows.gif`](docs/media/demo-windows.gif).
+
+**The model running.** The live view draws spikes over the neurons' positions
+while the engine streams them, here 60 ms of sugar at 40 Hz on x86-64:
+
+![Spikes spreading through the subcircuit over 60 ms, with MN9 crossing threshold](docs/media/onfly-live-short.gif)
+
+**On emulated MVS 3.8j.** The same request type answered through a 3270
+transaction under INTERCOMM, a transaction monitor that is not CICS, and the
+printed output of the batch job that computed it, both captured on
+2026-09-27 from MVS 3.8j emulated by Hercules on a laptop:
+
+![The 3270 screen's rows for G-17: FP=F9C7EE77 and both MN9 readouts](docs/media/mvs-3270-g17.png)
+
+![The job's printed output for G-17: the engine's run manifest on MVS38J with SoftFloat 2c, and the report](docs/media/mvs-report-g17.png)
+
+The emulated MVS job also streams its spikes to the host while it runs:
+[`docs/media/onfly-mvs-live.gif`](docs/media/onfly-mvs-live.gif).
+
 ## Status
 
 | Phase | What it covers | State |
@@ -128,7 +171,7 @@ JCC. macOS and arm64 are untested.
   menu-screen program has never executed for lack of a licence, and running
   it concurrently is untested. On the emulated MVS lab, typing a request on a
   3270 session under INTERCOMM, a transaction monitor that is not CICS,
-  starts an FlyBatch batch run and then shows its result and golden
+  starts a FlyBatch batch run and then shows its result and golden
   fingerprint.
 * **The emulated MVS job streams its spike data to the host while it is
   still running**, and for the five shipped-network golden requests that
@@ -176,34 +219,34 @@ terms with a non-commercial clause and is not included.
 ## Trademarks
 
 FlyBatch is a personal project by Mert Efe Şensoy. It is not an IBM product and
-is not affiliated with, sponsored by or endorsed by IBM, or by any
-organisation or person whose data, software or tools it uses, including HHMI
-Janelia, the MRC Laboratory of Molecular Biology, the University of
-Cambridge, Google Research, the FlyWire consortium, Raincode and the authors
-of Shiu et al. (2024). IBM, IBM Z, z/OS, CICS and MVS are trademarks or
-registered trademarks of International Business Machines Corporation,
-registered in many jurisdictions worldwide; a current list is at
+is not affiliated with, sponsored by or endorsed by IBM, or by any organisation
+or person whose data, software or tools it uses, including HHMI Janelia, the
+MRC Laboratory of Molecular Biology, the University of Cambridge, Google
+Research, the FlyWire consortium, Raincode and the authors of Shiu et al.
+(2024). IBM, IBM Z, z/OS, CICS and MVS are trademarks or registered trademarks
+of International Business Machines Corporation, registered in many
+jurisdictions worldwide; a current list is at
 https://www.ibm.com/legal/copytrade. Linux® is the registered trademark of
 Linus Torvalds in the U.S. and other countries. Other product and company
-names, including Raincode, QIX and INTERCOMM, may be trademarks of their
-owners and are used only to identify those products.
+names, including Raincode, QIX and INTERCOMM, may be trademarks of their owners
+and are used only to identify those products.
 
 ## How the project is built
 
-FlyBatch is built with an AI coding agent, Anthropic's Claude Code, working from
-the specification. The agent drafts code, tests and documentation and runs
+FlyBatch is built with an AI coding agent, Anthropic's Claude Code, working
+from the specification. The agent drafts code, tests and documentation and runs
 the builds and the lab jobs. The owner makes every decision: each is recorded
 with the alternatives offered in the specification's decision log (Appendix
 A.1), and the agent's own proposals are kept apart (Appendix A.2) until the
-owner decides them. A result is recorded only from a command actually run,
-with its output, its platform and what it does not prove (Appendix D).
-Commits carry the owner's name alone (D-478).
+owner decides them. A result is recorded only from a command actually run, with
+its output, its platform and what it does not prove (Appendix D). Commits carry
+the owner's name alone (D-478).
 
 ## Citing
 
-Please cite FlyBatch as its citation file, [`CITATION.cff`](CITATION.cff), gives
-it (GitHub shows it as "Cite this repository"), with the commit you used; no
-release is archived yet. Cite the work it builds on too: the MaleCNS
+Please cite FlyBatch as its citation file, [`CITATION.cff`](CITATION.cff),
+gives it (GitHub shows it as "Cite this repository"), with the commit you used;
+no release is archived yet. Cite the work it builds on too: the MaleCNS
 connectome (Berg, S. et al., *Cell* 189:5504-5526.e15, 2026,
 doi:10.1016/j.cell.2026.08.015) and the model (Shiu, P. K. et al., *Nature*
 634:210-219, 2024).

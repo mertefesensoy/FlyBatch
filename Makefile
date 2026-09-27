@@ -1040,6 +1040,30 @@ clips: eng
 	$(PYTHON) tools/liveview.py --engine $(BUILD)/onflyeng_nat.exe 	  --rate 40 --ms 60 --k 5 --fps 12 	  --save docs/media/onfly-live-short.gif
 	$(PYTHON) tools/liveview.py --engine $(BUILD)/onflyeng_nat.exe 	  --rate 40 --ms 1000 --k 50 --every 2 --fps 10 	  --save docs/media/onfly-live-standard.gif
 
+# D-628: the still picture of the shipped subcircuit, its somata and its
+# 10,783 connections, with the MaleCNS attribution drawn inside it.  Its
+# test runs first: the counts it prints come from the data, and two renders
+# must be byte-identical.  Not in `make test`, because matplotlib is in
+# requirements-live.txt and not in the requirements.txt the suite needs.
+netpic:
+	$(PYTHON) tests/test_netpic.py
+	$(PYTHON) tools/netpic.py
+
+# D-631, D-643: the terminal demonstration, one golden request through three
+# floating-point builds, as tools/demo/demo.sh runs it.  Neither recorder is
+# a declared dependency; each must be on PATH, and `srext` must be staged.
+# demo-linux: asciinema 3.2.1 and agg 1.9.0, run under ONFPLAT=x86l.
+# demo-windows: VHS 0.12.1 with ttyd 1.7.7 and ffmpeg, run under x86w.
+demo-linux: eng
+	asciinema rec --headless --quiet --overwrite --window-size 104x30 \
+	  --idle-time-limit 2 -c 'PY=$(PYTHON) bash tools/demo/demo.sh' \
+	  docs/media/demo-linux.cast
+	agg --font-size 18 --theme monokai --last-frame-duration 5 \
+	  docs/media/demo-linux.cast docs/media/demo-linux.gif > /dev/null
+
+demo-windows: eng
+	vhs tools/demo/demo.tape
+
 fixtures:
 	$(PYTHON) tools/fixtures.py
 

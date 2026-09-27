@@ -10,6 +10,9 @@ page suggests where to start, depending on what you want.
    what, and what it does not show.
 2. The repository's [`README.md`](../README.md): status, the commands you can
    run today, the limits and the licence.
+3. [`architecture.md`](architecture.md): how it works, with diagrams: the data
+   flow, the engine and its float layer, one timestep, the MVS job and the
+   determinism matrix.
 
 ## If you want to check a result
 

@@ -1,0 +1,7 @@
+* The non-blank rows of the 3270 screen after `BUZZ,`, as ws3270 read them from
+* TK5's local 3270 device 0C1 under INTERCOMM (not CICS), MVS 3.8j emulated by
+* Hercules on a laptop; captured 2026-09-27 by tools/mvstx.py --rate 200 (PASS).
+ONF423I ASKED    RATE= 200 MS=1000 SEED=        1
+ONF420I SUGR     RATE= 200 MS=1000 SEED=        1 RC=   0 FP=F9C7EE77
+READOUT  1 ID=        9 LAT-US=     8600  SPIKES= 165 HZ= 165.0
+READOUT  2 ID=       88 LAT-US=    43400  SPIKES=  15 HZ=  15.0

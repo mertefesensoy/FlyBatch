@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" width="960" height="560" role="img" aria-labelledby="t d">
+  <title id="t">FlyBatch data flow: from the MaleCNS connectome to identical fingerprints</title>
+  <desc id="d">The MaleCNS v1.0 connectome is turned by a Python preparation pipeline on x86-64 into three artifacts: a big-endian binary network file, a names file and a golden suite of nineteen requests. The same artifacts run on x86-64, on Linux s390x under QEMU and on MVS 3.8j under Hercules, and every filled row gives the same nineteen fingerprints. The z/OS row is empty because the project has no IBM Z access.</desc>
+  <style>
+    text { font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; fill: #1f2933; }
+    .h { font-size: 20px; font-weight: 700; }
+    .s { font-size: 13px; fill: #52606d; }
+    .b { font-size: 14px; font-weight: 700; }
+    .t { font-size: 12.5px; }
+    .m { font-family: Consolas, "SFMono-Regular", Menlo, monospace; font-size: 12px; }
+    .card { fill: #ffffff; stroke: #cbd2d9; }
+    .data { fill: #f8fafc; stroke: #9aa5b1; }
+    .prep { fill: #f5f3ff; stroke: #7c3aed; }
+    .art  { fill: #f8fafc; stroke: #52606d; }
+    .x86  { fill: #eff6ff; stroke: #2563eb; }
+    .s390 { fill: #f0fdfa; stroke: #0f766e; }
+    .mvs  { fill: #fffbeb; stroke: #b45309; }
+    .zos  { fill: #ffffff; stroke: #9aa5b1; stroke-dasharray: 6 5; }
+    .ok   { fill: #ecfdf5; stroke: #15803d; }
+    .a    { stroke: #52606d; stroke-width: 1.6; fill: none; marker-end: url(#arr); }
+    .ad   { stroke: #9aa5b1; stroke-width: 1.4; fill: none; stroke-dasharray: 5 4; marker-end: url(#arr2); }
+  </style>
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#52606d"/></marker>
+    <marker id="arr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9aa5b1"/></marker>
+  </defs>
+  <rect class="card" x="1" y="1" width="958" height="558" rx="14"/>
+  <text class="h" x="28" y="40">From connectome to identical fingerprints</text>
+  <text class="s" x="28" y="62">Prepared once on x86-64, then run unchanged on every platform (SRS 2.1, 8.3)</text>
+
+  <!-- source data -->
+  <rect class="data" x="28" y="88" width="250" height="78" rx="10"/>
+  <text class="b" x="44" y="113">MaleCNS v1.0 connectome</text>
+  <text class="t" x="44" y="134">neurons, cell types, synapse counts,</text>
+  <text class="t" x="44" y="152">predicted neurotransmitters (CC BY 4.0)</text>
+
+  <path class="a" d="M153 166 L153 196"/>
+
+  <!-- prep pipeline -->
+  <rect class="prep" x="28" y="198" width="250" height="232" rx="10"/>
+  <text class="b" x="44" y="223">Preparation pipeline</text>
+  <text class="s" x="44" y="242">x86-64, Python, run once</text>
+  <text class="t" x="44" y="270">1. aggregate and sign synapses</text>
+  <text class="t" x="44" y="293">2. run the full annotated network</text>
+  <text class="t" x="44" y="316">3. calibrate W_syn = 0.2969 mV</text>
+  <text class="t" x="44" y="339">4. keep the 500 most active neurons,</text>
+  <text class="t" x="62" y="357">plus stimulus and readout (501)</text>
+  <text class="t" x="44" y="380">5. add one fitted input term</text>
+  <text class="t" x="44" y="403">6. serialise every constant as bits</text>
+
+  <!-- artifacts -->
+  <path class="a" d="M278 250 L338 150"/>
+  <path class="a" d="M278 300 L338 266"/>
+  <path class="a" d="M278 350 L338 384"/>
+
+  <rect class="art" x="340" y="98" width="250" height="104" rx="10"/>
+  <text class="b" x="356" y="123">Network file</text>
+  <text class="m" x="468" y="123">ONFNET</text>
+  <text class="t" x="356" y="146">501 neurons, IEEE binary64,</text>
+  <text class="t" x="356" y="165">big-endian, no text inside;</text>
+  <text class="t" x="356" y="184">CRC-32 checked before any run</text>
+
+  <rect class="art" x="340" y="222" width="250" height="84" rx="10"/>
+  <text class="b" x="356" y="247">Names file</text>
+  <text class="m" x="444" y="247">ONFNAM</text>
+  <text class="t" x="356" y="270">readout names as text, turned</text>
+  <text class="t" x="356" y="289">into EBCDIC in transport to MVS</text>
+
+  <rect class="art" x="340" y="326" width="250" height="104" rx="10"/>
+  <text class="b" x="356" y="351">Golden suite</text>
+  <text class="t" x="356" y="374">19 requests (stimulus, rate,</text>
+  <text class="t" x="356" y="393">duration, seed) with the Python</text>
+  <text class="t" x="356" y="412">oracle's fingerprints</text>
+
+  <!-- platforms -->
+  <path class="a" d="M590 264 L652 129"/>
+  <path class="a" d="M590 264 L652 229"/>
+  <path class="a" d="M590 264 L652 329"/>
+  <path class="ad" d="M590 264 L652 421"/>
+
+  <rect class="x86" x="654" y="84" width="278" height="90" rx="10"/>
+  <text class="b" x="670" y="108">x86-64</text>
+  <text class="t" x="670" y="130">Python oracle, native IEEE,</text>
+  <text class="t" x="670" y="149">SoftFloat 3e, SoftFloat 2c</text>
+  <text class="s" x="670" y="166">MinGW gcc 6.3.0</text>
+
+  <rect class="s390" x="654" y="184" width="278" height="90" rx="10"/>
+  <text class="b" x="670" y="208">Linux s390x, big-endian</text>
+  <text class="t" x="670" y="230">SoftFloat 3e, native IEEE</text>
+  <text class="t" x="670" y="249">gcc 13.3.0</text>
+  <text class="s" x="670" y="266">emulated by QEMU</text>
+
+  <rect class="mvs" x="654" y="284" width="278" height="90" rx="10"/>
+  <text class="b" x="670" y="308">MVS 3.8j, System/370, EBCDIC</text>
+  <text class="t" x="670" y="330">SoftFloat 2c, no IEEE hardware</text>
+  <text class="t" x="670" y="349">GCCMVS 3.2.3 and JCC 1.50.00</text>
+  <text class="s" x="670" y="366">emulated by Hercules on a laptop</text>
+
+  <rect class="zos" x="654" y="384" width="278" height="76" rx="10"/>
+  <text class="b" x="670" y="408" style="fill:#52606d">z/OS</text>
+  <text class="t" x="670" y="430" style="fill:#52606d">empty: the project has no</text>
+  <text class="t" x="670" y="449" style="fill:#52606d">IBM Z access yet (VL-139)</text>
+
+  <!-- result -->
+  <rect class="ok" x="28" y="478" width="904" height="58" rx="10"/>
+  <text class="b" x="48" y="503">Every filled row gives the same 19 fingerprints.</text>
+  <text class="t" x="48" y="524">That shows the platforms agree with each other, not that any of them is right (VL-05). On MVS one text field differs, by code page.</text>
+</svg>

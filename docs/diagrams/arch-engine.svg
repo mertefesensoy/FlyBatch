@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" width="960" height="560" role="img" aria-labelledby="t d">
+  <title id="t">Inside the FlyBatch engine: a pure core behind adapters</title>
+  <desc id="d">The engine ONFLYENG has a pure core that decodes and checks the network, runs the kernel and builds the response with its fingerprint. Every floating-point operation goes through one float layer with three backends: SoftFloat 3e, SoftFloat 2c and native IEEE. Adapters around the core read and write request and response records, write a live chunk stream, and on x86-64 Windows serve an EXEC CICS transaction under Raincode. A COBOL CALL stub is a stretch goal that has not been built. Only the platform header differs between platforms.</desc>
+  <style>
+    text { font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; fill: #1f2933; }
+    .h { font-size: 20px; font-weight: 700; }
+    .s { font-size: 13px; fill: #52606d; }
+    .b { font-size: 14px; font-weight: 700; }
+    .t { font-size: 12.5px; }
+    .m { font-family: Consolas, "SFMono-Regular", Menlo, monospace; font-size: 12px; }
+    .card { fill: #ffffff; stroke: #cbd2d9; }
+    .core { fill: #f5f3ff; stroke: #7c3aed; stroke-width: 1.6; }
+    .in   { fill: #ffffff; stroke: #a78bfa; }
+    .fp   { fill: #eff6ff; stroke: #2563eb; stroke-width: 1.4; }
+    .chip { fill: #ffffff; stroke: #93c5fd; }
+    .ad   { fill: #f8fafc; stroke: #52606d; }
+    .stub { fill: #ffffff; stroke: #9aa5b1; stroke-dasharray: 6 5; }
+    .plat { fill: #fffbeb; stroke: #b45309; }
+    .a  { stroke: #52606d; stroke-width: 1.6; fill: none; marker-end: url(#arr); marker-start: url(#arr); }
+    .a1 { stroke: #52606d; stroke-width: 1.6; fill: none; marker-end: url(#arr); }
+    .ad2 { stroke: #9aa5b1; stroke-width: 1.4; fill: none; stroke-dasharray: 5 4; }
+  </style>
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#52606d"/></marker>
+  </defs>
+  <rect class="card" x="1" y="1" width="958" height="558" rx="14"/>
+  <text class="h" x="28" y="40">Inside the engine: a pure core behind adapters</text>
+  <text class="s" x="28" y="62">ONFLYENG, C89 with long long, one source for every platform (SRS 2.2, NFR-PRT-01)</text>
+
+  <!-- platform header -->
+  <rect class="plat" x="300" y="80" width="360" height="40" rx="8"/>
+  <text class="t" x="316" y="105"><tspan class="m">onfplat.h</tspan>: the only file that differs per platform</text>
+
+  <!-- core -->
+  <rect class="core" x="300" y="132" width="360" height="250" rx="12"/>
+  <text class="b" x="316" y="156">Core</text>
+  <text class="s" x="358" y="156">no I/O and no allocation once it starts (FR-SIM-07)</text>
+
+  <rect class="in" x="316" y="170" width="328" height="58" rx="8"/>
+  <text class="b" x="330" y="191">1. Decode and check the network</text>
+  <text class="t" x="330" y="212">magic, byte order, version, CRCs, length, memory</text>
+
+  <path class="a1" d="M480 228 L480 244"/>
+  <rect class="in" x="316" y="246" width="328" height="58" rx="8"/>
+  <text class="b" x="330" y="267">2. Run the kernel</text>
+  <text class="t" x="330" y="288">one timestep at a time, in Appendix C's order</text>
+
+  <path class="a1" d="M480 304 L480 320"/>
+  <rect class="in" x="316" y="322" width="328" height="48" rx="8"/>
+  <text class="b" x="330" y="343">3. Build the response</text>
+  <text class="t" x="330" y="362">spike counts, first-spike latency, CRC-32 fingerprint</text>
+
+  <!-- float layer -->
+  <path class="a1" d="M480 382 L480 404"/>
+  <rect class="fp" x="224" y="406" width="512" height="124" rx="12"/>
+  <text class="b" x="240" y="430">Float layer</text>
+  <text class="m" x="326" y="430">onf_fp</text>
+  <text class="t" x="240" y="452">every binary64 operation goes through it, in a fixed order, never fused (NR-07)</text>
+  <rect class="chip" x="240" y="466" width="150" height="48" rx="8"/>
+  <text class="b" x="252" y="487">SoftFloat 3e</text>
+  <text class="t" x="252" y="505">x86-64, s390x</text>
+  <rect class="chip" x="402" y="466" width="178" height="48" rx="8"/>
+  <text class="b" x="414" y="487">SoftFloat 2c</text>
+  <text class="t" x="414" y="505">32-bit integers; MVS, x86-64</text>
+  <rect class="chip" x="592" y="466" width="130" height="48" rx="8"/>
+  <text class="b" x="604" y="487">Native IEEE</text>
+  <text class="t" x="604" y="505">admitted per host</text>
+
+  <!-- left adapters -->
+  <rect class="ad" x="28" y="150" width="232" height="104" rx="10"/>
+  <text class="b" x="44" y="174">Batch file adapter</text>
+  <text class="t" x="44" y="196">412-byte request and response</text>
+  <text class="t" x="44" y="215">records: MVS datasets by DD name,</text>
+  <text class="t" x="44" y="234">ordinary files on Linux, Windows</text>
+  <path class="a" d="M262 202 L298 202"/>
+
+  <rect class="ad" x="28" y="270" width="232" height="104" rx="10"/>
+  <text class="b" x="44" y="294">Chunk stream</text>
+  <text class="m" x="146" y="294">STREAM=K</text>
+  <text class="t" x="44" y="316">spikes and membrane values,</text>
+  <text class="t" x="44" y="335">written while the run goes on;</text>
+  <text class="t" x="44" y="354">the answer is the same without it</text>
+  <path class="a1" d="M300 322 L262 322"/>
+
+  <!-- right adapters -->
+  <rect class="ad" x="700" y="150" width="232" height="104" rx="10"/>
+  <text class="b" x="716" y="174">EXEC CICS adapter</text>
+  <text class="t" x="716" y="196">a LINK target through .NET,</text>
+  <text class="t" x="716" y="215">x86-64 Windows under Raincode;</text>
+  <text class="t" x="716" y="234">not IBM CICS</text>
+  <path class="a" d="M662 202 L698 202"/>
+
+  <rect class="stub" x="700" y="270" width="232" height="104" rx="10"/>
+  <text class="b" x="716" y="294" style="fill:#52606d">COBOL CALL stub</text>
+  <text class="t" x="716" y="316" style="fill:#52606d">an S/370 assembler stub so the</text>
+  <text class="t" x="716" y="335" style="fill:#52606d">COBOL driver can CALL the engine;</text>
+  <text class="t" x="716" y="354" style="fill:#52606d">stretch goal, not built (FR-CAL-01)</text>
+  <path class="ad2" d="M662 322 L698 322"/>
+</svg>

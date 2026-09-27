@@ -1,0 +1,29 @@
+* JOB 420 ONFTX, printed on TK5's PRINTER1, MVS 3.8j emulated by Hercules 4.9.1
+* on a laptop; captured 2026-09-27 from the host printer file (lines 174-192
+* and 199-203 of the job's output; the report's carriage-control column is
+* removed). Request G-17: SUGR, 200 Hz, 1000 ms, seed 1.
+ONF002I RUN MANIFEST
+ONF002I   ENGINE VERSION  0.5.1
+ONF002I   FLOAT BACKEND   SOFT2C
+ONF002I   COMPILER        GCC
+ONF002I   PLATFORM        MVS38J
+ONF002I   MODE            SIMULATE
+ONF002I   NET FORMAT      1.1
+ONF002I   HEADER CRC      B05B9E6A
+ONF002I   PAYLOAD CRC     4577D74E
+ONF002I   N               501
+ONF002I   E               10783
+ONF002I   NS NR           14 2
+ONF002I   DT              100 US
+ONF002I   DT BITS         3FB999999999999A
+ONF002I   DELAY REFRACT   18 22 STEPS
+ONF002I   BIAS ROWS       9
+ONF002I   BYTES NEED      171768 255688
+ONF301I REQUEST 1 COMPLETE FP=F9C7EE77
+ONF302I STEP SUMMARY: 1 OK, 0 WARN, 0 ERROR
+
+ONFLY REPORT (FR-BAT-04)
+REQUEST    1 CODE=SUGR     RATE=  200 MS=1000 SEED=        1 RC=   0 OUT=   2 STEPS=    10000
+  ONF301I  REQUEST COMPLETE                                 FP=F9C7EE77
+  READOUT      1 ID=        9 MN9-10331                          LAT-US=      8600 SPIKES= 165 HZ=    165.0
+  READOUT      2 ID=       88 MN9-16949                          LAT-US=     43400 SPIKES=  15 HZ=     15.0
