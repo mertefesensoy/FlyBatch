@@ -150,6 +150,7 @@ results: Windows 11, MinGW.org gcc 6.3.0 (32-bit), GNU Make 3.82.90, Python
 | Pre-release | `gh release view v0.5.1-rc.1`; anonymous `curl -fsSLO` of each asset; `sha256sum -c SHA256SUMS`; `lint_name.py --message` on the body | prerelease true, tag at `8426699`, four assets; both `OK`; guard exit 0; `CC BY 4.0` twice in the body |
 | Tester guide, Task A, fresh clone of the tag in `C:\Users\senso\fb-rc` (D-656) | the guide's own commands | clone, venv (numpy 2.4.4, pandas 2.3.3, pyarrow 21.0.0), download, `sha256sum -c`, `fixtures.py --from` and `--check`, R0 (`run_tx: 25 identical`, `run_mvsrun: 62 passed`), `testfloat`, and `ONFLY_NOSKIP=1 mingw32-make test` all exit 0, closing `29 PASS, 0 SKIP, 0 PENDING, 5 EXEMPT`; R1 979 s wall clock |
 | Site | `bash site/build.sh build/site`, served locally | 13 files, every local link resolves; 8 images loaded, no horizontal overflow at 348 px, dark theme |
+| `main` and the live site | `git push origin HEAD:main`; `gh run view` on runs 36312177452 (ci) and 36312177469 (pages); anonymous `curl` of https://mertefesensoy.github.io/FlyBatch/ and every image it references | `d501e2b..0ee79a1` fast-forward (D-619); ci's four jobs `success`, pages `build` and `deploy` `success`; the page HTTP 200 with the long no-access statement, all 8 images and `style.css` HTTP 200 |
 
 **What this does not prove.** Nothing ran on IBM Z hardware or z/OS (VL-139).
 The demonstration and captures show the engine's existing behaviour; no
