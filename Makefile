@@ -184,7 +184,7 @@ GENERATED = generated/onfcom.h generated/onfcom.c generated/ONFCOM.cpy generated
 # from tools/genint.py instead.
 IVEC = generated/onfivec.h
 
-.PHONY: all test test-nonet quick onfres generate lint liclint namelint ntclint clean units layout fp kernel decode golden syn tt01 tt0132 tt02 c2c tf2 sfs shim testfloat c04 c04mvs col80 prep runner eng req sub mvsrun names fixtures fixtures-check
+.PHONY: all test test-nonet quick onfres generate lint liclint namelint ntclint reglint netpic demo-linux demo-windows clean units layout fp kernel decode golden syn tt01 tt0132 tt02 c2c tf2 sfs shim testfloat c04 c04mvs col80 prep runner eng req sub mvsrun names fixtures fixtures-check
 
 all: test
 
@@ -257,6 +257,15 @@ namelint:
 ntclint:
 	$(PYTHON) tools/lint_ntc.py --self-test
 	$(PYTHON) tools/lint_ntc.py
+
+# D-622: the FAQ and the write-up are held to P-41's claims register.  Every
+# answer paragraph cites a CAN id, a D-row or a VL-row that exists, and no
+# P-41 5.2 phrase appears outside a heading.  It checks that each paragraph
+# points at evidence, not that the evidence says what the paragraph says.
+# In `test` only; NONET stays the 23 targets P-44 measured (D-622).
+reglint:
+	$(PYTHON) tools/lint_reg.py --self-test
+	$(PYTHON) tools/lint_reg.py
 
 $(BUILD):
 	$(PYTHON) -c "import os; os.path.isdir('$(BUILD)') or os.makedirs('$(BUILD)')"
@@ -910,9 +919,9 @@ runners: $(BUILD) $(GENERATED) runner
 # exclusion rule and TP-09; and the 3270 transaction path off-lab.  That
 # echo said all of it "passed" whatever had been skipped (P-44 S3), which is
 # why it is now a count.
-TESTS = onfres lint liclint namelint ntclint col80 c04 c04mvs sub mvsrun \
-        mvsjcc ic3270 names tt01 tt02 c2c sfs shim layout units fp kernel \
-        syn decode eng req golden prep
+TESTS = onfres lint liclint namelint ntclint reglint col80 c04 c04mvs sub \
+        mvsrun mvsjcc ic3270 names tt01 tt02 c2c sfs shim layout units fp \
+        kernel syn decode eng req golden prep
 
 test:
 	$(PYTHON) tools/testrun.py "$(MAKE)" $(TESTS)

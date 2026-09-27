@@ -7,7 +7,7 @@
 | Plan of record | P-48 (D-629), workstream W4 |
 | Rests on | P-41's claims register (Section 5), rules for every post (7.1) and waves (7.2); D-479 and D-600 (the naming rule); D-519 (IBM roles only in posts, with the disclosure line); D-520 and D-639 (no affiliation); D-522 (the README's AI-use section) |
 | Method | Four read-only research agents, one per audience, each told to post nothing, sign in nowhere and contact no one; every row below was checked on the live web on 2026-09-27 by an agent, and the two calls D-644 and D-645 act on were re-read by the engineer the same day. Rows the agents could not confirm say UNVERIFIED |
-| Status | PROPOSED 2026-09-27, not decided. Every row is a candidate; nothing here is adopted until the owner says so, as a D-row |
+| Status | ADOPTED as listed 2026-09-27 (D-646). Q2 to Q6 answered as D-651, D-648, D-647, D-652 and D-653. Every row is still re-verified on the day it is used |
 
 Every fact here is true on 2026-09-27 and is re-verified before it is used
 (P-41 7.1 rule 12). Channels P-41 already planned or cut are named once in

@@ -13,6 +13,8 @@ page suggests where to start, depending on what you want.
 3. [`architecture.md`](architecture.md): how it works, with diagrams: the data
    flow, the engine and its float layer, one timestep, the MVS job and the
    determinism matrix.
+4. [`FAQ.md`](FAQ.md) for the questions people ask first, and
+   [`writeup.md`](writeup.md) for the story of the byte comparison.
 
 ## If you want to check a result
 

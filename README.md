@@ -38,7 +38,10 @@ shows wiring, not activity; the live view below shows activity.
 **How it works.** [`docs/architecture.md`](docs/architecture.md) explains the
 system with diagrams: the data flow from the connectome to the three
 platforms, the engine and its float layer, one timestep of the model, the
-MVS job and the determinism matrix.
+MVS job and the determinism matrix. [`docs/FAQ.md`](docs/FAQ.md) answers the
+questions people ask first, and [`docs/writeup.md`](docs/writeup.md) tells
+the story of the byte comparison and the compiler fault it found; every
+paragraph in both cites the evidence it rests on.
 
 **One golden request, three floating-point builds.** The same request, G-16,
 through the native, SoftFloat 3e and SoftFloat 2c engines, each printing the
