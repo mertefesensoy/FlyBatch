@@ -471,8 +471,10 @@ def run(args):
                 pad = max(0.5, 0.12 * (hi - lo))
                 ax_m.set_ylim(min(lo - pad, -0.5),
                               max(hi + pad, args["uth"] * 1.15))
+                # The project's public name (D-637, D-638); the engine it
+                # drives keeps its MVS name, ONFLYENG.
                 fig.suptitle(
-                    "ONFLY  -  SUGR %d Hz, seed %d, K=%d  -  t = %6.1f ms"
+                    "FlyBatch  -  SUGR %d Hz, seed %d, K=%d  -  t = %6.1f ms"
                     % (head["rate"], head["seed"], head["k"], ms),
                     color="#e8eefc", fontsize=12, x=0.5, y=0.975)
                 frames += 1

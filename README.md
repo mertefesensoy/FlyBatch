@@ -4,7 +4,7 @@
 </h1>
 
 <p align="center">
-  <a href="https://github.com/mertefesensoy/FlyBatch/actions/workflows/ci.yml"><img src="https://github.com/mertefesensoy/FlyBatch/actions/workflows/ci.yml/badge.svg" alt="CI status" title="CI runs the checks that need no network file: a smoke test, not the determinism matrix (SRS VL-142)"></a>
+  <a href="https://github.com/mertefesensoy/FlyBatch/actions/workflows/ci.yml"><img src="https://github.com/mertefesensoy/FlyBatch/actions/workflows/ci.yml/badge.svg" alt="CI status" title="CI runs the checks that need no network file, and checks the 19 golden fingerprints, on GitHub's own gcc: a smoke test, not the determinism matrix (SRS VL-142)"></a>
   <a href="https://mertefesensoy.github.io/FlyBatch/"><img src="https://github.com/mertefesensoy/FlyBatch/actions/workflows/pages.yml/badge.svg" alt="Site deploy status"></a>
   <a href="LICENSE"><img src="https://img.shields.io/github/license/mertefesensoy/FlyBatch" alt="Licence: MIT"></a>
   <a href="https://github.com/mertefesensoy/FlyBatch/releases"><img src="https://img.shields.io/github/v/release/mertefesensoy/FlyBatch?include_prereleases" alt="Latest release, pre-releases included"></a>

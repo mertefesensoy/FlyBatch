@@ -2,9 +2,10 @@
 #
 # What a green run means (D-586, VL-142): the checks that need no network
 # file pass on a GitHub-hosted x86-64 runner with the compilers that runner
-# provides.  Those are not the recorded toolchains, so a green run is a
-# smoke test and never evidence for the determinism matrix of SRS 8.3.
-# The golden-suite job arrives with the release assets (P-41 G5).
+# provides, and since D-663 the `golden` job reproduces the 19 golden
+# fingerprints there from the networks a release publishes (P-41 G5).
+# Those are not the recorded toolchains, so a green run is a smoke test and
+# never evidence for the determinism matrix of SRS 8.3.
 #
 # Supply chain (P-41 F6): every action is pinned to a full commit SHA, with
 # its release tag in a comment; the token is read-only; checkout keeps no
@@ -141,6 +142,49 @@ jobs:
         env:
           ONFLY_NOSKIP: "1"
         run: make ONFPLAT=x86l PYTHON=python test-nonet
+
+  # P-41 G5 (SRS D-663, D-667): the 19 golden fingerprints on every push.
+  # The two networks come from one pinned release tag, moved by this one
+  # line at each release, and are checked against its SHA256SUMS before any
+  # test; then `make quick` builds the engine and compares all 19 requests.
+  # Still a smoke test on GitHub's gcc, a new data point and never Section
+  # 8.3 evidence (D-586, VL-142).
+  golden:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      NETWORKS_TAG: v0.5.1-rc.1
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97  # v7.0.0
+        with:
+          python-version: "3.13"
+      - name: Toolchain
+        run: |
+          gcc -v
+          make --version | head -1
+          python -VV
+      - name: Pinned packages
+        run: |
+          python -m pip install -r requirements.txt
+          python -m pip freeze
+      - name: Fetch and check the networks
+        run: |
+          nets="$RUNNER_TEMP/nets"
+          mkdir -p "$nets"
+          R="https://github.com/mertefesensoy/FlyBatch/releases/download/$NETWORKS_TAG"
+          for f in onfnet-malecns-v1.0-srext.bin onfnet-malecns-v1.0-path.bin SHA256SUMS NETWORKS-NOTICE.md; do
+            curl -fsSL -o "$nets/$f" "$R/$f"
+          done
+          (cd "$nets" && sha256sum -c SHA256SUMS)
+          python tools/fixtures.py --from "$nets"
+          python tools/fixtures.py --check
+      - name: make quick, strict
+        env:
+          ONFLY_NOSKIP: "1"
+        run: make ONFPLAT=x86l PYTHON=python quick
 
   # `mingw32-make test-nonet` under MSYS2's 32-bit MinGW, strict.  It shares
   # x86w's ONFPLAT value with the recorded Windows host, not its compiler:
