@@ -98,7 +98,10 @@ TOOLS = ("JCC", "Raincode", "INTERCOMM", "Hercules", "TK5", "GCCMVS",
          "actions/checkout", "actions/setup-python", "msys2/setup-msys2",
          "GitHub-hosted runner", "MSYS2",
          # D-641, D-643: what records the terminal demonstrations.
-         "asciinema", "agg", "VHS", "ttyd", "FFmpeg")
+         "asciinema", "agg", "VHS", "ttyd", "FFmpeg",
+         # D-630: what deploys the Pages site, .github/workflows/pages.yml.
+         "actions/configure-pages", "actions/upload-pages-artifact",
+         "actions/deploy-pages")
 
 BSD_FILES = ("softfloat/onfrpk.c", "softfloat/onfprim.c")
 BSD_PHRASES = (

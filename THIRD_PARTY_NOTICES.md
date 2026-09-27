@@ -258,6 +258,7 @@ grants no right to any of them.
 | GitHub-hosted runner images (ubuntu-latest, windows-latest) | Where the CI jobs run | The image definitions are MIT, as the runner-images repository states, read on 2026-09-26; the software installed in an image keeps its own terms, which this row does not restate | https://github.com/actions/runner-images |
 | asciinema 3.2.1 and agg 1.9.0 | Recording `docs/media/demo-linux.cast` and drawing `docs/media/demo-linux.gif` (SRS D-641, D-643) | GPL-3.0, as each repository's licence metadata states, read on 2026-09-27 | https://github.com/asciinema/asciinema, https://github.com/asciinema/agg |
 | VHS 0.12.1 (Charm) and ttyd 1.7.7 | Recording `docs/media/demo-windows.gif` (SRS D-641, D-643) | MIT, as each repository's licence metadata states, read on 2026-09-27 | https://github.com/charmbracelet/vhs, https://github.com/tsl0922/ttyd |
+| actions/configure-pages v6.0.0, actions/upload-pages-artifact v5.0.0 and actions/deploy-pages v5.0.1 (GitHub) | Deploying the Pages site, `.github/workflows/pages.yml`, pinned to full commit SHAs (SRS D-630) | MIT, as each repository's licence metadata states, read on 2026-09-27 | https://github.com/actions/configure-pages, https://github.com/actions/upload-pages-artifact, https://github.com/actions/deploy-pages |
 | FFmpeg 8.1.1 (the gyan.dev full build) | VHS's video encoding | GPL-3.0-or-later, as the installed build reports with `ffmpeg -L` on 2026-09-27; FFmpeg's repository states no single licence | https://github.com/FFmpeg/FFmpeg |
 
 ## 8. Trademarks

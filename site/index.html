@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FlyBatch</title>
+<meta name="description" content="The sugar-to-feeding circuit of the male fruit fly, 501 neurons from the MaleCNS v1.0 connectome, in a portable C89 engine with a COBOL batch driver, giving the same fingerprints on x86-64, Linux s390x under QEMU and MVS 3.8j under Hercules. It has not run on IBM Z hardware.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<!-- SRS D-627, D-630: FlyBatch's landing page.  Every sentence comes from
+     P-41's claims register (docs/plan/2026-09-24-open-source-launch.md,
+     Section 5); the CAN ids are in the comments beside them. -->
+<header class="top">
+  <nav class="wrap nav">
+    <a class="brand" href="#top">FlyBatch</a>
+    <span class="links">
+      <a href="#matrix">Evidence</a>
+      <a href="#how">How it works</a>
+      <a href="#mvs">MVS</a>
+      <a href="#limits">Limits</a>
+      <a href="https://github.com/mertefesensoy/FlyBatch/blob/main/docs/FAQ.md">FAQ</a>
+      <a class="gh" href="https://github.com/mertefesensoy/FlyBatch">GitHub</a>
+    </span>
+  </nav>
+</header>
+
+<main id="top">
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="kicker">A fruit fly circuit as a batch job</p>
+      <h1>One fruit fly circuit. The same answer on a laptop, on emulated s390x and on emulated MVS 3.8j.</h1>
+      <!-- CAN-01 -->
+      <p class="lead">FlyBatch simulates the sugar-to-feeding circuit of the male fruit fly: a 501-neuron subcircuit taken from the MaleCNS v1.0 connectome, run with the leaky integrate-and-fire model of Shiu et al. (2024) in a portable C89 engine with a COBOL batch driver.</p>
+      <p class="cta">
+        <a class="btn primary" href="https://github.com/mertefesensoy/FlyBatch">Read the code</a>
+        <a class="btn" href="https://github.com/mertefesensoy/FlyBatch/blob/main/docs/architecture.md">How it works</a>
+        <a class="btn" href="https://github.com/mertefesensoy/FlyBatch/blob/main/REPLICATING.md">Reproduce it</a>
+      </p>
+      <p class="formerly">Called ONFLY until 2026-09-27. MIT licence.</p>
+    </div>
+    <figure class="hero-fig">
+      <img src="media/srext-network.png" width="1600" height="1000" alt="The 501 neurons of the subcircuit at their soma positions in the fly's nervous system, joined by 10,783 connections; the two MN9 feeding motor neurons are stars and the 14 sugar-sensing neurons triangles.">
+      <figcaption>The shipped subcircuit: 501 neurons and 10,783 connections, drawn from its own network file. It shows wiring, not activity.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="notice">
+  <div class="wrap">
+    <!-- P-41 3.2, the long form; CAN-03, VL-139 -->
+    <p><strong>FlyBatch has not run on IBM Z hardware. The project does not have IBM Z access yet.</strong> Every MVS result here comes from MVS 3.8j running under the Hercules emulator, and every s390x result from Linux running under QEMU, both on one x86-64 laptop. Nothing here has run on z/OS or on IBM CICS Transaction Server.</p>
+  </div>
+</section>
+
+<section id="matrix" class="band">
+  <div class="wrap two">
+    <div>
+      <h2>Nineteen requests, the same fingerprints on every row</h2>
+      <!-- CAN-02 -->
+      <p>A request names a sugar rate, a duration and a random seed; the answer gives what the two MN9 feeding motor neurons do, with a CRC-32 fingerprint of the whole response. All 19 golden requests produce identical fingerprints and response records on x86-64, from a Python reference and three C floating-point builds, and on Linux s390x under QEMU.</p>
+      <p>On MVS 3.8j under Hercules with the GCCMVS compiler the fingerprints are identical, and the response records are identical byte for byte apart from one text field that MVS stores in EBCDIC. With a second MVS compiler, JCC, all 19 reproduce the same way. The z/OS row is empty.</p>
+      <!-- VL-05 -->
+      <p class="caveat">Identical fingerprints show that the platforms agree with each other, not that any of them is correct.</p>
+    </div>
+    <figure>
+      <img src="diagrams/arch-matrix.svg" alt="The determinism matrix: rows 1 to 7 each reproduce all 19 golden fingerprints; row 8, z/OS, is empty.">
+    </figure>
+  </div>
+</section>
+
+<section id="demo" class="band alt">
+  <div class="wrap">
+    <h2>Watch one request</h2>
+    <p>The same golden request, G-16, through the native, SoftFloat 3e and SoftFloat 2c engines, each printing the fingerprint the specification records for it. Real commands, real output.</p>
+    <figure class="wide">
+      <img src="media/demo-linux.gif" width="1149" height="781" alt="A terminal session: a control card, the request built from it, the engine's run manifest, and three engine builds each printing FP=BAF81D91.">
+      <figcaption>Linux x86-64 under WSL, gcc 15.2.0, recorded with asciinema. The same script on Windows with MinGW gcc 6.3.0, recorded with VHS: <a href="media/demo-windows.gif">demo-windows.gif</a>.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="how" class="band">
+  <div class="wrap">
+    <h2>How it works</h2>
+    <p>Everything that needs a floating-point constant is computed once on x86-64 and shipped as bit patterns. Every binary64 operation goes through one float layer, in a fixed order, never fused; where the platform has no IEEE floating point, as MVS does not, that layer is Berkeley SoftFloat. The full explanation, with the model's timestep, is in <a href="https://github.com/mertefesensoy/FlyBatch/blob/main/docs/architecture.md">docs/architecture.md</a>.</p>
+    <div class="grid2">
+      <figure><img src="diagrams/arch-dataflow.svg" alt="Data flow: the MaleCNS connectome, a Python preparation pipeline on x86-64, three artifacts, and the platforms that run them."></figure>
+      <figure><img src="diagrams/arch-engine.svg" alt="The engine: a pure core that decodes, simulates and answers; a float layer with three backends; and adapters around it."></figure>
+    </div>
+  </div>
+</section>
+
+<section id="mvs" class="band alt">
+  <div class="wrap">
+    <h2>On emulated MVS 3.8j</h2>
+    <!-- CAN-13, CAN-05 -->
+    <p>The three-step BUZZ batch job, a COBOL driver, the C engine and a COBOL report, ran end to end on emulated MVS 3.8j with return code 0 and printed the five shipped-network golden fingerprints. Under Hercules 4.9.1 on an Intel Core i7-13650HX laptop, one standard 1000 ms request on the shipped network used 161 s of emulated CPU, inside the project's 10-minute budget; this is an emulator figure from one run and says nothing about IBM Z performance.</p>
+    <div class="grid2">
+      <figure><img src="diagrams/arch-mvsjob.svg" alt="The MVS job: control cards, the COBOL driver, the C engine, and the printed report, with the step return codes."></figure>
+      <figure><img src="media/mvs-report-g17.png" alt="The printed output of JOB 420 for request G-17: the engine's run manifest on MVS38J with SoftFloat 2c, FP=F9C7EE77, and the report of both MN9 neurons.">
+        <figcaption>A job's printed output, captured 2026-09-27 on MVS 3.8j emulated by Hercules.</figcaption></figure>
+    </div>
+    <!-- CAN-11, VL-144 -->
+    <p>On the emulated MVS lab, typing a request on a 3270 session under INTERCOMM, a transaction monitor that is not CICS, starts a FlyBatch batch run and then shows its result and golden fingerprint; the screen shows the run it started only when the request differs from the last one run. This part cannot be reproduced from the repository because INTERCOMM's licence keeps its code out.</p>
+    <figure class="wide"><img src="media/mvs-3270-g17.png" alt="The 3270 screen's rows for request G-17: FP=F9C7EE77 and both MN9 readouts."></figure>
+    <!-- CAN-12 -->
+    <p>The emulated MVS job streams its spike data to the host while it is still running, and for the five shipped-network golden requests that stream is byte-identical to the x86-64 one once line endings are normalised: <a href="media/onfly-mvs-live.gif">watch the stream</a>.</p>
+  </div>
+</section>
+
+<section id="bug" class="band">
+  <div class="wrap narrow">
+    <h2>The +0.0 that was not zero</h2>
+    <!-- CAN-14 -->
+    <p>Comparing the full MVS and x86 output streams line by line exposed a GCCMVS code-generation fault that had turned every +0.0 in the MVS kernel into a tiny subnormal, a difference no fingerprint had ever caught; the fault is worked around, not fully characterised. The story is in <a href="https://github.com/mertefesensoy/FlyBatch/blob/main/docs/writeup.md">the write-up</a>.</p>
+  </div>
+</section>
+
+<section id="limits" class="band alt">
+  <div class="wrap narrow">
+    <h2>What it does not show</h2>
+    <ul class="limits">
+      <!-- CAN-06 -->
+      <li><strong>The science was measured on x86-64 only.</strong> There, sugar at 40, 60, 120 and 200 Hz made the MN9 feeding motor neurons fire in all 30 seeds at every rate, and zero sugar produced zero spikes in all 501 neurons.</li>
+      <!-- CAN-07 -->
+      <li><strong>One fitted input term.</strong> The 501-neuron subcircuit carries one fitted input term standing in for the neurons it leaves out, and with it stays within 10% of the MN9 rate of the 184,099-neuron annotated MaleCNS network (39.0% of its synapses) at 40, 60, 120 and 200 Hz; 10 Hz is excluded because that network's rate is too variable there to test against.</li>
+      <!-- CAN-08 -->
+      <li><strong>Shape, not magnitude.</strong> Compared with Shiu et al.'s model of the female FlyWire connectome, re-run from their published code, the model on MaleCNS rises with sugar in the same shape but fires more at low rates: 3.67 Hz at 10 Hz where the reference is silent, and 14.35 Hz against 4.73 Hz at 40 Hz. No single synaptic weight removes that gap.</li>
+      <!-- CAN-15 -->
+      <li><strong>Two acceptance criteria were changed after we saw the results:</strong> ACC-3 no longer tests 10 Hz, and ACC-4 no longer tests magnitude. Both changes and the failing numbers are recorded in the specification.</li>
+      <!-- CAN-04 -->
+      <li><strong>Emulators are emulators.</strong> The s390x results come from QEMU's instruction-by-instruction emulation, so they show the code gives the same results on a big-endian system, but say nothing about floating point on real s390x hardware.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="open" class="band">
+  <div class="wrap narrow">
+    <h2>Built in the open</h2>
+    <!-- D-522 -->
+    <p>FlyBatch is built with an AI coding agent, Anthropic's Claude Code, working from a public requirements specification. The owner makes every decision, and each is recorded with the alternatives offered; every verification limit is recorded beside the result it limits.</p>
+    <p class="cta">
+      <a class="btn" href="https://github.com/mertefesensoy/FlyBatch/blob/main/docs/ONFLY-SRS.md">The specification</a>
+      <a class="btn" href="https://github.com/mertefesensoy/FlyBatch/blob/main/docs/FAQ.md">FAQ</a>
+      <a class="btn" href="https://github.com/mertefesensoy/FlyBatch/blob/main/CONTRIBUTING.md">Contributing</a>
+      <a class="btn" href="https://github.com/mertefesensoy/FlyBatch/issues/new/choose">Send a replication report</a>
+    </p>
+  </div>
+</section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p>FlyBatch's own code is under the MIT licence. Data: MaleCNS v1.0 (HHMI Janelia, MRC LMB, University of Cambridge, Google Research), CC BY 4.0, modified by FlyBatch. The reference curve derived from FlyWire data is under CC BY-NC 4.0; see <a href="https://github.com/mertefesensoy/FlyBatch/blob/main/THIRD_PARTY_NOTICES.md">THIRD_PARTY_NOTICES.md</a>.</p>
+    <p>FlyBatch is a personal project by Mert Efe Şensoy. It is not an IBM product and has no affiliation with IBM or with any organisation whose data, software or tools it uses. IBM, IBM Z, z/OS, CICS and MVS are trademarks of International Business Machines Corporation, registered in many jurisdictions worldwide. Other names may be trademarks of their owners.</p>
+  </div>
+</footer>
+</body>
+</html>
