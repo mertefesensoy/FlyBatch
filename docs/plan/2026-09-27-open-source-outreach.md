@@ -5,7 +5,7 @@
 | Scope | D-617 as revised by D-621: slice G's open entry items; an architecture explainer and visual material; the FAQ and the write-up; a backlink and outreach strategy; a GitHub Pages site; a W1a tester kit with a pre-release. Not a Section 9 phase |
 | Decisions it rests on | D-617 to D-628; P-41 (D-488), its claims register (5), rules (3.4, 7.1) and checks (11); D-479 and D-600 (the naming rule); D-478 (one author); D-516 (CC BY 4.0 for ONFLY's data); D-519 (IBM roles not in the repository); D-522 (AI use); D-544, D-545, D-573 (version, assets, engine 0.5.1) |
 | Proposal | P-48, revision 2. Revision 1 was not approved (D-621) |
-| Status | APPROVED as drafted 2026-09-27 (D-629); Q2 to Q4 answered as D-630 to D-632 |
+| Status | APPROVED as drafted 2026-09-27 (D-629); Q2 to Q4 answered as D-630 to D-632. Carried out the same day, D-633 to D-656 decided on the way; the exits and their evidence are in `docs/implementations/2026-09-27-open-source-outreach.md` |
 
 ## 1. Why
 
