@@ -33,8 +33,8 @@ x86-64 laptop.
 - A GitHub Pages site built from them, `site/` (D-627, D-630).
 - The site's favicon, a fruit fly on a stack of punched cards, the fly as a
   batch job, is the project's logo: at the head of the README with CI,
-  site, licence and release badges, and above the site's hero headline
-  (D-657 to D-661).
+  site, licence and release badges, and in the site's top bar
+  (D-657 to D-662).
 - A guide for testers of the release candidate `v0.5.1-rc.1`,
   `docs/testers.md` (D-626).
 - Found: the 3270 transaction shows a stale answer when a request repeats
