@@ -194,8 +194,10 @@ JCC. macOS and arm64 are untested.
   stream is byte-identical to the x86-64 one once line endings are
   normalised. Comparing those streams line by line exposed a GCCMVS
   code-generation fault that had turned every +0.0 in the MVS kernel into a
-  tiny subnormal, a difference no fingerprint had caught; it is worked
-  around, not fully characterised.
+  tiny subnormal, a difference no fingerprint had caught. It is worked
+  around, and a 26-line reproducer shows its cause in the generated code:
+  at -O1 an eight-byte structure of zeros is copied from a four-byte
+  constant (SRS VL-145).
 
 ## Repository map
 

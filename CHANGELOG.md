@@ -20,7 +20,7 @@ x86-64 laptop.
   `python tools/mvsgcc.py --structret`. Its job outputs, with the generated
   assembler, are in `data/structret/`. At `-O1` an eight-byte structure of
   zeros is copied from a four-byte literal; `-O0` and JCC are right
-  (VL-145).
+  (VL-145). The README, the site and the write-up now say so (D-668).
 - CI gained a `golden` job: on every push it downloads the two networks
   from a pinned release, checks their SHA-256 values and compares all 19
   golden fingerprints, on GitHub's compiler, as a smoke test (D-667,

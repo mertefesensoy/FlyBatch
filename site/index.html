@@ -119,7 +119,7 @@
   <div class="wrap narrow">
     <h2>The +0.0 that was not zero</h2>
     <!-- CAN-14 -->
-    <p>Comparing the full MVS and x86 output streams line by line exposed a GCCMVS code-generation fault that had turned every +0.0 in the MVS kernel into a tiny subnormal, a difference no fingerprint had ever caught; the fault is worked around, not fully characterised. The story is in <a href="https://github.com/mertefesensoy/FlyBatch/blob/main/docs/writeup.md">the write-up</a>.</p>
+    <p>Comparing the full MVS and x86 output streams line by line exposed a GCCMVS code-generation fault that had turned every +0.0 in the MVS kernel into a tiny subnormal, a difference no fingerprint had ever caught. The fault is worked around, and a 26-line reproducer shows its cause in the generated code: at -O1 an eight-byte structure of zeros is copied from a four-byte constant. The story is in <a href="https://github.com/mertefesensoy/FlyBatch/blob/main/docs/writeup.md">the write-up</a>.</p>
   </div>
 </section>
 

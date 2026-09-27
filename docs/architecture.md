@@ -132,8 +132,10 @@ punch the host reads live, and for the five shipped-network golden requests
 that stream is byte-identical to the x86-64 one once line endings are
 normalised (VL-135, D-414). Comparing those streams line by line found a
 GCCMVS code-generation fault that had turned every +0.0 in the MVS kernel
-into a tiny subnormal, which no fingerprint had caught; it is worked around,
-not fully characterised (D-420, VL-127).
+into a tiny subnormal, which no fingerprint had caught. It is worked around
+(D-420), and a 26-line reproducer shows its cause in the generated code: at
+`-O1` an eight-byte structure of zeros is copied from a four-byte constant
+(VL-145).
 
 ## The determinism matrix
 

@@ -5,7 +5,7 @@
 | Date | 2026-09-27 |
 | Author | Mert Efe Şensoy |
 | Phase / gate | P-41 slices G (preparation only) and H; plan P-50 |
-| Owner decisions relied on | D-663 (scope), D-664 (P-50 approved), D-665 (TK5 lab terms), D-666 (social preview), D-667 (golden job triggers); D-586, D-594, D-626, D-634, D-637, D-638, D-654 |
+| Owner decisions relied on | D-663 (scope), D-664 (P-50 approved), D-665 (TK5 lab terms), D-666 (social preview), D-667 (golden job triggers), D-668 (CAN-14 cites VL-145); D-586, D-594, D-626, D-634, D-637, D-638, D-654 |
 | Requirements touched | none; VL-127 cross-referenced, VL-142 note, VL-145 new |
 | Open items closed | none |
 
@@ -47,6 +47,8 @@ gaps were left, which the owner chose to close together (D-663):
 | `docs/ONFLY-SRS.md` | D-663 to D-667 and P-50 (commit c10a3c3); VL-142's note on the golden job; VL-145; a pointer from VL-127 to VL-145. |
 | `docs/plan/2026-09-27-rename-ci-repro-release.md` | The plan, P-50, approved as drafted (c10a3c3). |
 | `CHANGELOG.md` | The 2026-09-27 entry gains the reproducer, the golden job, the GIFs and `.zenodo.json`. |
+| `docs/plan/2026-09-24-open-source-launch.md` | CAN-14's ready phrasing, evidence and limits cite VL-145 (D-668). |
+| `README.md`, `site/index.html`, `docs/architecture.md`, `docs/writeup.md` | Their account of the fault follows the new CAN-14 (D-668). |
 
 Outside the repository and not committed: the social preview PNG (the owner
 uploads it; D-594), and in the owner's private notes under `local/outreach/`
@@ -130,10 +132,18 @@ That is the size VL-122 observed.
 - **The comparand from the host compiler:** the same reason as in every
   other `mvsgcc.py` probe. A hand-typed expected value can be wrong in the
   same way as the thing it checks.
-- **CAN-14's public wording was left alone.** "Not fully characterised" is
-  still true: the code generator's rule is unread and one program was run.
-  Whether CAN-14 should cite VL-145 is a claims-register change, which P-50
-  did not authorise, so it goes to the owner as a follow-up.
+- **CAN-14's public wording was first left alone, then changed by D-668.**
+  P-50 did not authorise a claims-register change, so the commit that
+  landed VL-145 kept "not fully characterised" and raised the question. The
+  owner then instructed that CAN-14 cite VL-145 (D-668). The register row
+  now says the fault is worked around and that a 26-line reproducer shows
+  its cause, and its limits are VL-145's. The README, the site,
+  `docs/architecture.md` and `docs/writeup.md` follow it. The write-up had
+  to change regardless: its "there is no minimal reproducer yet" had become
+  false. The write-up's new paragraph says only what the listing shows. The
+  number of arguments did not matter in this program, because the
+  two-argument function copies no constant. It does not claim a general
+  rule.
 - **Release notes, Zenodo steps and `g5-check.sh` stay in private notes**
   (P-50 R4). Nothing is published before W1a and the owner's word.
 

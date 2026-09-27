@@ -136,9 +136,17 @@ not protection (VL-121, VL-125).
 
 The fix was to stop calling that function and build the zero another way,
 after which the engine's own float self-test ran on MVS for the first time
-and matched the laptop's line for line. The fault itself is worked around,
-not fully characterised: there is no minimal reproducer yet (D-420, VL-126,
-VL-127).
+and matched the laptop's line for line (D-420, VL-126).
+
+A 26-line program with nothing of FlyBatch in it later reproduced the fault
+and, with its assembler listed, showed the cause. At -O1 GCCMVS fills the
+eight-byte structure of zeros with one eight-byte copy from a constant only
+four bytes long, so the second word picks up whatever follows the constant
+in memory, there an address. In this program the number of arguments was
+not what mattered: the two-argument function copies no constant at all.
+At -O0, and under JCC, the same program is right. That is one program on
+the emulator: the compiler's own source was not read, and other structure
+sizes and constants were not tried (CAN-14, VL-145).
 
 ## What the agreement proves, and what it does not
 
