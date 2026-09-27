@@ -160,6 +160,22 @@ Linux x86-64 run under WSL with gcc 15.2.0, a data point outside Section 8.3
 not an outside replication (VL-05). The MVS captures are from Hercules on a
 laptop, and one G-17 run. Web facts in P-49 are true on 2026-09-27 only.
 
+## Addendum: the site's favicon (D-657)
+
+Asked for after the report, the same day. `site/favicon.svg` is a
+hand-drawn red-eyed fruit fly on a stack of three 80-column punched cards,
+the name drawn: the fly as a batch job (D-637). No outside imagery, so it
+falls under the repository's MIT default, not under MaleCNS's terms. Two
+PNG fallbacks were rendered from it by headless Microsoft Edge in the
+session scratchpad, since no SVG rasteriser is installed on the host:
+`favicon-32.png` with a transparent background, and `apple-touch-icon.png`
+at 180 px on the site's dark colour, because iOS fills transparency with
+black. `site/index.html` links all three, and `site/build.sh` copies them;
+its link check covers the new `href`s. Edge is registered in
+`THIRD_PARTY_NOTICES.md` section 7 and in `lint_ntc.py`'s tool list, shown
+failing first. The owner chose it in the third round of candidates; D-657
+records all three rounds.
+
 ## 7. Related docs
 
 - `docs/ONFLY-SRS.md`: Appendix A.1 D-617 to D-655; A.2 P-48, P-49; D VL-05,

@@ -14,7 +14,8 @@ root=$(dirname "$here")
 
 rm -rf "$out"
 mkdir -p "$out/media" "$out/diagrams"
-cp "$here/index.html" "$here/style.css" "$out/"
+cp "$here/index.html" "$here/style.css" "$here/favicon.svg" \
+   "$here/favicon-32.png" "$here/apple-touch-icon.png" "$out/"
 for f in srext-network.png demo-linux.gif demo-windows.gif \
          mvs-report-g17.png mvs-3270-g17.png onfly-mvs-live.gif; do
     cp "$root/docs/media/$f" "$out/media/"

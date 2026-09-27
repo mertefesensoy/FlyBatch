@@ -31,6 +31,8 @@ x86-64 laptop.
   `make test` holds the FAQ and the write-up to the claims register
   (D-621 to D-623, D-627, D-628, D-643, D-650).
 - A GitHub Pages site built from them, `site/` (D-627, D-630).
+- The site's favicon: a fruit fly on a stack of punched cards, the fly as a
+  batch job (D-657).
 - A guide for testers of the release candidate `v0.5.1-rc.1`,
   `docs/testers.md` (D-626).
 - Found: the 3270 transaction shows a stale answer when a request repeats

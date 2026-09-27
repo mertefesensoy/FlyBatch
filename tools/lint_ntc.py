@@ -101,7 +101,9 @@ TOOLS = ("JCC", "Raincode", "INTERCOMM", "Hercules", "TK5", "GCCMVS",
          "asciinema", "agg", "VHS", "ttyd", "FFmpeg",
          # D-630: what deploys the Pages site, .github/workflows/pages.yml.
          "actions/configure-pages", "actions/upload-pages-artifact",
-         "actions/deploy-pages")
+         "actions/deploy-pages",
+         # D-657: what rendered the site's PNG favicons from favicon.svg.
+         "Microsoft Edge")
 
 BSD_FILES = ("softfloat/onfrpk.c", "softfloat/onfprim.c")
 BSD_PHRASES = (
