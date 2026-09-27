@@ -1,0 +1,49 @@
+=== ACC-5 row 7: TK5 MVS 3.8j / SOFT2C / JCC ===
+    data/phase-e/v051/jcc\rsp-path-2c.bin
+    vs data/phase-d/x86w\rsp-path-2c.bin
+  note record 1: raw NO   binary(8..411) yes  translated yes
+         chr[0:8] got e2e4c7d940404040 ('SUGR    ' as EBCDIC), want 5355475220202020
+  note record 2: raw NO   binary(8..411) yes  translated yes
+         chr[0:8] got e2e4c7d940404040 ('SUGR    ' as EBCDIC), want 5355475220202020
+  note record 3: raw NO   binary(8..411) yes  translated yes
+         chr[0:8] got e2e4c7d940404040 ('SUGR    ' as EBCDIC), want 5355475220202020
+  note record 4: raw NO   binary(8..411) yes  translated yes
+         chr[0:8] got e2e4c7d940404040 ('SUGR    ' as EBCDIC), want 5355475220202020
+  note record 5: raw NO   binary(8..411) yes  translated yes
+         chr[0:8] got e2e4c7d940404040 ('SUGR    ' as EBCDIC), want 5355475220202020
+  note record 6: raw NO   binary(8..411) yes  translated yes
+         chr[0:8] got e2e4c7d940404040 ('SUGR    ' as EBCDIC), want 5355475220202020
+  note record 7: raw NO   binary(8..411) yes  translated yes
+         chr[0:8] got e2e4c7d940404040 ('SUGR    ' as EBCDIC), want 5355475220202020
+  note record 8: raw NO   binary(8..411) yes  translated yes
+         chr[0:8] got e2e4c7d940404040 ('SUGR    ' as EBCDIC), want 5355475220202020
+  note record 9: raw NO   binary(8..411) yes  translated yes
+         chr[0:8] got e2e4c7d940404040 ('SUGR    ' as EBCDIC), want 5355475220202020
+  note record 10: raw NO   binary(8..411) yes  translated yes
+         chr[0:8] got e2e4c7d940404040 ('SUGR    ' as EBCDIC), want 5355475220202020
+  note record 11: raw NO   binary(8..411) yes  translated yes
+         chr[0:8] got e6c1e3d940404040 ('WATR    ' as EBCDIC), want 5741545220202020
+  note record 12: raw NO   binary(8..411) yes  translated yes
+         chr[0:8] got e7e7e7e740404040 ('XXXX    ' as EBCDIC), want 5858585820202020
+  note record 13: raw NO   binary(8..411) yes  translated yes
+         chr[0:8] got e2e4c7d940404040 ('SUGR    ' as EBCDIC), want 5355475220202020
+  note record 14: raw NO   binary(8..411) yes  translated yes
+         chr[0:8] got e2e4c7d940404040 ('SUGR    ' as EBCDIC), want 5355475220202020
+  raw=False  binary=True  translated=True
+
+=== ACC-5 row 7 vs the Section 8.4 fingerprints ===
+  ok   G-01  fp=6C143127  golden=6C143127
+  ok   G-02  fp=5CAB2AA0  golden=5CAB2AA0
+  ok   G-03  fp=A54BAAC7  golden=A54BAAC7
+  ok   G-04  fp=82808C5F  golden=82808C5F
+  ok   G-05  fp=CBEB5C0B  golden=CBEB5C0B
+  ok   G-06  fp=4F98279A  golden=4F98279A
+  ok   G-07  fp=C4CABE4D  golden=C4CABE4D
+  ok   G-08  fp=F37639B8  golden=F37639B8
+  ok   G-09  fp=5E07D024  golden=5E07D024
+  ok   G-10  fp=461A343E  golden=461A343E
+  ok   G-11  fp=025CBFDB  golden=025CBFDB
+  ok   G-12  fp=740E6A92  golden=740E6A92
+  ok   G-13  fp=A30B1F03  golden=A30B1F03
+  ok   G-14  fp=8EC69ADE  golden=8EC69ADE
+mvsjcc: ACC-5 row 7 PASS (path, measured data/phase-e/v051/jcc)
