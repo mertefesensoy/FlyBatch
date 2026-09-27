@@ -1,4 +1,8 @@
-# FlyBatch
+<p align="center">
+  <img src="site/favicon.svg" width="128" height="128" alt="The FlyBatch logo: a red-eyed fruit fly on a stack of punched cards">
+</p>
+
+<h1 align="center">FlyBatch</h1>
 
 FlyBatch simulates the sugar-to-feeding circuit of the male fruit fly: a
 501-neuron subcircuit taken from the MaleCNS v1.0 connectome, run with the
