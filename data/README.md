@@ -16,6 +16,7 @@ the SRS, and the file itself stays as it was written.
 | `phase-d/` | x86-64 and Linux s390x (under QEMU) request, response and golden records | TX-01, TX-02, ACC-5 rows 1 to 5 |
 | `phase-e/` | MVS 3.8j (under the Hercules emulator) listings and records, GCCMVS and JCC | ACC-5 rows 6 and 7, ACC-6, ACC-7 |
 | `g0/` | The Gate G0 environment inventory | Gate G0 |
+| `structret/` | MVS 3.8j (under the Hercules emulator) job outputs of the GCCMVS struct-return reproducer, at `-O1` and `-O0` and under JCC, with the generated assembler listed | VL-145 |
 
 **What is not here.** The two network binaries (`srext`, 171,768 bytes, and
 `path`, 951,200 bytes) are listed in `.gitignore`: they are distributed beside

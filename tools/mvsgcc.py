@@ -414,6 +414,127 @@ def probe_shifts():
     return 1 if bad else 0
 
 
+#: VL-127, P-41 7.3 (a), SRS D-663: the smallest program that shows the
+#: fault D-420 worked around.  onffzer() was ONFLY's only no-argument
+#: function returning a structure, and under GCCMVS at -O1 it returned a
+#: subnormal instead of +0.0, while onffbit(0, 0), the same structure from
+#: a two-argument function, was right (VL-122).  This keeps exactly that
+#: contrast and nothing of ONFLY: two 32-bit words, one function with no
+#: arguments, one with two, both returning zero.
+SR_SRC = [
+    "#include <stdio.h>",
+    "struct w2 { unsigned long hi; unsigned long lo; };",
+    "struct w2 zero0(void)",
+    "{",
+    "    struct w2 z;",
+    "    z.hi = 0UL;",
+    "    z.lo = 0UL;",
+    "    return z;",
+    "}",
+    "struct w2 make2(unsigned long h, unsigned long l)",
+    "{",
+    "    struct w2 z;",
+    "    z.hi = h;",
+    "    z.lo = l;",
+    "    return z;",
+    "}",
+    "int main(void)",
+    "{",
+    "    struct w2 a;",
+    "    struct w2 b;",
+    "    a = zero0();",
+    "    b = make2(0UL, 0UL);",
+    '    printf("MINIPROBE SR zero0 hi=%08lX lo=%08lX\\n", a.hi, a.lo);',
+    '    printf("MINIPROBE SR make2 hi=%08lX lo=%08lX\\n", b.hi, b.lo);',
+    "    return 0;",
+    "}",
+]
+SR_RE = r"MINIPROBE SR (zero0|make2) hi=([0-9A-F]{8}) lo=([0-9A-F]{8})"
+SR_DIR = os.path.join(os.path.dirname(os.path.dirname(
+    os.path.abspath(__file__))), "data", "structret")
+
+
+def sr_lines(text):
+    """{'zero0': (hi, lo), 'make2': (hi, lo)} from a job's printed output."""
+    import re
+    got = {}
+    for m in re.finditer(SR_RE, text):
+        got[m.group(1)] = (m.group(2), m.group(3))
+    return got
+
+
+def sr_host():
+    """What the same source prints when this host's gcc builds it: the
+    comparand, so the verdict never rests on a value typed in by hand."""
+    import subprocess
+    import tempfile
+    d = tempfile.mkdtemp(prefix="structret_")
+    src = os.path.join(d, "sr.c")
+    exe = os.path.join(d, "sr.exe")
+    with open(src, "w") as fh:
+        fh.write("\n".join(SR_SRC) + "\n")
+    subprocess.check_call(["gcc", "-std=c89", "-O1", "-o", exe, src])
+    out = subprocess.run([exe], capture_output=True, text=True).stdout
+    return sr_lines(out)
+
+
+def probe_structret():
+    """Run SR_SRC under GCCMVS at -O1 and -O0, and under JCC, on TK5.
+
+    Each job's whole printed output is kept in data/structret/, because
+    the generated code is the point: a wrong value names the fault, the
+    listing says where it is.  Exit 1 if any compiler's result differs
+    from this host's, which is the fault reproduced, not a tool failure.
+    """
+    import io as _io
+    want = sr_host()
+    print("=== struct return, SR_SRC, %d lines ===" % len(SR_SRC))
+    print("  host gcc: " + ", ".join("%s hi=%s lo=%s" % (k, v[0], v[1])
+                                     for k, v in sorted(want.items())))
+    if not os.path.isdir(SR_DIR):
+        os.makedirs(SR_DIR)
+    runs = []
+    for job, opt in (("ONFGSR1", "-O1"), ("ONFGSR0", "-O0")):
+        # GCCCLG assembles with NOLIST; overriding the ASM step's PARM is
+        # what puts the generated assembler, with its object code and
+        # offsets, into the job's printed output.
+        step = gcc_step(opt)
+        step[0] += ","
+        step.insert(1, "//             PARM.ASM='DECK,LIST'")
+        deck = head(job, "FLYBATCH STRUCTRET") + step + SR_SRC \
+            + ["/*", "//"]
+        runs.append(("gccmvs%s" % opt, job, run_job(job, deck, timeout=600)))
+    # JCC through mvsjcc's own mini-probe deck: compile with the generated
+    # assembler listed, prelink, link, run.
+    import mvsjcc
+    mvsjcc.MINI["structret"] = SR_SRC
+    d = mvsjcc.mini_deck("structret")
+    before = mvsub.submit(d)
+    runs.append(("jcc", "ONFJMIN", mvsub.collect("ONFJMIN", before,
+                                                 timeout=900, poll=4)))
+    differ = 0
+    for name, job, out in runs:
+        if out is None:
+            print("  %-10s TIMEOUT (%s)" % (name, job))
+            differ += 1
+            continue
+        path = os.path.join(SR_DIR, "%s.txt" % name)
+        with _io.open(path, "w", encoding="utf-8", newline="\n") as fh:
+            fh.write(out)
+        got = sr_lines(out)
+        for fn in ("zero0", "make2"):
+            g = got.get(fn)
+            verdict = "no output" if g is None else \
+                ("ok" if g == want.get(fn) else "WRONG")
+            if verdict != "ok":
+                differ += 1
+            print("  %-10s %-6s %s  (%s)" % (
+                name, fn, verdict if g is None else
+                "hi=%s lo=%s %s" % (g[0], g[1], verdict),
+                os.path.relpath(path).replace("\\", "/")))
+    return 1 if differ else 0
+
+
 def main(argv):
     want = [a for a in argv if a.startswith("--")]
     if not want:
@@ -427,6 +548,8 @@ def main(argv):
         rc |= probe_ops()
     if "--shifts" in want:
         rc |= probe_shifts()
+    if "--structret" in want:
+        rc |= probe_structret()
     return rc
 
 

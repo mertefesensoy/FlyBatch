@@ -15,6 +15,19 @@ x86-64 laptop.
 
 ### 2026-09-27
 
+- A GCCMVS code-generation fault, found in 2026-09 and worked around then,
+  now has a 26-line reproducer outside FlyBatch,
+  `python tools/mvsgcc.py --structret`. Its job outputs, with the generated
+  assembler, are in `data/structret/`. At `-O1` an eight-byte structure of
+  zeros is copied from a four-byte literal; `-O0` and JCC are right
+  (VL-145).
+- CI gained a `golden` job: on every push it downloads the two networks
+  from a pinned release, checks their SHA-256 values and compares all 19
+  golden fingerprints, on GitHub's compiler, as a smoke test (D-667,
+  VL-142).
+- The live-view animations say FlyBatch; the MVS one was redrawn from a new
+  run on the emulated MVS lab. `.zenodo.json` describes the archive a
+  release will make (P-50, D-663 to D-666).
 - The project is renamed FlyBatch; it was called ONFLY. The program names
   ONFLYENG and ONFLYDRV, the ONF message prefix and the specification's file
   name are unchanged. The repository is now

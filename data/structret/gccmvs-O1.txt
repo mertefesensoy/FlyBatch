@@ -1,0 +1,690 @@
+****A  START  JOB  424  ONFGSR1   FLYBATCH STRUCTRET    ROOM        2.40.02 PM 27 SEP 26  PRINTER1  SYS TK5R  JOB  424  START  A****
+****A  START  JOB  424  ONFGSR1   FLYBATCH STRUCTRET    ROOM        2.40.02 PM 27 SEP 26  PRINTER1  SYS TK5R  JOB  424  START  A****
+****A  START  JOB  424  ONFGSR1   FLYBATCH STRUCTRET    ROOM        2.40.02 PM 27 SEP 26  PRINTER1  SYS TK5R  JOB  424  START  A****
+****A  START  JOB  424  ONFGSR1   FLYBATCH STRUCTRET    ROOM        2.40.02 PM 27 SEP 26  PRINTER1  SYS TK5R  JOB  424  START  A****
+
+                                                J E S 2   J O B   L O G
+
+
+14.40.01 JOB  424  $HASP373 ONFGSR1  STARTED - INIT  1 - CLASS A - SYS TK5R
+14.40.01 JOB  424  IEF403I ONFGSR1 - STARTED - TIME=14.40.01
+14.40.01 JOB  424  IEFACTRT - Stepname  Procstep  Program   Retcode
+14.40.01 JOB  424  ONFGSR1    S1        COMP      GCC       RC= 0000
+14.40.02 JOB  424  ONFGSR1    S1        ASM       IFOX00    RC= 0000
+14.40.02 JOB  424  ONFGSR1    S1        LKED      IEWL      RC= 0000
+14.40.02 JOB  424  ONFGSR1    S1        GO        PGM=*.DD  RC= 0000
+14.40.02 JOB  424  IEF404I ONFGSR1 - ENDED - TIME=14.40.02
+14.40.02 JOB  424  $HASP395 ONFGSR1  ENDED
+
+
+------ JES2 JOB STATISTICS ------
+
+
+ 27 SEP 26 JOB EXECUTION DATE
+
+
+        35 CARDS READ
+
+
+       574 SYSOUT PRINT RECORDS
+
+
+         0 SYSOUT PUNCH RECORDS
+
+
+      0.01 MINUTES EXECUTION TIME
+
+    1     //ONFGSR1  JOB (001),'FLYBATCH STRUCTRET',CLASS=A,MSGCLASS=A,           JOB  424
+          //             USER=HERC01,PASSWORD=,
+          //             REGION=8M,TIME=1440,MSGLEVEL=(1,1)
+          ***
+    2     //S1       EXEC GCCCLG,COPTS='-Wno-long-long -O1',
+          //             PARM.ASM='DECK,LIST'
+    3     XXGCCCLG  PROC SOUT='*',PDPPREF='PDPCLIB',INFILE='',
+          XX         COPTS='',LOPTS='',
+          XX COS1='-S -ansi -pedantic-errors',
+          XX COS2='-o dd:out -'
+          ***
+    4     XXCOMP     EXEC PGM=GCC,COND=(4,LT),
+          XX PARM='&COS1 &COPTS &COS2'
+          ***
+          *** INCLUDE SHOULD HAVE YOUR OWN HEADERS ADDED
+          ***
+    5     XXINCLUDE  DD DSN=&PDPPREF..INCLUDE,DISP=SHR,DCB=BLKSIZE=32720
+    6     XXSYSINCL  DD DSN=&PDPPREF..INCLUDE,DISP=SHR,DCB=BLKSIZE=32720
+    7     //COMP.SYSIN DD *
+          X/SYSIN    DD DSN=&INFILE,DISP=SHR
+    8     XXOUT      DD DSN=&&TEMP,DISP=(,PASS),UNIT=SYSALLDA,
+          XX            DCB=(LRECL=80,BLKSIZE=6160,RECFM=FB),
+          XX            SPACE=(6160,(500,500))
+    9     XXSYSPRINT DD SYSOUT=&SOUT
+   10     XXSYSTERM  DD SYSOUT=&SOUT
+          ***
+   11     XXASM      EXEC PGM=IFOX00,
+          XX            PARM='DECK,NOLIST',
+          XX            COND=(4,LT,COMP)
+   12     XXSYSLIB   DD DSN=SYS1.MACLIB,DISP=SHR,DCB=BLKSIZE=32720
+   13     XX         DD DSN=&PDPPREF..MACLIB,DISP=SHR
+   14     XXSYSUT1   DD UNIT=SYSALLDA,SPACE=(CYL,(20,10))
+   15     XXSYSUT2   DD UNIT=SYSALLDA,SPACE=(CYL,(10,10))
+   16     XXSYSUT3   DD UNIT=SYSALLDA,SPACE=(CYL,(10,10))
+   17     XXSYSPRINT DD SYSOUT=&SOUT
+   18     XXSYSLIN   DD DUMMY
+   19     XXSYSGO    DD DUMMY
+   20     XXSYSPUNCH DD DSN=&&OBJSET,UNIT=SYSALLDA,SPACE=(80,(200,200)),
+          XX            DISP=(,PASS)
+   21     XXSYSIN    DD DSN=&&TEMP,DISP=(OLD,DELETE)
+          ***
+   22     XXLKED     EXEC PGM=IEWL,PARM='&LOPTS',
+          XX         COND=((4,LT,COMP),(4,LT,ASM))
+   23     XXSYSLIN   DD DSN=&&OBJSET,DISP=(OLD,DELETE)
+   24     XX         DD DDNAME=SYSIN
+   25     XXSYSIN    DD DUMMY
+   26     XXSYSLIB   DD DSN=&PDPPREF..NCALIB,DISP=SHR
+   27     XXSYSUT1   DD UNIT=SYSALLDA,SPACE=(CYL,(2,1))
+   28     XXSYSPRINT DD SYSOUT=&SOUT
+   29     XXSYSLMOD  DD   DSN=&&GOSET(GO),UNIT=SYSALLDA,SPACE=(1024,(50,20,1)),
+          XX   DISP=(MOD,PASS)
+   30     XXGO       EXEC PGM=*.LKED.SYSLMOD,
+          XX         COND=((4,LT,COMP),(4,LT,ASM),(4,LT,LKED))
+   31     XXSYSPRINT DD SYSOUT=&SOUT
+   32     XXSYSTERM  DD SYSOUT=&SOUT
+   33     XXSYSIN    DD DUMMY
+          //
+
+ STMT NO. MESSAGE
+-
+    4     IEF653I SUBSTITUTION JCL - PARM='-S -ansi -pedantic-errors -Wno-long-long -O1 -o dd:out -'
+    5     IEF653I SUBSTITUTION JCL - DSN=PDPCLIB.INCLUDE,DISP=SHR,DCB=BLKSIZE=32720
+    6     IEF653I SUBSTITUTION JCL - DSN=PDPCLIB.INCLUDE,DISP=SHR,DCB=BLKSIZE=32720
+    7     IEF653I SUBSTITUTION JCL - DSN=,DISP=SHR
+    9     IEF653I SUBSTITUTION JCL - SYSOUT=*
+   10     IEF653I SUBSTITUTION JCL - SYSOUT=*
+   13     IEF653I SUBSTITUTION JCL - DSN=PDPCLIB.MACLIB,DISP=SHR
+   17     IEF653I SUBSTITUTION JCL - SYSOUT=*
+   22     IEF653I SUBSTITUTION JCL - PGM=IEWL,PARM='',
+   26     IEF653I SUBSTITUTION JCL - DSN=PDPCLIB.NCALIB,DISP=SHR
+   28     IEF653I SUBSTITUTION JCL - SYSOUT=*
+   31     IEF653I SUBSTITUTION JCL - SYSOUT=*
+   32     IEF653I SUBSTITUTION JCL - SYSOUT=*
+IEF236I ALLOC. FOR ONFGSR1 COMP S1
+IEF237I 299  ALLOCATED TO INCLUDE
+IEF237I 298  ALLOCATED TO SYS00025
+IEF237I 299  ALLOCATED TO SYSINCL
+IEF237I JES2 ALLOCATED TO SYSIN
+IEF237I 290  ALLOCATED TO OUT
+IEF237I JES2 ALLOCATED TO SYSPRINT
+IEF237I JES2 ALLOCATED TO SYSTERM
+IEF142I ONFGSR1 COMP S1 - STEP WAS EXECUTED - COND CODE 0000
+IEF285I   PDPCLIB.INCLUDE                              KEPT          *--------0
+IEF285I   VOL SER NOS= TK5002.
+IEF285I   SYS1.UCAT.TK5                                KEPT          *--------0
+IEF285I   VOL SER NOS= TK5001.
+IEF285I   PDPCLIB.INCLUDE                              KEPT          *--------7
+IEF285I   VOL SER NOS= TK5002.
+IEF285I   JES2.JOB00424.SI0101                         SYSIN
+IEF285I   SYS26270.T144001.RA000.ONFGSR1.TEMP          PASSED        *--------2
+IEF285I   VOL SER NOS= WORK01.
+IEF285I   JES2.JOB00424.SO0102                         SYSOUT
+IEF285I   JES2.JOB00424.SO0103                         SYSOUT
+IEF373I STEP /COMP    / START 26270.1440
+IEF374I STEP /COMP    / STOP  26270.1440 CPU    0MIN 00.18SEC SRB    0MIN 00.10SEC VIRT  3728K SYS   228K
+************************************************************************************************************************************
+*     1. Jobstep of job: ONFGSR1     Stepname: COMP        Program name: GCC        Executed on 27.09.26 from 14.40.01 to 14.40.01 *
+*         elapsed time  00:00:00,59                      CPU-Identifier:  TK5R           Page-in:      0                           *
+*             CPU time  00:00:00,28               Virtual Storage used:   3728K         Page-out:      0                           *
+*           corr. CPU:  00:00:00,28   CPU time has been corrected by  1 / 1,0  multiplier                                          *
+*                                                                                                                                  *
+*     I/O Operation                                                                                                                *
+*     Number of records read via DD * or DD DATA:     26                                                                           *
+*     299.......0 298.......0 299.......7 DMY.......0 290.......2 DMY.......0 DMY.......0                                          *
+*                                                                                                                                  *
+*                                          Charge for step (w/o SYSOUT):          0,46                                             *
+************************************************************************************************************************************
+IEF236I ALLOC. FOR ONFGSR1 ASM S1
+IEF237I 390  ALLOCATED TO SYSLIB
+IEF237I 299  ALLOCATED TO
+IEF237I 298  ALLOCATED TO SYS00027
+IEF237I 292  ALLOCATED TO SYSUT1
+IEF237I 291  ALLOCATED TO SYSUT2
+IEF237I 293  ALLOCATED TO SYSUT3
+IEF237I JES2 ALLOCATED TO SYSPRINT
+IEF237I DMY  ALLOCATED TO SYSLIN
+IEF237I DMY  ALLOCATED TO SYSGO
+IEF237I 292  ALLOCATED TO SYSPUNCH
+IEF237I 290  ALLOCATED TO SYSIN
+IEF142I ONFGSR1 ASM S1 - STEP WAS EXECUTED - COND CODE 0000
+IEF285I   SYS1.MACLIB                                  KEPT          *-------10
+IEF285I   VOL SER NOS= TK5RES.
+IEF285I   PDPCLIB.MACLIB                               KEPT          *--------7
+IEF285I   VOL SER NOS= TK5002.
+IEF285I   SYS1.UCAT.TK5                                KEPT          *--------0
+IEF285I   VOL SER NOS= TK5001.
+IEF285I   SYS26270.T144001.RA000.ONFGSR1.R0000001      DELETED       *-------54
+IEF285I   VOL SER NOS= WORK03.
+IEF285I   SYS26270.T144001.RA000.ONFGSR1.R0000002      DELETED       *--------9
+IEF285I   VOL SER NOS= WORK02.
+IEF285I   SYS26270.T144001.RA000.ONFGSR1.R0000003      DELETED       *--------8
+IEF285I   VOL SER NOS= WORK04.
+IEF285I   JES2.JOB00424.SO0104                         SYSOUT
+IEF285I   SYS26270.T144001.RA000.ONFGSR1.OBJSET        PASSED        *-------16
+IEF285I   VOL SER NOS= WORK03.
+IEF285I   SYS26270.T144001.RA000.ONFGSR1.TEMP          DELETED       *--------3
+IEF285I   VOL SER NOS= WORK01.
+IEF373I STEP /ASM     / START 26270.1440
+IEF374I STEP /ASM     / STOP  26270.1440 CPU    0MIN 00.10SEC SRB    0MIN 00.01SEC VIRT  2152K SYS   220K
+************************************************************************************************************************************
+*     2. Jobstep of job: ONFGSR1     Stepname: ASM         Program name: IFOX00     Executed on 27.09.26 from 14.40.01 to 14.40.02 *
+*         elapsed time  00:00:00,21                      CPU-Identifier:  TK5R           Page-in:      0                           *
+*             CPU time  00:00:00,11               Virtual Storage used:   2152K         Page-out:      0                           *
+*           corr. CPU:  00:00:00,11   CPU time has been corrected by  1 / 1,0  multiplier                                          *
+*                                                                                                                                  *
+*     I/O Operation                                                                                                                *
+*     Number of records read via DD * or DD DATA:      0                                                                           *
+*     390......10 299.......7 298.......0 292......54 291.......9 293.......8 DMY.......0 DMY.......0 DMY.......0 292......16      *
+*     290.......3                                                                                                                  *
+*                                                                                                                                  *
+*                                          Charge for step (w/o SYSOUT):          0,18                                             *
+************************************************************************************************************************************
+IEF236I ALLOC. FOR ONFGSR1 LKED S1
+IEF237I 292  ALLOCATED TO SYSLIN
+IEF237I DMY  ALLOCATED TO
+IEF237I 299  ALLOCATED TO SYSLIB
+IEF237I 298  ALLOCATED TO SYS00029
+IEF237I 291  ALLOCATED TO SYSUT1
+IEF237I JES2 ALLOCATED TO SYSPRINT
+IEF237I 290  ALLOCATED TO SYSLMOD
+IEF142I ONFGSR1 LKED S1 - STEP WAS EXECUTED - COND CODE 0000
+IEF285I   SYS26270.T144001.RA000.ONFGSR1.OBJSET        DELETED       *-------17
+IEF285I   VOL SER NOS= WORK03.
+IEF285I   PDPCLIB.NCALIB                               KEPT          *------111
+IEF285I   VOL SER NOS= TK5002.
+IEF285I   SYS1.UCAT.TK5                                KEPT          *--------0
+IEF285I   VOL SER NOS= TK5001.
+IEF285I   SYS26270.T144001.RA000.ONFGSR1.R0000004      DELETED       *-------22
+IEF285I   VOL SER NOS= WORK02.
+IEF285I   JES2.JOB00424.SO0105                         SYSOUT
+IEF285I   SYS26270.T144001.RA000.ONFGSR1.GOSET         PASSED        *-------41
+IEF285I   VOL SER NOS= WORK01.
+IEF373I STEP /LKED    / START 26270.1440
+IEF374I STEP /LKED    / STOP  26270.1440 CPU    0MIN 00.05SEC SRB    0MIN 00.01SEC VIRT   264K SYS   224K
+************************************************************************************************************************************
+*     3. Jobstep of job: ONFGSR1     Stepname: LKED        Program name: IEWL       Executed on 27.09.26 from 14.40.02 to 14.40.02 *
+*         elapsed time  00:00:00,15                      CPU-Identifier:  TK5R           Page-in:      0                           *
+*             CPU time  00:00:00,06               Virtual Storage used:    264K         Page-out:      0                           *
+*           corr. CPU:  00:00:00,06   CPU time has been corrected by  1 / 1,0  multiplier                                          *
+*                                                                                                                                  *
+*     I/O Operation                                                                                                                *
+*     Number of records read via DD * or DD DATA:      0                                                                           *
+*     292......17 DMY.......0 299.....111 298.......0 291......22 DMY.......0 290......41                                          *
+*                                                                                                                                  *
+*                                          Charge for step (w/o SYSOUT):          0,10                                             *
+************************************************************************************************************************************
+IEF236I ALLOC. FOR ONFGSR1 GO S1
+IEF237I 290  ALLOCATED TO PGM=*.DD
+IEF237I JES2 ALLOCATED TO SYSPRINT
+IEF237I JES2 ALLOCATED TO SYSTERM
+IEF237I DMY  ALLOCATED TO SYSIN
+IEF142I ONFGSR1 GO S1 - STEP WAS EXECUTED - COND CODE 0000
+IEF285I   SYS26270.T144001.RA000.ONFGSR1.GOSET         KEPT          *--------0
+IEF285I   VOL SER NOS= WORK01.
+IEF285I   JES2.JOB00424.SO0106                         SYSOUT
+IEF285I   JES2.JOB00424.SO0107                         SYSOUT
+IEF373I STEP /GO      / START 26270.1440
+IEF374I STEP /GO      / STOP  26270.1440 CPU    0MIN 00.01SEC SRB    0MIN 00.00SEC VIRT   452K SYS   224K
+************************************************************************************************************************************
+*     4. Jobstep of job: ONFGSR1     Stepname: GO          Program name: PGM=*.DD   Executed on 27.09.26 from 14.40.02 to 14.40.02 *
+*         elapsed time  00:00:00,02                      CPU-Identifier:  TK5R           Page-in:      0                           *
+*             CPU time  00:00:00,01               Virtual Storage used:    452K         Page-out:      0                           *
+*           corr. CPU:  00:00:00,01   CPU time has been corrected by  1 / 1,0  multiplier                                          *
+*                                                                                                                                  *
+*     I/O Operation                                                                                                                *
+*     Number of records read via DD * or DD DATA:      0                                                                           *
+*     290.......0 DMY.......0 DMY.......0 DMY.......0                                                                              *
+*                                                                                                                                  *
+*                                          Charge for step (w/o SYSOUT):          0,01                                             *
+************************************************************************************************************************************
+IEF237I 290  ALLOCATED TO SYS00001
+IEF285I   SYS26270.T144002.RA000.ONFGSR1.R0000001      KEPT          *--------0
+IEF285I   VOL SER NOS= WORK01.
+IEF285I   SYS26270.T144001.RA000.ONFGSR1.GOSET         DELETED
+IEF285I   VOL SER NOS= WORK01.
+IEF375I  JOB /ONFGSR1 / START 26270.1440
+IEF376I  JOB /ONFGSR1 / STOP  26270.1440 CPU    0MIN 00.34SEC SRB    0MIN 00.12SEC
+
+                                               EXTERNAL SYMBOL DICTIONARY                                      PAGE    1
+
+
+SYMBOL   TYPE  ID   ADDR  LENGTH LDID                                                            ASM 0201 14.40 09/27/26
+
+          PC  0001 000000 0001F0
+ZERO0     LD       000000        0001
+MAKE2     LD       00005C        0001
+@@CRT0    ER  0002
+@@MAIN    LD       000114        0001
+MAIN      LD       000124        0001
+PRINTF    ER  0003
+
+                                                                                                               PAGE    2
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                       ASM 0201 14.40 09/27/26
+
+                                      1          COPY  PDPTOP
+                                      2 **********************************************************************
+                                      3 *                                                                    *
+                                      4 *  This macro was written by Paul Edwards                            *
+                                      5 *  Released to the public domain                                     *
+                                      6 *                                                                    *
+                                      7 **********************************************************************
+                                      8 **********************************************************************
+                                      9 *                                                                    *
+                                     10 *  PDPTOP - standard code for the start of every assembler file.     *
+                                     11 *                                                                    *
+                                     12 *  (version customized for S/370 - see PDPTOP/PDPORIG for original)  *
+                                     13 *                                                                    *
+                                     14 **********************************************************************
+                                     15 *
+                                     16 * Is the GCC or C/370 calling convention being used?
+                                     17 *
+                                     18          GBLC &COMP               Declare compiler switch
+                                     19 *
+
+                                     20 * What system are the compiles being done for?
+                                     21 *
+                                     22          GBLC &SYS                Declare variable for system
+                                     23 *
+                                     24 * Which OS are we targetting?
+                                     25 *
+                                     26          GBLC &OS                 Declare compiler switch
+                                     27 *
+                                     28 * Are PUTs done in locate or move mode?
+                                     29 *
+                                     30          GBLC &OUTM
+                                     31 *
+                                     32 *
+                                     33 *
+                                     34 &COMP    SETC 'GCC'               Indicate that this is for GCC
+                                     35 * &COMP    SETC 'C370'            Indicate that this is for C/370
+                                     36 &SYS     SETC 'S370'              Define either S370, S380 or S390
+                                     37 &OUTM    SETC 'M'                 Indicate move mode
+                                     38 * &OUTM    SETC 'L'               Indicate locate mode
+                                     39 &OS      SETC 'UNKNOWN'           Indicate that the OS is not known
+                                     40 * &OS      SETC 'MVS'             Indicate that this is for MVS
+                                     41 * &OS      SETC 'MUSIC'           Indicate that this is for MUSIC/SP
+                                     42 *
+                                     43 * AMODE/RMODE not available on S370. In the S/370 model,
+                                     44 * everything is 24-bit so these considerations are not
+                                     45 * important.
+                                     46 *
+                                     47 *        AMODE ANY
+                                     48 *        RMODE ANY
+
+                                     49 *
+000000                               50          CSECT
+                                     51 * Program text area
+000000                               52          DS    0F
+                                     53 * X-func zero0 prologue
+                                     54 ZERO0    PDPPRLG CINDEX=0,FRAME=88,BASER=12,ENTRY=YES
+                                     55+*
+
+                                                                                                               PAGE    3
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                       ASM 0201 14.40 09/27/26
+
+                                     56+* The standard GCC entry prolog macro
+                                     57+* by Chris Langford and Dave Jones
+                                     58+* August, 2006
+                                     59+*
+                                     60+* This code is in the public domain and can be used without
+                                     61+* restriction in any application, either commercial or non-commerical,
+                                     62+* and can be freely redistributed.
+                                     63+*
+                                     64+*
+                                     65+         ENTRY ZERO0
+000000                               66+ZERO0    DS    0H
+                            00000    67+         USING *,12
+000000 47F0 F00A      0000A          68+         B     10(0,15)                          BRANCH AROUND ID       00450000
+000004 05                            69+         DC    AL1(5)                            LENGTH OF IDENTIFIER   00550000
+000005 E9C5D9D6F0                    70+         DC    CL5'ZERO0'                        IDENTIFIER             00750000
+00000A 90EC D00C      0000C          71+         STM   14,12,12(13)                      SAVE REGISTERS         02950000
+00000E 18CF                          72+         LR    12,15
+000010 58F0 D04C      0004C          73+         L     15,76(,13)
+000014 50D0 F004      00004          74+         ST    13,4(,15)
+000018 50F0 D008      00008          75+         ST    15,8(,13)
+
+00001C 18DF                          76+         LR    13,15
+00001E 41F0 F058      00058          77+         LA    15,88(,15)
+000022 50FD 004C      0004C          78+         ST    15,76(13)
+000026 47F0 C030      00030          79          B     FEN0
+000030                               80          LTORG
+                            00030    81 FEN0     EQU   *
+                                     82          DROP  12
+000030 05C0                          83          BALR  12,0
+                            00032    84          USING *,12
+                            00032    85 PG0      EQU   *
+000032 18B1                          86          LR    11,1
+000034 58A0 C01E      00050          87          L     10,=A(PGT0)
+                                     88 * Function zero0 code
+000038 1820                          89          LR    2,0
+00003A D207 2000 C022 00000 00054    90          MVC   0(8,2),=F'0'
+000040 18F0                          91          LR    15,0
+                                     92 * Function zero0 epilogue
+                                     93          PDPEPIL
+                                     94+*
+                                     95+* The standard GCC exit code macro
+                                     96+* by Chris Langford and Dave Jones
+                                     97+* August, 2006
+                                     98+*
+                                     99+* This code is in the public domain and can be used without
+                                    100+* restriction in any application, either commercial or non-commerical,
+                                    101+* and can be freely redistributed.
+                                    102+*
+000042 58D0 D004      00004         103+         L     13,4(,13)
+000046 58ED 000C      0000C         104+         L     14,12(13,0)                       RESTORE REGISTER 14    01200000
+
+00004A 980C D014      00014         105+         LM    0,12,20(13)                       RESTORE THE REGISTERS  01000000
+00004E 07FE                         106+         BR    14                                RETURN                 02000000
+                                    107 * Function zero0 literal pool
+000050                              108          DS    0F
+000050                              109          LTORG
+000050 00000058                     110                =A(PGT0)
+
+                                                                                                               PAGE    4
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                       ASM 0201 14.40 09/27/26
+
+000054 00000000                     111                =F'0'
+                                    112 * Function zero0 page table
+000058                              113          DS    0F
+                            00058   114 PGT0     EQU   *
+000058 00000032                     115          DC    A(PG0)
+00005C                              116          DS    0F
+                                    117 * X-func make2 prologue
+                                    118 MAKE2    PDPPRLG CINDEX=1,FRAME=88,BASER=12,ENTRY=YES
+
+                                    119+*
+                                    120+         ENTRY MAKE2
+00005C                              121+MAKE2    DS    0H
+                            0005C   122+         USING *,12
+00005C 47F0 F00A      0000A         123+         B     10(0,15)                          BRANCH AROUND ID       00450000
+000060 05                           124+         DC    AL1(5)                            LENGTH OF IDENTIFIER   00550000
+000061 D4C1D2C5F2                   125+         DC    CL5'MAKE2'                        IDENTIFIER             00750000
+000066 90EC D00C      0000C         126+         STM   14,12,12(13)                      SAVE REGISTERS         02950000
+00006A 18CF                         127+         LR    12,15
+00006C 58F0 D04C      0004C         128+         L     15,76(,13)
+000070 50D0 F004      00004         129+         ST    13,4(,15)
+000074 50F0 D008      00008         130+         ST    15,8(,13)
+000078 18DF                         131+         LR    13,15
+00007A 41F0 F058      00058         132+         LA    15,88(,15)
+00007E 50FD 004C      0004C         133+         ST    15,76(13)
+000082 47F0 C02C      00088         134          B     FEN1
+000088                              135          LTORG
+                            00088   136 FEN1     EQU   *
+                                    137          DROP  12
+000088 05C0                         138          BALR  12,0
+                            0008A   139          USING *,12
+                            0008A   140 PG1      EQU   *
+00008A 18B1                         141          LR    11,1
+00008C 58A0 C02E      000B8         142          L     10,=A(PGT1)
+                                    143 * Function make2 code
+000090 1840                         144          LR    4,0
+000092 582B 0000      00000         145          L     2,0(11)
+000096 583B 0004      00004         146          L     3,4(11)
+00009A 5024 0000      00000         147          ST    2,0(4)
+
+00009E 5034 0004      00004         148          ST    3,4+0(4)
+0000A2 18F0                         149          LR    15,0
+                                    150 * Function make2 epilogue
+                                    151          PDPEPIL
+0000A4 58D0 D004      00004         152+         L     13,4(,13)
+0000A8 58ED 000C      0000C         153+         L     14,12(13,0)                       RESTORE REGISTER 14    01200000
+0000AC 980C D014      00014         154+         LM    0,12,20(13)                       RESTORE THE REGISTERS  01000000
+0000B0 07FE                         155+         BR    14                                RETURN                 02000000
+                                    156 * Function make2 literal pool
+0000B4                              157          DS    0F
+0000B8                              158          LTORG
+0000B8 000000BC                     159                =A(PGT1)
+                                    160 * Function make2 page table
+0000BC                              161          DS    0F
+                            000BC   162 PGT1     EQU   *
+0000BC 0000008A                     163          DC    A(PG1)
+                            000C0   164 LC0      EQU   *
+0000C0 D4C9D5C9D7D9D6C2             165          DC    C'MINIPROBE SR zero0 hi=%08lX lo=%08lX'
+
+                                                                                                               PAGE    5
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                       ASM 0201 14.40 09/27/26
+
+0000E4 15                           166          DC    X'15'
+0000E5 00                           167          DC    X'0'
+                            000E6   168 LC1      EQU   *
+0000E6 D4C9D5C9D7D9D6C2             169          DC    C'MINIPROBE SR make2 hi=%08lX lo=%08lX'
+00010A 15                           170          DC    X'15'
+00010B 00                           171          DC    X'0'
+00010C                              172          DS    0F
+00010C C7C3C3D4E5E25A5A             173          DC    C'GCCMVS!!'
+                                    174          EXTRN @@CRT0
+
+                                    175          ENTRY @@MAIN
+000114                              176 @@MAIN   DS    0H
+                            00114   177          USING *,15
+000114 58F0 F00C      00120         178          L     15,=V(@@CRT0)
+000118 07FF                         179          BR    15
+                                    180          DROP  15
+000120                              181          LTORG
+000120 00000000                     182                =V(@@CRT0)
+                                    183 * X-func main prologue
+                                    184 MAIN     PDPPRLG CINDEX=2,FRAME=120,BASER=12,ENTRY=YES
+                                    185+*
+                                    186+         ENTRY MAIN
+000124                              187+MAIN     DS    0H
+                            00124   188+         USING *,12
+000124 47F0 F00A      0000A         189+         B     10(0,15)                          BRANCH AROUND ID       00450000
+000128 04                           190+         DC    AL1(4)                            LENGTH OF IDENTIFIER   00550000
+000129 D4C1C9D5                     191+         DC    CL4'MAIN'                         IDENTIFIER             00750000
+00012D 00
+00012E 90EC D00C      0000C         192+         STM   14,12,12(13)                      SAVE REGISTERS         02950000
+000132 18CF                         193+         LR    12,15
+000134 58F0 D04C      0004C         194+         L     15,76(,13)
+000138 50D0 F004      00004         195+         ST    13,4(,15)
+00013C 50F0 D008      00008         196+         ST    15,8(,13)
+000140 18DF                         197+         LR    13,15
+000142 41F0 F078      00078         198+         LA    15,120(,15)
+000146 50FD 004C      0004C         199+         ST    15,76(13)
+00014A 47F0 C02C      00150         200          B     FEN2
+000150                              201          LTORG
+                            00150   202 FEN2     EQU   *
+
+                                    203          DROP  12
+000150 05C0                         204          BALR  12,0
+                            00152   205          USING *,12
+                            00152   206 PG2      EQU   *
+000152 18B1                         207          LR    11,1
+000154 58A0 C07E      001D0         208          L     10,=A(PGT2)
+                                    209 * Function main code
+000158 4100 D068      00068         210          LA    0,104(,13)
+
+00015C 4110 D058      00058         211          LA    1,88(,13)
+000160 58F0 C082      001D4         212          L     15,=A(ZERO0)
+000164 05EF                         213          BALR  14,15
+000166 584D 0068      00068         214          L     4,104(13)
+00016A 585D 006C      0006C         215          L     5,4+104(13)
+00016E D203 D058 C086 00058 001D8   216          MVC   88(4,13),=F'0'
+000174 D203 D05C C086 0005C 001D8   217          MVC   92(4,13),=F'0'
+00017A 4100 D070      00070         218          LA    0,112(,13)
+00017E 4110 D058      00058         219          LA    1,88(,13)
+
+                                                                                                               PAGE    6
+
+
+  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                       ASM 0201 14.40 09/27/26
+
+000182 58F0 C08A      001DC         220          L     15,=A(MAKE2)
+000186 05EF                         221          BALR  14,15
+000188 582D 0070      00070         222          L     2,112(13)
+00018C 583D 0074      00074         223          L     3,4+112(13)
+000190 D203 D058 C08E 00058 001E0   224          MVC   88(4,13),=A(LC0)
+000196 504D 005C      0005C         225          ST    4,92(13)
+00019A 505D 0060      00060         226          ST    5,96(13)
+00019E 4110 D058      00058         227          LA    1,88(,13)
+0001A2 58F0 C092      001E4         228          L     15,=V(PRINTF)
+0001A6 05EF                         229          BALR  14,15
+0001A8 D203 D058 C096 00058 001E8   230          MVC   88(4,13),=A(LC1)
+0001AE 502D 005C      0005C         231          ST    2,92(13)
+0001B2 503D 0060      00060         232          ST    3,96(13)
+0001B6 4110 D058      00058         233          LA    1,88(,13)
+0001BA 58F0 C092      001E4         234          L     15,=V(PRINTF)
+0001BE 05EF                         235          BALR  14,15
+0001C0 1FFF                         236          SLR   15,15
+                                    237 * Function main epilogue
+
+                                    238          PDPEPIL
+0001C2 58D0 D004      00004         239+         L     13,4(,13)
+0001C6 58ED 000C      0000C         240+         L     14,12(13,0)                       RESTORE REGISTER 14    01200000
+0001CA 980C D014      00014         241+         LM    0,12,20(13)                       RESTORE THE REGISTERS  01000000
+0001CE 07FE                         242+         BR    14                                RETURN                 02000000
+                                    243 * Function main literal pool
+0001D0                              244          DS    0F
+0001D0                              245          LTORG
+0001D0 000001EC                     246                =A(PGT2)
+0001D4 00000000                     247                =A(ZERO0)
+0001D8 00000000                     248                =F'0'
+0001DC 0000005C                     249                =A(MAKE2)
+0001E0 000000C0                     250                =A(LC0)
+0001E4 00000000                     251                =V(PRINTF)
+0001E8 000000E6                     252                =A(LC1)
+                                    253 * Function main page table
+0001EC                              254          DS    0F
+                            001EC   255 PGT2     EQU   *
+0001EC 00000152                     256          DC    A(PG2)
+000114                              257          END   @@MAIN
+
+                                                  RELOCATION DICTIONARY                                        PAGE    7
+
+
+POS.ID   REL.ID   FLAGS   ADDRESS                                                                ASM 0201 14.40 09/27/26
+
+ 0001     0001      0C     000050
+ 0001     0001      0C     000058
+ 0001     0001      0C     0000B8
+ 0001     0001      0C     0000BC
+ 0001     0001      0C     0001D0
+ 0001     0001      0C     0001D4
+ 0001     0001      0C     0001DC
+
+ 0001     0001      0C     0001E0
+ 0001     0001      0C     0001E8
+ 0001     0001      0C     0001EC
+ 0001     0002      1C     000120
+ 0001     0003      1C     0001E4
+
+
+                                                  CROSS-REFERENCE                                              PAGE    8
+
+
+SYMBOL    LEN   VALUE   DEFN    REFERENCES                                                       ASM 0201 14.40 09/27/26
+
+@@MAIN   00002 00000114 00176  00175 00257
+FEN0     00001 00000030 00081  00079
+FEN1     00001 00000088 00136  00134
+FEN2     00001 00000150 00202  00200
+LC0      00001 000000C0 00164  00250
+LC1      00001 000000E6 00168  00252
+MAIN     00002 00000124 00187  00186
+MAKE2    00002 0000005C 00121  00120 00249
+PGT0     00001 00000058 00114  00110
+PGT1     00001 000000BC 00162  00159
+PGT2     00001 000001EC 00255  00246
+PG0      00001 00000032 00085  00115
+PG1      00001 0000008A 00140  00163
+PG2      00001 00000152 00206  00256
+ZERO0    00002 00000000 00066  00065 00247
+
+                                                  LITERAL CROSS-REFERENCE                                      PAGE    9
+
+
+SYMBOL    LEN   VALUE   DEFN    REFERENCES                                                       ASM 0201 14.40 09/27/26
+
+=A(PGT0) 00004 00000050 00110  00087
+=F'0'    00004 00000054 00111  00090
+=A(PGT1) 00004 000000B8 00159  00142
+=V(@@CRT0)
+
+         00004 00000120 00182  00178
+=A(PGT2) 00004 000001D0 00246  00208
+=A(ZERO0)
+         00004 000001D4 00247  00212
+=F'0'    00004 000001D8 00248  00216 00217
+=A(MAKE2)
+         00004 000001DC 00249  00220
+=A(LC0)  00004 000001E0 00250  00224
+=V(PRINTF)
+         00004 000001E4 00251  00228 00234
+=A(LC1)  00004 000001E8 00252  00230
+
+                                                  ASSEMBLER DIAGNOSTICS AND STATISTICS                         PAGE   10
+
+
+                                                                                                 ASM 0201 14.40 09/27/26
+
+NO STATEMENTS FLAGGED IN THIS ASSEMBLY
+HIGHEST SEVERITY WAS    0
+OPTIONS FOR THIS ASSEMBLY
+  ALIGN, ALOGIC, BUFSIZE(STD), DECK, ESD, FLAG(0), LINECOUNT(55), LIST, NOMCALL, YFLAG, WORKSIZE(2097152)
+  NOMLOGIC, NONUMBER, NOOBJECT, NORENT, RLD, NOSTMT, NOLIBMAC, NOTERMINAL, NOTEST, XREF(SHORT)
+  SYSPARM()
+WORK FILE BUFFER SIZE/NUMBER =32758/ 1
+TOTAL RECORDS READ FROM SYSTEM INPUT        123
+TOTAL RECORDS READ FROM SYSTEM LIBRARY      846
+TOTAL RECORDS PUNCHED                        16
+TOTAL RECORDS PRINTED                       339
+
+
+
+ F64-LEVEL LINKAGE EDITOR OPTIONS SPECIFIED   NONE
+          DEFAULT OPTION(S) USED -  SIZE=(231424,55296)
+****GO        DOES NOT EXIST BUT HAS BEEN ADDED TO DATA SET
+AUTHORIZATION CODE IS         0.
+
+
+
+MINIPROBE SR zero0 hi=00000000 lo=000A5B8A
+MINIPROBE SR make2 hi=00000000 lo=00000000
+
+                        OOOOOOOOOOOO  NN        NN  FFFFFFFFFFFF   GGGGGGGGGG    SSSSSSSSSS   RRRRRRRRRRR        11
+                       OOOOOOOOOOOO  NNN       NN  FFFFFFFFFFFF  GGGGGGGGGGGG  SSSSSSSSSSSS  RRRRRRRRRRRR      111
+                      OO        OO  NNNN      NN  FF            GG        GG  SS        SS  RR        RR     1111
+                     OO        OO  NN NN     NN  FF            GG            SS            RR        RR       11
+                    OO        OO  NN  NN    NN  FF            GG            SSS           RR        RR       11
+                   OO        OO  NN   NN   NN  FFFFFFFF      GG             SSSSSSSSS    RRRRRRRRRRRR       11
+                  OO        OO  NN    NN  NN  FFFFFFFF      GG     GGGGG    SSSSSSSSS   RRRRRRRRRRR        11
+                 OO        OO  NN     NN NN  FF            GG     GGGGG           SSS  RR    RR           11
+                OO        OO  NN      NNNN  FF            GG        GG            SS  RR     RR          11
+               OO        OO  NN       NNN  FF            GG        GG  SS        SS  RR      RR         11
+              OOOOOOOOOOOO  NN        NN  FF            GGGGGGGGGGGG  SSSSSSSSSSSS  RR       RR    1111111111
+             OOOOOOOOOOOO  NN         N  FF             GGGGGGGGGG    SSSSSSSSSS   RR        RR   1111111111
+
+
+
+                    JJJJJJJJJJ        444      2222222222         444                                  AAAAAAAAAA
+                    JJJJJJJJJJ       4444     222222222222       4444                                 AAAAAAAAAAAA
+                        JJ          44 44     22        22      44 44                                 AA        AA
+                        JJ         44  44               22     44  44                                 AA        AA
+                        JJ        44   44               22    44   44                                 AA        AA
+                        JJ       44444444444           22    44444444444                              AAAAAAAAAAAA
+                        JJ      444444444444         22     444444444444                              AAAAAAAAAAAA
+                        JJ             44          22              44                                 AA        AA
+                  JJ    JJ             44        22                44                                 AA        AA
+                  JJ    JJ             44      22                  44                                 AA        AA
+                  JJJJJJJJ             44     222222222222         44                                 AA        AA
+                   JJJJJJ              44     222222222222         44                                 AA        AA
+
+
+****A   END   JOB  424  ONFGSR1   FLYBATCH STRUCTRET    ROOM        2.40.02 PM 27 SEP 26  PRINTER1  SYS TK5R  JOB  424   END   A****
+****A   END   JOB  424  ONFGSR1   FLYBATCH STRUCTRET    ROOM        2.40.02 PM 27 SEP 26  PRINTER1  SYS TK5R  JOB  424   END   A****
+****A   END   JOB  424  ONFGSR1   FLYBATCH STRUCTRET    ROOM        2.40.02 PM 27 SEP 26  PRINTER1  SYS TK5R  JOB  424   END   A****
+****A   END   JOB  424  ONFGSR1   FLYBATCH STRUCTRET    ROOM        2.40.02 PM 27 SEP 26  PRINTER1  SYS TK5R  JOB  424   END   A****
