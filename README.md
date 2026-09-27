@@ -154,7 +154,8 @@ Third-party components and data are under their own terms, listed in
 [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md): SoftFloat 3e and TestFloat
 3e (BSD), the Shiu et al. code (MIT), MaleCNS-derived data (CC BY 4.0, with
 ONFLY's own contribution also CC BY 4.0), and material derived from FlyWire
-data, whose status is open. `REUSE.toml` states the licence of every path.
+data (CC BY-NC 4.0, which does not reach the network files; SRS D-625).
+`REUSE.toml` states the licence of every path.
 
 **SoftFloat 2c is not BSD.** Every SOFT2C build, which means every MVS build
 and part of the x86-64 test suite, contains Berkeley SoftFloat Release 2c,

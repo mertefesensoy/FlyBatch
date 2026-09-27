@@ -10,7 +10,7 @@ directory are vendored verbatim from github.com/philshiu/Drosophila_brain_model
 FlyWire 630 completeness and connectivity files, exactly as ``figures.ipynb``
 cell 5 drives it for Figure 1D.  (The FlyWire files are not in this
 repository and FlyWire states its public data is non-commercial, CC BY-NC
-4.0; see THIRD_PARTY_NOTICES.md, section 6, and SRS D-515.)  Inputs: the 21
+4.0; see THIRD_PARTY_NOTICES.md, section 6, and SRS D-625.)  Inputs: the 21
 right-hemisphere labellar sugar GRNs as
 Poisson inputs at rate r, ``t_run`` = 1000 ms, ``n_run`` = 30 trials, MN9 rate
 = spikes / t_run averaged over trials (``utils.get_rate``).

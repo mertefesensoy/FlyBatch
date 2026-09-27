@@ -3,8 +3,8 @@
 The MIT licence in `LICENSE` covers ONFLY's own files. The paths listed in
 this file are under their own terms, which govern those files, including
 SoftFloat 2c (not BSD; use restriction and indemnity), MaleCNS-derived data
-(CC BY 4.0) and the FlyWire-derived material (whose status is open, see
-section 6).
+(CC BY 4.0) and the FlyWire-derived material (CC BY-NC 4.0, see section
+6).
 
 ONFLY's own files in every earlier commit of this repository are also
 available under the MIT licence. Earlier versions of `LICENSE` described the
@@ -34,7 +34,7 @@ of Shiu et al. (2024).
 | 3 | Berkeley SoftFloat Release 2c | 2c | `third_party/SoftFloat-2c/`; derived `softfloat/c2c/` | Its own legal notice, reproduced below | LicenseRef-SoftFloat-2c |
 | 4 | Shiu et al. model code | as vendored 2026-09-11 | `reference/shiu/model.py`, `reference/shiu/utils.py`, `reference/shiu/LICENSE` | MIT, other holders | MIT |
 | 5 | MaleCNS v1.0 derived data | `male-cns:v1.0` | `data/networks/`, `data/geom/`, `data/calibration/`, `data/phase-d/`, `data/phase-e/`, `docs/malecns-*`, `docs/media/` | CC BY 4.0 | CC-BY-4.0 |
-| 6 | FlyWire-derived material | snapshot 630 | the paths listed in section 6 | Status open (D-515) | LicenseRef-FlyWire-Pending |
+| 6 | FlyWire-derived material | snapshot 630 | the paths listed in section 6 | CC BY-NC 4.0 (D-625) | CC-BY-NC-4.0 |
 
 Build tools and lab software that ONFLY uses but does not include are in
 section 7.
@@ -174,8 +174,9 @@ and signed from the predicted neurotransmitter, multiplied by a calibrated
 synaptic weight, a compensating-input table added, and the result encoded in
 ONFLY's network format. No endorsement by the dataset's creators is implied.
 ONFLY's own contribution to these files is released under CC BY 4.0 (SRS
-D-516), subject to how section 6 is decided for the parts it touches. The
-two network binaries themselves are not in this repository.
+D-516), except the twelve `data/calibration/` files section 6 lists, which
+are under CC BY-NC 4.0 (D-625). The two network binaries themselves are not
+in this repository.
 
 ## 6. FlyWire-derived material
 
@@ -187,11 +188,12 @@ FlyWire's guidelines (https://flywire.ai/guidelines) state that its public
 release data is under CC BY-NC 4.0, a non-commercial licence. That page names
 release v783 and does not name snapshot 630 explicitly.
 
-**Status: open.** ONFLY takes no position yet on whether the material below,
-or the synaptic weight W_syn = 0.2969 mV fitted to it, is adapted material
-under FlyWire's terms. The question is recorded as open (SRS D-515) and is
-decided before any release. Until then, nothing in this repository relicenses
-FlyWire data, and the MIT licence in `LICENSE` is not claimed for these paths:
+**Decided 2026-09-27 (SRS D-625).** The paths below are offered under CC
+BY-NC 4.0, https://creativecommons.org/licenses/by-nc/4.0/, the licence
+FlyWire's guidelines give its data, with the attribution below; the licence
+text is `LICENSES/CC-BY-NC-4.0.txt`. The MIT licence in `LICENSE` is not
+claimed for them. This is the same inventory the open status of SRS D-515
+covered:
 
 * `reference/shiu/results/` (the curve itself; see its `NOTICE.md`)
 * `reference/shiu/rerun.py` (it names 21 FlyWire neuron identifiers taken
@@ -205,8 +207,13 @@ FlyWire data, and the MIT licence in `LICENSE` is not claimed for these paths:
   (each embeds values of the curve)
 * `docs/implementations/2026-09-12-phase-c-calibration.md` and the passages of
   `docs/ONFLY-SRS.md` that quote the curve
-* W_syn, a value rather than a file, which multiplies every edge weight of
-  every network ONFLY builds
+
+**The network files are not in that list.** ONFLY's position is that the
+synaptic weight W_syn = 0.2969 mV, a single number fitted to the curve, and
+neuron identifiers are not adapted material of FlyWire's data, so the network
+files that W_syn multiplies into stay under CC BY 4.0 with MaleCNS's terms
+(section 5, SRS D-516). That position was taken on the facts in this section
+without legal advice, and it is not legal advice.
 
 FlyWire asks users to cite, together: Dorkenwald, S. et al., "Neuronal wiring
 diagram of an adult brain", *Nature* 634:124-138 (2024),

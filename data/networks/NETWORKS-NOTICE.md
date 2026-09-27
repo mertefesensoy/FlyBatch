@@ -29,14 +29,14 @@ printed by `tools/fixtures.py` whenever it places a network.
    network format 1.1.
 5. **FlyWire.** W_syn was fitted to a reference curve produced by re-running
    Shiu et al.'s published code on FlyWire connectome data, which FlyWire's
-   guidelines place under CC BY-NC 4.0. ONFLY takes no position yet on
-   whether W_syn, and so these files, are adapted material under FlyWire's
-   terms. The question is open (SRS D-515) and is decided before any
-   release.
+   guidelines place under CC BY-NC 4.0. ONFLY's position is that W_syn, a
+   single fitted number, is not adapted material of FlyWire's data, so these
+   files are not under FlyWire's non-commercial terms (SRS D-625, decided
+   2026-09-27 without legal advice). The curve itself and the files that
+   embed it are CC BY-NC 4.0; they are not these files.
 6. **No endorsement** by the dataset's creators is implied.
 7. **Licence of ONFLY's contribution.** ONFLY's own contribution to these
-   files is released under CC BY 4.0 (SRS D-516), subject to how point 5 is
-   decided.
+   files is released under CC BY 4.0 (SRS D-516).
 
 The two other networks the project builds, `hop2` and `full`, are not
 distributed (SRS D-545); they are regenerated with `prep/emit.py` from the

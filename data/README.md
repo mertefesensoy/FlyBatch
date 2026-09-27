@@ -66,14 +66,14 @@ printed by `tools/fixtures.py` whenever it places a network.
    network format 1.1.
 5. **FlyWire.** W_syn was fitted to a reference curve produced by re-running
    Shiu et al.'s published code on FlyWire connectome data, which FlyWire's
-   guidelines place under CC BY-NC 4.0. ONFLY takes no position yet on
-   whether W_syn, and so these files, are adapted material under FlyWire's
-   terms. The question is open (SRS D-515) and is decided before any
-   release.
+   guidelines place under CC BY-NC 4.0. ONFLY's position is that W_syn, a
+   single fitted number, is not adapted material of FlyWire's data, so these
+   files are not under FlyWire's non-commercial terms (SRS D-625, decided
+   2026-09-27 without legal advice). The curve itself and the files that
+   embed it are CC BY-NC 4.0; they are not these files.
 6. **No endorsement** by the dataset's creators is implied.
 7. **Licence of ONFLY's contribution.** ONFLY's own contribution to these
-   files is released under CC BY 4.0 (SRS D-516), subject to how point 5 is
-   decided.
+   files is released under CC BY 4.0 (SRS D-516).
 
 The two other networks the project builds, `hop2` and `full`, are not
 distributed (SRS D-545); they are regenerated with `prep/emit.py` from the
@@ -96,16 +96,17 @@ compensating-input table added, and the results encoded, simulated and
 measured. No endorsement by the dataset's creators is implied.
 
 ONFLY's own contribution to these files is released under CC BY 4.0 (SRS
-D-516), with one open exception below.
+D-516), except the twelve files named below (SRS D-625).
 
-**`calibration/` is not assumed to be CC BY.** Twelve of its files embed
-values of the Shiu reference curve, which was produced from FlyWire data
-whose status for ONFLY is open (SRS D-515): `acc1-candidate.json`,
+**Twelve `calibration/` files are CC BY-NC 4.0.** They embed values of the
+Shiu reference curve, which was produced from FlyWire data, and are offered
+under FlyWire's non-commercial licence (SRS D-625): `acc1-candidate.json`,
 `acc4.json`, `acc4-phg9.json`, `acc4-right.json`, `acc4-tpgrn.json`,
 `search-log.json`, `search-log-rerun.json`, `seeds.json`,
 `wsens-d52-s30.json`, `wsens-right-s30.json`, `wsens-tpgrn-s30.json` and
 `wsens-tpgrn-s4.json`. The synaptic weight fitted to that curve multiplies
-every edge weight of every network. `THIRD_PARTY_NOTICES.md`, section 6,
+every edge weight of every network; ONFLY's position is that one fitted
+number is not adapted material, so the networks stay CC BY 4.0. `THIRD_PARTY_NOTICES.md`, section 6,
 says what this means and what FlyWire asks users to cite. None of this is
 legal advice.
 

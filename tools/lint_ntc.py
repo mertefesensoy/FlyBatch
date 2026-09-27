@@ -32,6 +32,12 @@ WHAT IT CHECKS
    data/networks/NETWORKS-NOTICE.md.
 6. data/README.md repeats data/networks/NETWORKS-NOTICE.md byte for byte
    between its NETWORKS-NOTICE marker lines (P-41 E3).
+7. P-41 item 8 is stated as D-625 decided it, everywhere it is stated:
+   REUSE.toml marks the FlyWire-derived paths CC-BY-NC-4.0 and no longer
+   uses the placeholder licence, whose file is gone; LICENSES/ holds the
+   CC BY-NC 4.0 text; the register, the curve's notice and the network
+   notice name CC BY-NC 4.0 and D-625; and none of those, data/README.md,
+   CITATION.cff or README.md keeps a phrasing of the open status.
 
 WHAT IT CANNOT DO
 -----------------
@@ -99,6 +105,27 @@ BSD_PHRASES = (
 )
 
 DATA_NOTICES = ("reference/shiu/results/NOTICE.md", "data/README.md")
+
+# D-625 closed P-41 item 8 as a split: the FlyWire-derived paths are
+# CC BY-NC 4.0, the network files stay CC BY 4.0.  While the item was open
+# (D-515) every place that states the status said "open" and REUSE.toml
+# used a placeholder licence; a decision recorded in one place and not the
+# others is the drift this check exists to catch.
+FW_NOTICE = "reference/shiu/results/NOTICE.md"
+FW_SPDX = 'SPDX-License-Identifier = "CC-BY-NC-4.0"'
+FW_PENDING = "LicenseRef-FlyWire-Pending"
+FW_TERMS = "CC BY-NC 4.0"
+FW_DECISION = "D-625"
+# The phrasings the open status was stated in, as they stood in the tree
+# when D-625 was made.
+FW_OPEN = ("Status: open", "Status open", "open (SRS D-515)",
+           "whose status is open", "status for ONFLY is open",
+           "with one open exception", "subject to how point 5 is decided",
+           "subject to how section 6 is decided", "takes no position yet")
+# Files that state the status: the first three must state the decision,
+# and none may keep an open phrasing.
+FW_STATE = (NOTICES, FW_NOTICE, "data/networks/NETWORKS-NOTICE.md")
+FW_MENTION = FW_STATE + ("data/README.md", "CITATION.cff", "README.md")
 
 # P-41 E3: the network notice travels beside the .bin files, and
 # data/README.md repeats it VERBATIM between these two marker lines, so a
@@ -205,10 +232,46 @@ def check_notice_copy(root):
     return []
 
 
+def check_item8_status(root):
+    """Every statement of the FlyWire status is D-625's (P-41 item 8)."""
+    out = []
+    reuse = read(root, "REUSE.toml")
+    if reuse is None:
+        out.append("REUSE.toml: missing")
+    else:
+        if FW_PENDING in reuse:
+            out.append("REUSE.toml: still uses %s; D-625 decided item 8"
+                       % FW_PENDING)
+        if FW_SPDX not in reuse:
+            out.append("REUSE.toml: no '%s' for the item 8 paths (D-625)"
+                       % FW_SPDX)
+    if not exists(root, "LICENSES/CC-BY-NC-4.0.txt"):
+        out.append("LICENSES/CC-BY-NC-4.0.txt: missing")
+    if exists(root, "LICENSES/%s.txt" % FW_PENDING):
+        out.append("LICENSES/%s.txt: still present; nothing may use it "
+                   "after D-625" % FW_PENDING)
+    for rel in FW_MENTION:
+        text = read(root, rel)
+        if text is None:
+            continue        # reported as missing elsewhere, or optional
+        # Markdown and YAML wrap prose anywhere, so a phrase is looked for
+        # with every run of whitespace collapsed to one space.
+        text = " ".join(text.split())
+        if rel in FW_STATE:
+            for want in (FW_TERMS, FW_DECISION):
+                if want not in text:
+                    out.append("%s: does not state '%s'" % (rel, want))
+        for stale in FW_OPEN + (FW_PENDING,):
+            if stale in text:
+                out.append("%s: still says '%s'; D-625 decided item 8"
+                           % (rel, stale))
+    return out
+
+
 def findings(root):
     return (check_licence(root) + check_register(root) + check_paths(root)
             + check_bsd(root) + check_data_notices(root)
-            + check_notice_copy(root))
+            + check_notice_copy(root) + check_item8_status(root))
 
 
 MIT_BODY = ("MIT License\n\nCopyright (c) 2026 Someone\n\n"
@@ -236,14 +299,19 @@ def good_tree(root):
         for rel in paths:
             put(rel)
             names.append(rel)
-    put(NOTICES, "\n".join(names + list(TOOLS)) + "\n")
+    put(NOTICES, "\n".join(names + list(TOOLS)
+                           + [FW_TERMS, FW_DECISION]) + "\n")
     for rel in BSD_FILES:
         put(rel, "\n".join(BSD_PHRASES) + "\n")
     for rel in DATA_NOTICES:
         put(rel, "notice\n")
-    put(NET_NOTICE, "## NETWORK NOTICE\n\nterms\n")
+    put(FW_NOTICE, "notice %s %s\n" % (FW_TERMS, FW_DECISION))
+    put("REUSE.toml", "[[annotations]]\n%s\n" % FW_SPDX)
+    put("LICENSES/CC-BY-NC-4.0.txt", "licence\n")
+    net = "## NETWORK NOTICE\n\nterms %s %s\n" % (FW_TERMS, FW_DECISION)
+    put(NET_NOTICE, net)
     put("data/README.md", "readme\n\n%s\n%s%s\n\nmore\n"
-        % (BLOCK_BEGIN, "## NETWORK NOTICE\n\nterms\n", BLOCK_END))
+        % (BLOCK_BEGIN, net, BLOCK_END))
 
 
 def self_test():
@@ -304,6 +372,37 @@ def self_test():
                                                      "NETWORK NOTISE")), 1),
         ("the notice changed but not the README's copy", lambda r: mutate(
             r, NET_NOTICE, lambda t: t + "a new line\n"), 1),
+        # D-625: item 8 is decided, and every place that states its
+        # status says so.
+        ("REUSE.toml still marks item 8 pending", lambda r: mutate(
+            r, "REUSE.toml", lambda t: t + FW_PENDING + "\n"), 1),
+        ("REUSE.toml without the CC BY-NC 4.0 identifier", lambda r: mutate(
+            r, "REUSE.toml", lambda t: t.replace(FW_SPDX, "")), 1),
+        ("the CC BY-NC 4.0 text missing", lambda r: os.remove(
+            os.path.join(r, "LICENSES", "CC-BY-NC-4.0.txt")), 1),
+        ("the pending licence file still present", lambda r: open(
+            os.path.join(r, "LICENSES", FW_PENDING + ".txt"), "w").close(),
+         1),
+        ("the register still says the status is open", lambda r: mutate(
+            r, NOTICES, lambda t: t + "\n**Status: open.**\n"), 1),
+        ("the register without CC BY-NC 4.0", lambda r: mutate(
+            r, NOTICES, lambda t: t.replace(FW_TERMS, "")), 1),
+        ("the curve's notice without the decision", lambda r: mutate(
+            r, FW_NOTICE, lambda t: t.replace(FW_DECISION, "")), 1),
+        ("the curve's notice still pending", lambda r: mutate(
+            r, FW_NOTICE, lambda t: t + FW_PENDING + "\n"), 1),
+        ("the network notice without the decision", lambda r: [mutate(
+            r, p, lambda t: t.replace(FW_DECISION, "D-5"))
+            for p in (NET_NOTICE, "data/README.md")], 1),
+        ("an open phrasing wrapped across lines", lambda r: open(
+            os.path.join(r, "CITATION.cff"), "w").write(
+                "abstract: >-\n  material (whose\n  status is open)\n"), 1),
+        ("the README keeps an open phrasing", lambda r: open(
+            os.path.join(r, "README.md"), "w").write(
+                "FlyWire data, whose status is open.\n"), 1),
+        ("the data README keeps an open phrasing", lambda r: mutate(
+            r, "data/README.md", lambda t: t + "with one open exception\n"),
+         1),
     )
     for name, fn, want in cases:
         root = fresh()

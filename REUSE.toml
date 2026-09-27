@@ -98,8 +98,8 @@ precedence = "override"
 SPDX-FileCopyrightText = "2023 Philip Shiu and Nico Spiller"
 SPDX-License-Identifier = "MIT"
 
-# FlyWire-derived material: status open (D-515).  Nothing here relicenses
-# FlyWire data, and MIT is not claimed for these paths.
+# FlyWire-derived material: CC BY-NC 4.0, FlyWire's own licence (D-625).
+# MIT is not claimed for these paths.  The network files are not among them.
 [[annotations]]
 path = [
     "reference/shiu/results/**",
@@ -120,11 +120,11 @@ path = [
 ]
 precedence = "override"
 SPDX-FileCopyrightText = "2026 Mert Efe Şensoy"
-SPDX-License-Identifier = "LicenseRef-FlyWire-Pending"
+SPDX-License-Identifier = "CC-BY-NC-4.0"
 
 # The SRS quotes the curve in places; its own text is ONFLY's.
 [[annotations]]
 path = ["docs/ONFLY-SRS.md", "docs/ONFLY-SRS.docx"]
 precedence = "override"
 SPDX-FileCopyrightText = "2026 Mert Efe Şensoy"
-SPDX-License-Identifier = "MIT AND LicenseRef-FlyWire-Pending"
+SPDX-License-Identifier = "MIT AND CC-BY-NC-4.0"

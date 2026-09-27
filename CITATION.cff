@@ -19,8 +19,8 @@ abstract: >-
   licence in LICENSE covers ONFLY's own files. The paths listed in
   THIRD_PARTY_NOTICES.md are under their own terms, which govern those
   files, including SoftFloat 2c (not BSD; use restriction and indemnity),
-  MaleCNS-derived data (CC BY 4.0) and the FlyWire-derived material (whose
-  status is open, see section 6 of THIRD_PARTY_NOTICES.md).
+  MaleCNS-derived data (CC BY 4.0) and the FlyWire-derived material (CC
+  BY-NC 4.0, see section 6 of THIRD_PARTY_NOTICES.md).
 references:
   - type: article
     authors:
