@@ -25,6 +25,16 @@ x86-64 laptop.
   CC BY 4.0 (D-625). The first tag will be `v0.5.1` (D-634).
 - Records written from now on store paths relative to the repository
   (D-635).
+- A visual tour in the README, an architecture explainer with diagrams
+  (`docs/architecture.md`), a picture of the subcircuit, two terminal
+  demonstrations, captures from the emulated MVS lab, a FAQ and a write-up;
+  `make test` holds the FAQ and the write-up to the claims register
+  (D-621 to D-623, D-627, D-628, D-643, D-650).
+- A GitHub Pages site built from them, `site/` (D-627, D-630).
+- A guide for testers of the release candidate `v0.5.1-rc.1`,
+  `docs/testers.md` (D-626).
+- Found: the 3270 transaction shows a stale answer when a request repeats
+  the last one run (VL-144).
 - Phase E's acceptance criteria were re-evidenced on engine 0.5.1, and rows
   6 and 7 of the determinism matrix cover all nineteen golden requests on it
   (D-605 to D-616, VL-143).

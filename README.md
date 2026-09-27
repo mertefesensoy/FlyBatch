@@ -119,13 +119,16 @@ python tests/run_mvsrun.py
 python tests/run_mvsjcc.py
 ```
 
-**2. Build and run the x86-64 suite.** Not yet possible from a clone. The
-suite needs the two network files, `srext` (171,768 bytes) and `path`
-(951,200 bytes), which are not distributed yet; their digests are in
-[`data/networks/MANIFEST.json`](data/networks/MANIFEST.json). On x86-64 it
-has been run only with the recorded toolchain, 32-bit MinGW gcc 6.3.0 on
-Windows, with GNU Make and Python 3.13 with numpy and pandas:
-`mingw32-make fixtures && mingw32-make testfloat && mingw32-make test`.
+**2. Build and run the x86-64 suite.** The suite needs the two network
+files, `srext` (171,768 bytes) and `path` (951,200 bytes), which are not in
+git. They are published as assets of the release candidate `v0.5.1-rc.1`
+for its testers, and will be of the first release, `v0.5.1` (SRS D-626,
+D-634); their digests are in
+[`data/networks/MANIFEST.json`](data/networks/MANIFEST.json).
+[`REPLICATING.md`](REPLICATING.md) gives the commands to fetch, check and
+place them and to run the suite on Windows with MinGW gcc 6.3.0 or on Linux
+x86-64, and [`docs/testers.md`](docs/testers.md) is the same path as one
+task.
 
 **3. The emulated labs.** Linux s390x needs your own QEMU guest; the MVS rows
 need your own TK5 system on Hercules and hours of emulated CPU. The 3270

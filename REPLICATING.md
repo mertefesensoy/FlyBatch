@@ -20,11 +20,12 @@ QEMU and Hercules, on one x86-64 laptop.
   MinGW.org GCC 6.3.0 (32-bit i686) with `mingw32-make`. Any other compiler
   is a new data point, not a reproduction of a recorded row.
 - **The two networks.** `srext` and `path` are not in git: they are data,
-  to be distributed beside the code as release assets of the first tag,
-  `v0.5.1` (SRS D-634, D-545). **No release has been published yet**, so
-  until one is, this step needs the files from another source. Put the two
-  `.bin` files and their `SHA256SUMS` in one directory, check them, and
-  place them:
+  distributed beside the code as release assets, of the release candidate
+  `v0.5.1-rc.1` for its testers (SRS D-626) and of the first release,
+  `v0.5.1`, once it is published (D-634, D-545). Download the two `.bin`
+  files, `SHA256SUMS` and `NETWORKS-NOTICE.md` from
+  https://github.com/mertefesensoy/FlyBatch/releases/tag/v0.5.1-rc.1 into
+  one directory, check them, and place them:
 
       (cd <dir> && sha256sum -c SHA256SUMS)
       python tools/fixtures.py --from <dir>
