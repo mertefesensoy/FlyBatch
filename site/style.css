@@ -60,8 +60,7 @@ h2 { font-size: 1.7rem; margin: 0 0 1rem; }
 }
 .nav { display: flex; align-items: center; justify-content: space-between;
        gap: 1rem; min-height: 56px; flex-wrap: wrap; }
-.brand { display: inline-flex; align-items: center; gap: 0.55rem;
-         color: var(--hero-ink); font-weight: 800; font-size: 1.15rem;
+.brand { color: var(--hero-ink); font-weight: 800; font-size: 1.15rem;
          text-decoration: none; letter-spacing: 0.02em; }
 .links { display: flex; gap: 1.1rem; flex-wrap: wrap; }
 .links a { color: var(--hero-muted); text-decoration: none; font-size: 0.95rem; }

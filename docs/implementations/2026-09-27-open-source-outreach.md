@@ -183,8 +183,9 @@ plus the heading's top margin in GitHub's stylesheet (D-659). Under it are
 four badges, each checked first to answer HTTP 200 and to say something
 true: GitHub's CI and Pages status and shields.io's licence and release;
 the CI badge's hover text says it is a smoke test (VL-142), and GitHub
-serves the shields.io images through its own proxy. The site shows the
-logo in the top bar and above the hero headline (D-660).
+serves the shields.io images through its own proxy. The site showed the
+logo in the top bar and above the hero headline (D-660); after seeing it
+live, the owner kept only the hero's (D-661).
 
 ## 7. Related docs
 
