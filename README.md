@@ -1,8 +1,14 @@
-<p align="center">
-  <img src="site/favicon.svg" width="128" height="128" alt="The FlyBatch logo: a red-eyed fruit fly on a stack of punched cards">
-</p>
+<h1 align="center">
+  <img src="site/favicon.svg" width="128" height="128" alt=""><br>
+  FlyBatch
+</h1>
 
-<h1 align="center">FlyBatch</h1>
+<p align="center">
+  <a href="https://github.com/mertefesensoy/FlyBatch/actions/workflows/ci.yml"><img src="https://github.com/mertefesensoy/FlyBatch/actions/workflows/ci.yml/badge.svg" alt="CI status" title="CI runs the checks that need no network file: a smoke test, not the determinism matrix (SRS VL-142)"></a>
+  <a href="https://mertefesensoy.github.io/FlyBatch/"><img src="https://github.com/mertefesensoy/FlyBatch/actions/workflows/pages.yml/badge.svg" alt="Site deploy status"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/mertefesensoy/FlyBatch" alt="Licence: MIT"></a>
+  <a href="https://github.com/mertefesensoy/FlyBatch/releases"><img src="https://img.shields.io/github/v/release/mertefesensoy/FlyBatch?include_prereleases" alt="Latest release, pre-releases included"></a>
+</p>
 
 FlyBatch simulates the sugar-to-feeding circuit of the male fruit fly: a
 501-neuron subcircuit taken from the MaleCNS v1.0 connectome, run with the

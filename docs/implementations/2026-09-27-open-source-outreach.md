@@ -176,6 +176,16 @@ its link check covers the new `href`s. Edge is registered in
 failing first. The owner chose it in the third round of candidates; D-657
 records all three rounds.
 
+The owner then made it the project's logo (D-658). In the README it sits
+inside the `<h1>`, above the name: first drawn as a paragraph above the
+heading, it left the gap the owner reported, the paragraph's bottom margin
+plus the heading's top margin in GitHub's stylesheet (D-659). Under it are
+four badges, each checked first to answer HTTP 200 and to say something
+true: GitHub's CI and Pages status and shields.io's licence and release;
+the CI badge's hover text says it is a smoke test (VL-142), and GitHub
+serves the shields.io images through its own proxy. The site shows the
+logo in the top bar and above the hero headline (D-660).
+
 ## 7. Related docs
 
 - `docs/ONFLY-SRS.md`: Appendix A.1 D-617 to D-655; A.2 P-48, P-49; D VL-05,
