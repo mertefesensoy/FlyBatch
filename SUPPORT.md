@@ -1,6 +1,6 @@
 # Support
 
-ONFLY is a personal project by Mert Efe Şensoy, its one maintainer. Every
+FlyBatch is a personal project by Mert Efe Şensoy, its one maintainer. Every
 channel below is answered by the maintainer personally.
 
 ## Where to go
@@ -8,7 +8,7 @@ channel below is answered by the maintainer personally.
 | For | Use |
 |---|---|
 | A question | GitHub Discussions |
-| Something ONFLY does wrong | An issue, with the bug report form |
+| Something FlyBatch does wrong | An issue, with the bug report form |
 | Your results, matching or not | An issue, with the replication report form |
 | A change to behaviour, a requirement or a recorded result | An issue, with the proposal form |
 | A security problem | Private vulnerability reporting, as [`SECURITY.md`](SECURITY.md) says |
@@ -24,7 +24,7 @@ The maintainer aims to answer each issue within **14 days** (SRS D-580).
 | Best effort | Linux s390x under QEMU, and MVS 3.8j (the TK5 system under the Hercules emulator) |
 | Unsupported | The `EXEC CICS` transaction under Raincode, the 3270 demonstration under INTERCOMM, and z/OS |
 
-ONFLY has not run on IBM Z hardware, and the project does not have IBM Z
+FlyBatch has not run on IBM Z hardware, and the project does not have IBM Z
 access yet (SRS VL-139).
 
 ## Tested platforms

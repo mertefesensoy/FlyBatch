@@ -1,17 +1,33 @@
 # Changelog
 
-ONFLY has no release yet, so every entry sits under **Unreleased**, newest
+FlyBatch has no release yet, so every entry sits under **Unreleased**, newest
 first. Each entry names the decision rows of the specification,
 [`docs/ONFLY-SRS.md`](docs/ONFLY-SRS.md), that record it, and the date is
 the day the work was recorded as complete. The phase letters are labels, not
 an order (SRS Section 9.2).
 
-ONFLY has not run on IBM Z hardware, and the project does not have IBM Z
+FlyBatch has not run on IBM Z hardware, and the project does not have IBM Z
 access yet (SRS VL-139). Every MVS result comes from MVS 3.8j under the
 Hercules emulator, and every s390x result from Linux under QEMU, both on one
 x86-64 laptop.
 
 ## Unreleased
+
+### 2026-09-27
+
+- The project is renamed FlyBatch; it was called ONFLY. The program names
+  ONFLYENG and ONFLYDRV, the ONF message prefix and the specification's file
+  name are unchanged. The repository is now
+  github.com/mertefesensoy/FlyBatch, and GitHub redirects the old address
+  (D-636 to D-638).
+- The FlyWire-derived material, the Shiu reference curve and the files that
+  embed it, is offered under CC BY-NC 4.0; the network files stay under
+  CC BY 4.0 (D-625). The first tag will be `v0.5.1` (D-634).
+- Records written from now on store paths relative to the repository
+  (D-635).
+- Phase E's acceptance criteria were re-evidenced on engine 0.5.1, and rows
+  6 and 7 of the determinism matrix cover all nineteen golden requests on it
+  (D-605 to D-616, VL-143).
 
 ### 2026-09-26
 

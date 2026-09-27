@@ -701,6 +701,9 @@ prep:
 # this holds the manifest, the generator's own string and prep/netman.py
 # to each other.  Pure Python, no connectome, under a second.
 	$(PYTHON) tests/test_netman.py
+# D-635, D-640: the committed G0 inventory shows the home directory as ~
+# in what tools/g0.py writes from now on.  Pure Python, no build.
+	$(PYTHON) tests/test_g0.py
 
 # --- TE-09: ONFLYENG, verify-only mode and the run manifest ---------------
 # The minimal engine level of D-78: the self-test, the FR-LOD-02 load checks,

@@ -1,4 +1,4 @@
-# Replicating ONFLY
+# Replicating FlyBatch
 
 This is the ladder of things a reader can re-run, from checking the recorded
 evidence to repeating the emulated-MVS runs. Each rung says what it proves
@@ -6,7 +6,7 @@ and, as plainly, what it does not. Wall clocks are **as recorded on the
 owner's host** (Intel Core i7-13650HX, 15.6 GB RAM), not predictions for
 other machines.
 
-ONFLY has not run on IBM Z hardware, and the project does not have IBM Z
+FlyBatch has not run on IBM Z hardware, and the project does not have IBM Z
 access yet (SRS VL-139). Every s390x and MVS result comes from emulators,
 QEMU and Hercules, on one x86-64 laptop.
 
@@ -21,7 +21,7 @@ QEMU and Hercules, on one x86-64 laptop.
   is a new data point, not a reproduction of a recorded row.
 - **The two networks.** `srext` and `path` are not in git: they are data,
   to be distributed beside the code as release assets of the first tag,
-  `v0.5.0` (SRS D-544, D-545). **No release has been published yet**, so
+  `v0.5.1` (SRS D-634, D-545). **No release has been published yet**, so
   until one is, this step needs the files from another source. Put the two
   `.bin` files and their `SHA256SUMS` in one directory, check them, and
   place them:
@@ -109,7 +109,7 @@ Download MaleCNS v1.0 (1,109,008,094 bytes), regenerate the networks with
 RAM class. The recipe is below. **Proves** the science result as a
 measurement. **Does not prove** anything on MVS or s390x.
 
-**FlyWire's non-commercial terms.** The reference curve ONFLY calibrates
+**FlyWire's non-commercial terms.** The reference curve FlyBatch calibrates
 against was produced by re-running Shiu et al.'s code on FlyWire data, which
 FlyWire's guidelines place under CC BY-NC 4.0; see `THIRD_PARTY_NOTICES.md`
 section 6. The Shiu re-run itself needs brian2 (`requirements-shiu.txt`, in

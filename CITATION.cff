@@ -1,22 +1,22 @@
 cff-version: 1.2.0
 message: >-
-  If you use ONFLY, please cite it as below, with the commit you used, and
+  If you use FlyBatch (called ONFLY until 2026-09-27), please cite it as below, with the commit you used, and
   cite the connectome and the model it builds on, listed under references.
-title: ONFLY
+title: FlyBatch
 type: software
 authors:
   - family-names: Şensoy
     given-names: Mert Efe
-repository-code: "https://github.com/mertefesensoy/ONFLY"
+repository-code: "https://github.com/mertefesensoy/FlyBatch"
 license: MIT
 abstract: >-
-  ONFLY simulates the sugar-to-feeding circuit of the male fruit fly: a
+  FlyBatch simulates the sugar-to-feeding circuit of the male fruit fly: a
   501-neuron subcircuit taken from the MaleCNS v1.0 connectome, run with the
   leaky integrate-and-fire model of Shiu et al. (2024) in a portable C89
-  engine with a COBOL batch driver. ONFLY has not run on IBM Z hardware, and
+  engine with a COBOL batch driver. FlyBatch has not run on IBM Z hardware, and
   the project does not have IBM Z access yet: every s390x and MVS result
   comes from emulators (QEMU and Hercules) on one x86-64 laptop. The MIT
-  licence in LICENSE covers ONFLY's own files. The paths listed in
+  licence in LICENSE covers FlyBatch's own files. The paths listed in
   THIRD_PARTY_NOTICES.md are under their own terms, which govern those
   files, including SoftFloat 2c (not BSD; use restriction and indemnity),
   MaleCNS-derived data (CC BY 4.0) and the FlyWire-derived material (CC

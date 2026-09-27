@@ -6,7 +6,7 @@ page suggests where to start, depending on what you want.
 
 ## If you have ten minutes
 
-1. [`overview.md`](overview.md): what ONFLY is, what has been shown and on
+1. [`overview.md`](overview.md): what FlyBatch is, what has been shown and on
    what, and what it does not show.
 2. The repository's [`README.md`](../README.md): status, the commands you can
    run today, the limits and the licence.

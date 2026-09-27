@@ -1,11 +1,11 @@
 name: Proposal
-description: Propose a change to ONFLY's behaviour, a requirement or a recorded result.
+description: Propose a change to FlyBatch's behaviour, a requirement or a recorded result.
 labels: ["proposal"]
 body:
   - type: markdown
     attributes:
       value: |
-        ONFLY is run from its specification, docs/ONFLY-SRS.md. The owner
+        FlyBatch is run from its specification, docs/ONFLY-SRS.md. The owner
         makes every decision: a proposal may be recorded as a P-row
         (Appendix A.2) and decided as a D-row (Appendix A.1). Contributors
         never write D-rows. CONTRIBUTING.md says more.

@@ -1,9 +1,10 @@
-## Notice for the ONFLY network files
+## Notice for the FlyBatch network files
 
-This notice travels with the two network files ONFLY distributes. The
-network format carries no text (SRS IR-NET-02), so the notice cannot live
-inside the files; it is kept beside them, in `data/README.md`, and it is
-printed by `tools/fixtures.py` whenever it places a network.
+This notice travels with the two network files FlyBatch, called ONFLY
+until 2026-09-27, distributes. The network format carries no text (SRS
+IR-NET-02), so the notice cannot live inside the files; it is kept beside
+them, in `data/README.md`, and it is printed by `tools/fixtures.py`
+whenever it places a network.
 
 | File | Bytes | SHA-256 |
 |---|---|---|
@@ -21,21 +22,21 @@ printed by `tools/fixtures.py` whenever it places a network.
    dataset's own page before any release.
 3. **Dataset.** `male-cns:v1.0`, UUID `4b2087c0fbe046bfaf0d60bc970e3e5d`,
    https://male-cns.janelia.org/.
-4. **Modified by ONFLY.** Neurons were selected (501 in `srext`, 913 in
+4. **Modified by FlyBatch.** Neurons were selected (501 in `srext`, 913 in
    `path`); synapse counts were aggregated per neuron pair and signed from
    the presynaptic neuron's predicted neurotransmitter; each count was
    multiplied by a calibrated synaptic weight, W_syn = 0.2969 mV; a
-   compensating-input table was added; and the result was encoded in ONFLY
+   compensating-input table was added; and the result was encoded in FlyBatch
    network format 1.1.
 5. **FlyWire.** W_syn was fitted to a reference curve produced by re-running
    Shiu et al.'s published code on FlyWire connectome data, which FlyWire's
-   guidelines place under CC BY-NC 4.0. ONFLY's position is that W_syn, a
+   guidelines place under CC BY-NC 4.0. FlyBatch's position is that W_syn, a
    single fitted number, is not adapted material of FlyWire's data, so these
    files are not under FlyWire's non-commercial terms (SRS D-625, decided
    2026-09-27 without legal advice). The curve itself and the files that
    embed it are CC BY-NC 4.0; they are not these files.
 6. **No endorsement** by the dataset's creators is implied.
-7. **Licence of ONFLY's contribution.** ONFLY's own contribution to these
+7. **Licence of FlyBatch's contribution.** FlyBatch's own contribution to these
    files is released under CC BY 4.0 (SRS D-516).
 
 The two other networks the project builds, `hop2` and `full`, are not

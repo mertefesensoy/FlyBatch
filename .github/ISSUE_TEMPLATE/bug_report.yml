@@ -1,5 +1,5 @@
 name: Bug report
-description: Something ONFLY does wrong on a platform you ran it on.
+description: Something FlyBatch does wrong on a platform you ran it on.
 labels: ["bug"]
 body:
   - type: markdown

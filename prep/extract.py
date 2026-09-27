@@ -448,7 +448,8 @@ def diag(jobs):
                                          "n%d+partners" % n)
         path = os.path.join(cal.CAL_DIR, "diag-n%d-partners.bin" % n)
         io.open(path, "wb").write(blob)
-        subs[n] = {"file": path, "neurons": int(nn), "edges": int(e),
+        subs[n] = {"file": cal.repo_rel(path), "neurons": int(nn),
+                   "edges": int(e),
                    "added_partners": int(len(np.setdiff1d(partners, top))),
                    "sha256": hashlib.sha256(blob).hexdigest()}
     del arrays
@@ -466,7 +467,7 @@ def diag(jobs):
             raise SystemExit("run %s failed:\n%s" % (k, text))
         results[k] = (res, need)
 
-    jobs_list = [(subs[n]["file"], r, s) for n in N_SEQ
+    jobs_list = [(cal.repo_abs(subs[n]["file"]), r, s) for n in N_SEQ
                  for r in VAL_RATES for s in SEEDS]
     t0 = time.time()
     run_pool(jobs_list, jobs, [], on_done)
@@ -481,7 +482,7 @@ def diag(jobs):
         for r in VAL_RATES:
             means = []
             for sd in SEEDS:
-                res, need = results[(subs[n]["file"], r, sd)]
+                res, need = results[(cal.repo_abs(subs[n]["file"]), r, sd)]
                 sp = [x["spikes"] for x in res["readouts"]]
                 means.append(sum(sp) * 1000.0 / cal.SIM_MS / len(sp))
             mean = sum(means) / len(means)
@@ -646,7 +647,7 @@ def closure(jobs):
                 path = os.path.join(cal.CAL_DIR,
                                     "diag-closure-%s.bin" % label)
                 io.open(path, "wb").write(blob)
-                entry.update({"file": path, "edges": int(e),
+                entry.update({"file": cal.repo_rel(path), "edges": int(e),
                               "sha256": hashlib.sha256(blob).hexdigest()})
             cases[label] = entry
     del arrays
@@ -664,7 +665,7 @@ def closure(jobs):
             raise SystemExit("run %s failed:\n%s" % (k, text))
         results[k] = (res, need)
 
-    jobs_list = [(c["file"], r, sd) for c in cases.values()
+    jobs_list = [(cal.repo_abs(c["file"]), r, sd) for c in cases.values()
                  if not c["over_cap"] for r in VAL_RATES for sd in SEEDS]
     t0 = time.time()
     run_pool(jobs_list, jobs, [], on_done)
@@ -678,7 +679,7 @@ def closure(jobs):
         for r in VAL_RATES:
             means = []
             for sd in SEEDS:
-                res, need = results[(c["file"], r, sd)]
+                res, need = results[(cal.repo_abs(c["file"]), r, sd)]
                 sp = [x["spikes"] for x in res["readouts"]]
                 means.append(sum(sp) * 1000.0 / cal.SIM_MS / len(sp))
             mean = sum(means) / len(means)
@@ -1113,7 +1114,7 @@ def acc3_eval(cases, full, jobs):
             raise SystemExit("run %s failed:\n%s" % (k, text[-2000:]))
         results[k] = (res, need)
 
-    jobs_list = [(c["file"], r, s) for c in cases.values()
+    jobs_list = [(cal.repo_abs(c["file"]), r, s) for c in cases.values()
                  for r in VAL_RATES for s in SEEDS]
     run_pool(jobs_list, jobs, [], on_done)
     for label, c in cases.items():
@@ -1121,7 +1122,7 @@ def acc3_eval(cases, full, jobs):
         for r in VAL_RATES:
             means = []
             for s in SEEDS:
-                res, need = results[(c["file"], r, s)]
+                res, need = results[(cal.repo_abs(c["file"]), r, s)]
                 sp = [x["spikes"] for x in res["readouts"]]
                 means.append(sum(sp) * 1000.0 / cal.SIM_MS / len(sp))
             mean = sum(means) / len(means)
@@ -1165,7 +1166,8 @@ def compensate(jobs):
                                         rin)
         label = "A-n%d" % n
         path, nn, e, sha = emit_diag(arrays, nodes, stim, read, label)
-        cases[label] = {"construction": "A", "N": n, "file": path,
+        cases[label] = {"construction": "A", "N": n,
+                        "file": cal.repo_rel(path),
                         "neurons": nn, "edges": e, "sha256": sha,
                         "weights_changed": False,
                         "inhibitory_partners_added": k,
@@ -1182,7 +1184,8 @@ def compensate(jobs):
         b1_gains[n] = (nodes, ge, gi)
         label = "B1-n%d" % n
         path, nn, e, sha = emit_diag(arrays, nodes, stim, read, label, ge, gi)
-        cases[label] = {"construction": "B1", "N": n, "file": path,
+        cases[label] = {"construction": "B1", "N": n,
+                        "file": cal.repo_rel(path),
                         "neurons": nn, "edges": e, "sha256": sha,
                         "weights_changed": True,
                         "gain_exc": {"median": float(np.median(ge)),
@@ -1202,7 +1205,8 @@ def compensate(jobs):
                                   stim, read, totals, "B2-n%d" % n, jobs)
         label = "B2-n%d" % n
         path, nn, e, sha = emit_diag(arrays, nodes, stim, read, label, ge, gi)
-        cases[label] = {"construction": "B2", "N": n, "file": path,
+        cases[label] = {"construction": "B2", "N": n,
+                        "file": cal.repo_rel(path),
                         "neurons": nn, "edges": e, "sha256": sha,
                         "weights_changed": True, "iterations": ITERATIONS,
                         "damping": DAMPING, "gain_cap": GAIN_CAP,
@@ -1363,7 +1367,8 @@ def biasnet(jobs):
         io.open(path, "wb").write(blob)
         mags = [max(abs(x) for x in row) if row else 0.0 for row in rows]
         cases[label] = {
-            "construction": "C", "N": n, "file": path, "neurons": int(nn),
+            "construction": "C", "N": n, "file": cal.repo_rel(path),
+            "neurons": int(nn),
             "edges": int(e), "sha256": hashlib.sha256(blob).hexdigest(),
             "bias_rates": rates, "nbias": len(rates),
             "bias_max_abs_per_rate": mags,
@@ -1769,7 +1774,8 @@ def fitbias(jobs):
         path, nn, e, sha = emit_diag_bias(sub, nodes, stim, read,
                                           "F1-n%d" % n, rates, f1_rows)
         cases["F1-n%d" % n] = {
-            "construction": "F1", "N": n, "file": path, "neurons": nn,
+            "construction": "F1", "N": n, "file": cal.repo_rel(path),
+            "neurons": nn,
             "edges": e, "sha256": sha, "in_sample": False,
             "form": "a + b*R", "a": a, "b": b,
             "fitted_on": cr,
@@ -1783,7 +1789,8 @@ def fitbias(jobs):
         path, nn, e, sha = emit_diag_bias(sub, nodes, stim, read,
                                           "F2-n%d" % n, rates, f2_rows)
         cases["F2-n%d" % n] = {
-            "construction": "F2", "N": n, "file": path, "neurons": nn,
+            "construction": "F2", "N": n, "file": cal.repo_rel(path),
+            "neurons": nn,
             "edges": e, "sha256": sha, "in_sample": True,
             "form": "one free multiplier per rate",
             "multiplier_at": dict((str(r), f2_scale(r)) for r in VAL_RATES),
@@ -1940,7 +1947,8 @@ def constbias(jobs):
         path, nn, e, sha = emit_diag_bias(sub, nodes, stim, read,
                                           "F3-n%d" % n, rates, f3_rows)
         cases["F3-n%d" % n] = {
-            "construction": "F3", "N": n, "file": path, "neurons": nn,
+            "construction": "F3", "N": n, "file": cal.repo_rel(path),
+            "neurons": nn,
             "edges": e, "sha256": sha, "in_sample": False,
             "form": "one constant multiplier", "multiplier": m,
             "fitted_on": list(cal.CAL_RATES),
@@ -2131,6 +2139,7 @@ def verify_comparand(diag, sha):
     network with bytes nothing had measured.  It now runs first, and both
     refusals say that nothing was written.
     """
+    diag = cal.repo_abs(diag)       # D-635: a record may hold either form
     if not os.path.isfile(diag):
         raise SystemExit(
             "the subcircuit ACC-1, ACC-3 and the backend comparison were "

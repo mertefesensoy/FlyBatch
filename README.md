@@ -1,6 +1,6 @@
-# ONFLY
+# FlyBatch
 
-ONFLY simulates the sugar-to-feeding circuit of the male fruit fly: a
+FlyBatch simulates the sugar-to-feeding circuit of the male fruit fly: a
 501-neuron subcircuit taken from the MaleCNS v1.0 connectome, run with the
 leaky integrate-and-fire model of Shiu et al. (2024) in a portable C89 engine
 with a COBOL batch driver. On MVS, whose System/370 architecture has no IEEE
@@ -9,7 +9,7 @@ SoftFloat), and the nineteen golden requests give the same fingerprints on
 every platform in the table below, from x86-64 to MVS 3.8j running under an
 emulator.
 
-> **ONFLY has not run on IBM Z hardware. The project does not have IBM Z
+> **FlyBatch has not run on IBM Z hardware. The project does not have IBM Z
 > access yet.** Every MVS result in this repository comes from MVS 3.8j
 > running under the Hercules emulator, and every s390x result from Linux
 > running under QEMU, both on one x86-64 laptop. Nothing here has run on
@@ -19,6 +19,12 @@ The specification, every decision and every verification limit are in
 [`docs/ONFLY-SRS.md`](docs/ONFLY-SRS.md). A shorter account is
 [`docs/overview.md`](docs/overview.md), and [`docs/README.md`](docs/README.md)
 suggests where to start reading.
+
+FlyBatch was called ONFLY until 2026-09-27 (SRS D-637). The engine and
+the COBOL driver keep their MVS program names, ONFLYENG and ONFLYDRV,
+the messages keep their ONF prefix, and the specification keeps its file
+name, because those names are written into the job control, the
+requirements and every recorded listing (D-638).
 
 ## Status
 
@@ -101,7 +107,7 @@ JCC. macOS and arm64 are untested.
   re-measured with new seeds is estimated to pass 52 to 60% of the time.
 * **Agreement with Shiu et al. is in shape, not magnitude.** Compared with
   their model of the female FlyWire connectome, re-run from their published
-  code, ONFLY's model on the annotated MaleCNS network rises with sugar in
+  code, FlyBatch's model on the annotated MaleCNS network rises with sugar in
   the same shape but fires more at low rates: 3.67 Hz at 10 Hz where the
   reference is silent, and 14.35 Hz against 4.73 Hz at 40 Hz. No single
   synaptic weight removes that gap.
@@ -122,7 +128,7 @@ JCC. macOS and arm64 are untested.
   menu-screen program has never executed for lack of a licence, and running
   it concurrently is untested. On the emulated MVS lab, typing a request on a
   3270 session under INTERCOMM, a transaction monitor that is not CICS,
-  starts an ONFLY batch run and then shows its result and golden
+  starts an FlyBatch batch run and then shows its result and golden
   fingerprint.
 * **The emulated MVS job streams its spike data to the host while it is
   still running**, and for the five shipped-network golden requests that
@@ -141,7 +147,7 @@ JCC. macOS and arm64 are untested.
 | `layout/`, `generated/` | The record layout's master definition and the files generated from it; generated files are committed because MVS has no Python |
 | `softfloat/`, `third_party/` | The float layer and the vendored SoftFloat and TestFloat releases |
 | `oracle/`, `prep/` | The Python reference kernel and the preparation pipeline |
-| `reference/shiu/` | Shiu et al.'s model code and ONFLY's re-run of their protocol |
+| `reference/shiu/` | Shiu et al.'s model code and FlyBatch's re-run of their protocol |
 | `cics/` | The `EXEC CICS` transaction source |
 | `tests/`, `tools/` | The test suite, and the tools that build, submit and check the lab runs |
 | `data/` | Recordings, measurements and manifests; see [`data/README.md`](data/README.md) |
@@ -149,11 +155,11 @@ JCC. macOS and arm64 are untested.
 
 ## Licence
 
-ONFLY's own code is under the MIT licence in [`LICENSE`](LICENSE).
+FlyBatch's own code is under the MIT licence in [`LICENSE`](LICENSE).
 Third-party components and data are under their own terms, listed in
 [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md): SoftFloat 3e and TestFloat
 3e (BSD), the Shiu et al. code (MIT), MaleCNS-derived data (CC BY 4.0, with
-ONFLY's own contribution also CC BY 4.0), and material derived from FlyWire
+FlyBatch's own contribution also CC BY 4.0), and material derived from FlyWire
 data (CC BY-NC 4.0, which does not reach the network files; SRS D-625).
 `REUSE.toml` states the licence of every path.
 
@@ -169,7 +175,7 @@ terms with a non-commercial clause and is not included.
 
 ## Trademarks
 
-ONFLY is a personal project by Mert Efe Şensoy. It is not an IBM product and
+FlyBatch is a personal project by Mert Efe Şensoy. It is not an IBM product and
 is not affiliated with, sponsored by or endorsed by IBM, or by any
 organisation or person whose data, software or tools it uses, including HHMI
 Janelia, the MRC Laboratory of Molecular Biology, the University of
@@ -184,7 +190,7 @@ owners and are used only to identify those products.
 
 ## How the project is built
 
-ONFLY is built with an AI coding agent, Anthropic's Claude Code, working from
+FlyBatch is built with an AI coding agent, Anthropic's Claude Code, working from
 the specification. The agent drafts code, tests and documentation and runs
 the builds and the lab jobs. The owner makes every decision: each is recorded
 with the alternatives offered in the specification's decision log (Appendix
@@ -195,7 +201,7 @@ Commits carry the owner's name alone (D-478).
 
 ## Citing
 
-Please cite ONFLY as its citation file, [`CITATION.cff`](CITATION.cff), gives
+Please cite FlyBatch as its citation file, [`CITATION.cff`](CITATION.cff), gives
 it (GitHub shows it as "Cite this repository"), with the commit you used; no
 release is archived yet. Cite the work it builds on too: the MaleCNS
 connectome (Berg, S. et al., *Cell* 189:5504-5526.e15, 2026,

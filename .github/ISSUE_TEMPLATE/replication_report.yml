@@ -1,5 +1,5 @@
 name: Replication report
-description: Your results from running ONFLY's tests, whether they match or not.
+description: Your results from running FlyBatch's tests, whether they match or not.
 body:
   - type: markdown
     attributes:

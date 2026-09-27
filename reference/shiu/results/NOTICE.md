@@ -1,6 +1,6 @@
 # Notice: the Shiu reference curve
 
-`mn9-reference.csv` in this directory is the MN9 firing-rate curve ONFLY
+`mn9-reference.csv` in this directory is the MN9 firing-rate curve FlyBatch
 calibrates and validates against (SRS SR-CAL-04, D-164). It was produced on
 2026-09-12 by `reference/shiu/rerun.py`, which re-runs the Figure 1D protocol
 of Shiu et al. (2024) with their published MIT code (`model.py`, `utils.py`)
@@ -16,7 +16,7 @@ other files that embed the curve's values, are offered under CC BY-NC 4.0,
 https://creativecommons.org/licenses/by-nc/4.0/, the licence FlyWire's
 guidelines give its data, with FlyWire's attribution; the text is
 `LICENSES/CC-BY-NC-4.0.txt`. The MIT licence in the repository's `LICENSE` is
-not claimed for this directory. ONFLY's position is that the synaptic weight
+not claimed for this directory. FlyBatch's position is that the synaptic weight
 fitted to the curve, a single number, is not adapted material of FlyWire's
 data, so the network files stay under CC BY 4.0; that position was taken
 without legal advice. `THIRD_PARTY_NOTICES.md`,

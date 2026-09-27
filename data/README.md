@@ -35,12 +35,13 @@ repeated here word for word from `networks/NETWORKS-NOTICE.md`.
 `tools/lint_ntc.py` fails if the two copies differ.
 
 <!-- NETWORKS-NOTICE: begin, a verbatim copy of data/networks/NETWORKS-NOTICE.md -->
-## Notice for the ONFLY network files
+## Notice for the FlyBatch network files
 
-This notice travels with the two network files ONFLY distributes. The
-network format carries no text (SRS IR-NET-02), so the notice cannot live
-inside the files; it is kept beside them, in `data/README.md`, and it is
-printed by `tools/fixtures.py` whenever it places a network.
+This notice travels with the two network files FlyBatch, called ONFLY
+until 2026-09-27, distributes. The network format carries no text (SRS
+IR-NET-02), so the notice cannot live inside the files; it is kept beside
+them, in `data/README.md`, and it is printed by `tools/fixtures.py`
+whenever it places a network.
 
 | File | Bytes | SHA-256 |
 |---|---|---|
@@ -58,21 +59,21 @@ printed by `tools/fixtures.py` whenever it places a network.
    dataset's own page before any release.
 3. **Dataset.** `male-cns:v1.0`, UUID `4b2087c0fbe046bfaf0d60bc970e3e5d`,
    https://male-cns.janelia.org/.
-4. **Modified by ONFLY.** Neurons were selected (501 in `srext`, 913 in
+4. **Modified by FlyBatch.** Neurons were selected (501 in `srext`, 913 in
    `path`); synapse counts were aggregated per neuron pair and signed from
    the presynaptic neuron's predicted neurotransmitter; each count was
    multiplied by a calibrated synaptic weight, W_syn = 0.2969 mV; a
-   compensating-input table was added; and the result was encoded in ONFLY
+   compensating-input table was added; and the result was encoded in FlyBatch
    network format 1.1.
 5. **FlyWire.** W_syn was fitted to a reference curve produced by re-running
    Shiu et al.'s published code on FlyWire connectome data, which FlyWire's
-   guidelines place under CC BY-NC 4.0. ONFLY's position is that W_syn, a
+   guidelines place under CC BY-NC 4.0. FlyBatch's position is that W_syn, a
    single fitted number, is not adapted material of FlyWire's data, so these
    files are not under FlyWire's non-commercial terms (SRS D-625, decided
    2026-09-27 without legal advice). The curve itself and the files that
    embed it are CC BY-NC 4.0; they are not these files.
 6. **No endorsement** by the dataset's creators is implied.
-7. **Licence of ONFLY's contribution.** ONFLY's own contribution to these
+7. **Licence of FlyBatch's contribution.** FlyBatch's own contribution to these
    files is released under CC BY 4.0 (SRS D-516).
 
 The two other networks the project builds, `hop2` and `full`, are not
@@ -90,12 +91,12 @@ Research, licensed under CC BY 4.0
 "Sexual dimorphism in the complete Drosophila male central nervous system
 connectome", *Cell* 189:5504-5526.e15 (2026), doi:10.1016/j.cell.2026.08.015.
 
-**Modified by ONFLY:** neurons selected, synapse counts aggregated per pair
+**Modified by FlyBatch:** neurons selected, synapse counts aggregated per pair
 and signed, multiplied by a calibrated synaptic weight of 0.2969 mV, a
 compensating-input table added, and the results encoded, simulated and
 measured. No endorsement by the dataset's creators is implied.
 
-ONFLY's own contribution to these files is released under CC BY 4.0 (SRS
+FlyBatch's own contribution to these files is released under CC BY 4.0 (SRS
 D-516), except the twelve files named below (SRS D-625).
 
 **Twelve `calibration/` files are CC BY-NC 4.0.** They embed values of the
@@ -105,7 +106,7 @@ under FlyWire's non-commercial licence (SRS D-625): `acc1-candidate.json`,
 `search-log.json`, `search-log-rerun.json`, `seeds.json`,
 `wsens-d52-s30.json`, `wsens-right-s30.json`, `wsens-tpgrn-s30.json` and
 `wsens-tpgrn-s4.json`. The synaptic weight fitted to that curve multiplies
-every edge weight of every network; ONFLY's position is that one fitted
+every edge weight of every network; FlyBatch's position is that one fitted
 number is not adapted material, so the networks stay CC BY 4.0. `THIRD_PARTY_NOTICES.md`, section 6,
 says what this means and what FlyWire asks users to cite. None of this is
 legal advice.

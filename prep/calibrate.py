@@ -66,6 +66,36 @@ sys.path.insert(0, HERE)
 import emit                                   # noqa: E402
 
 CAL_DIR = os.path.join(ROOT, "data", "calibration")
+
+
+def repo_rel(path):
+    """The form a record stores a path in (D-635, P-41 item 22).
+
+    A path inside the repository becomes relative to its root, with forward
+    slashes, so a committed record carries no one's home directory and reads
+    the same on every host.  A path outside the tree is returned absolute:
+    it cannot be made portable, and hiding that would be worse.
+    """
+    full = os.path.abspath(path)
+    try:
+        rel = os.path.relpath(full, ROOT)
+    except ValueError:              # another drive on Windows
+        return full
+    if rel == os.pardir or rel.startswith(os.pardir + os.sep):
+        return full
+    return rel.replace(os.sep, "/")
+
+
+def repo_abs(stored):
+    """Resolve a path read from a record, in either form (D-635).
+
+    Records written before D-635 hold absolute paths, and they stay as
+    evidence, so an absolute path is returned unchanged; a relative one is
+    taken from the repository root, whatever the current directory is.
+    """
+    if os.path.isabs(stored):
+        return stored
+    return os.path.join(ROOT, *stored.split("/"))
 CACHE = os.path.join(CAL_DIR, "signed.npz")
 LOG = os.path.join(CAL_DIR, "search-log.json")
 REFERENCE = os.path.join(ROOT, "reference", "shiu", "results",

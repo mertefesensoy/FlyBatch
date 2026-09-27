@@ -245,6 +245,58 @@ class AdmitRefuses(unittest.TestCase):
                         "network (at %d)" % (check, write))
 
 
+@unittest.skipIf(extract is None, NO_EXTRACT)
+class RepoPaths(unittest.TestCase):
+    """D-635 (P-41 item 22): records store repository-relative paths.
+
+    Six committed records hold the owner's absolute paths, written by
+    prep/extract.py and prep/seeds.py; they stay as evidence.  From now on
+    a path under the tree is stored relative to it, and a stored path of
+    either form resolves back to the file.
+    """
+
+    def test_a_path_under_the_tree_is_stored_relative(self):
+        path = os.path.join(extract.cal.ROOT, "data", "calibration", "x.bin")
+        self.assertEqual(extract.cal.repo_rel(path),
+                         "data/calibration/x.bin")
+
+    def test_a_path_outside_the_tree_is_left_absolute(self):
+        out = os.path.join(tempfile.gettempdir(), "onfly-x.bin")
+        got = extract.cal.repo_rel(out)
+        self.assertTrue(os.path.isabs(got), got)
+
+    def test_a_stored_relative_path_resolves_under_the_tree(self):
+        self.assertEqual(
+            os.path.normcase(extract.cal.repo_abs("data/calibration/x.bin")),
+            os.path.normcase(os.path.join(extract.cal.ROOT, "data",
+                                          "calibration", "x.bin")))
+
+    def test_an_old_absolute_record_resolves_to_itself(self):
+        old = os.path.join(tempfile.gettempdir(), "diag-F3-n500.bin")
+        self.assertEqual(extract.cal.repo_abs(old), old)
+
+    def test_admit_resolves_a_relative_comparand(self):
+        build = os.path.join(extract.cal.ROOT, "build")
+        if not os.path.isdir(build):
+            os.makedirs(build)
+        fd, path = tempfile.mkstemp(dir=build)
+        os.close(fd)
+        try:
+            io.open(path, "wb").write(b"same")
+            with contextlib.redirect_stdout(io.StringIO()):
+                extract.verify_comparand(extract.cal.repo_rel(path),
+                                         hashlib.sha256(b"same").hexdigest())
+        finally:
+            os.unlink(path)
+
+    def test_no_writer_stores_an_absolute_path(self):
+        import re
+        src = inspect.getsource(extract)
+        bare = re.findall(r'"file":\s*path\b', src)
+        self.assertEqual(bare, [], "prep/extract.py stores %d path(s) "
+                         "unconverted; use cal.repo_rel (D-635)" % len(bare))
+
+
 class Distributed(unittest.TestCase):
     """P-41 E3, D-545: `--from`, the distributed set, NOT DISTRIBUTED."""
 

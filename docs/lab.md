@@ -1,8 +1,8 @@
-# The ONFLY labs: emulated MVS 3.8j and Linux s390x
+# The FlyBatch labs: emulated MVS 3.8j and Linux s390x
 
-ONFLY's MVS and s390x results come from emulators on one x86-64 laptop:
+FlyBatch's MVS and s390x results come from emulators on one x86-64 laptop:
 MVS 3.8j (TK5) under the Hercules emulator, and Ubuntu 24.04 for s390x
-under QEMU. ONFLY has not run on IBM Z hardware, and the project does not
+under QEMU. FlyBatch has not run on IBM Z hardware, and the project does not
 have IBM Z access yet (SRS VL-139). Nothing in this guide changes that.
 
 This guide says what the labs are made of, how to check the downloads, and
@@ -33,7 +33,7 @@ submission with no password.
 | `mvs-tk5.zip` | 498,312,872 | `710d002843631322810a276dd42c793fda458548dc64d86e2914a62db7425f84` |
 | `mvstk5-update5.zip` | 350,462,458 | `c44fb64cc365a3a94fa9ce312394408d22a729b73797ef6b06d1688b05cc7212` |
 
-These digests were computed on 2026-09-26 from the copies the ONFLY results
+These digests were computed on 2026-09-26 from the copies the FlyBatch results
 were produced with. Check a download against them before using it, for
 example with `sha256sum <file>` or PowerShell's `Get-FileHash <file>`. A
 different digest means a different build, whose results are a new data
@@ -47,7 +47,7 @@ VL-139).
 
 ### The codepage step, after every Hercules start
 
-ONFLY's C source reaches the GCCMVS compiler through the card reader, and on
+FlyBatch's C source reaches the GCCMVS compiler through the card reader, and on
 Hercules' `default` codepage one character of C, `|`, arrives as a byte
 GCCMVS rejects (SRS VL-18). Set the codepage on the Hercules console after
 every start, because a restart silently returns it to `default`:
@@ -78,7 +78,7 @@ about IBM Z performance.
 The big-endian platform is a full s390x system VM, not a cross-compiler
 (SRS D-215): the Ubuntu 24.04 s390x cloud image booted by
 `qemu-system-s390x` with 4096 MB and two CPUs, reached by ssh on host port
-2222, with the ONFLY tree shared into the guest at `/onfly`. Inside it the
+2222, with the FlyBatch tree shared into the guest at `/onfly`. Inside it the
 build is the same Makefile:
 
     make ONFPLAT=s390x CC=gcc PYTHON=python3 BUILD=/tmp/b390 test

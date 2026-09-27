@@ -1,8 +1,8 @@
-# ONFLY: an overview
+# FlyBatch: an overview
 
 ## Not run on IBM Z
 
-> **ONFLY has not run on IBM Z hardware. The project does not have IBM Z
+> **FlyBatch has not run on IBM Z hardware. The project does not have IBM Z
 > access yet.** Every MVS result in this repository comes from MVS 3.8j
 > running under the Hercules emulator, and every s390x result from Linux
 > running under QEMU, both on one x86-64 laptop. Nothing here has run on
@@ -11,9 +11,15 @@
 The owner confirmed this on 2026-09-24, and the specification keeps it as a
 standing limit (`docs/ONFLY-SRS.md`, VL-139, citing D-491 and D-492).
 
-## What ONFLY is
+## What FlyBatch is
 
-ONFLY simulates the sugar-to-feeding circuit of the male fruit fly: a
+FlyBatch was called ONFLY until 2026-09-27 (`docs/ONFLY-SRS.md`, D-637). The engine and
+the COBOL driver keep their MVS program names, ONFLYENG and ONFLYDRV,
+the messages keep their ONF prefix, and the specification keeps its file
+name, because those names are written into the job control, the
+requirements and every recorded listing (D-638).
+
+FlyBatch simulates the sugar-to-feeding circuit of the male fruit fly: a
 501-neuron subcircuit taken from the MaleCNS v1.0 connectome, run with the
 leaky integrate-and-fire model of Shiu et al. (2024) in a portable C89 engine
 with a COBOL batch driver.
@@ -50,7 +56,7 @@ error, and a campaign re-measured with new seeds is estimated to pass 52 to
 60% of the time.
 
 **Agreement with Shiu et al.** Compared with their model of the female
-FlyWire connectome, re-run from their published code, ONFLY's model on the
+FlyWire connectome, re-run from their published code, FlyBatch's model on the
 184,099-neuron annotated MaleCNS network, with the synaptic weight
 re-calibrated to 0.2969 mV and a pharyngeal and taste-peg sugar input, rises
 with sugar in the same shape but fires more at low rates: 3.67 Hz at 10 Hz
@@ -92,7 +98,7 @@ program has never executed for lack of a licence, and running it
 concurrently is untested.
 
 On the emulated MVS 3.8j lab, typing a request on a 3270 session under
-INTERCOMM, a transaction monitor that is not CICS, starts an ONFLY batch run
+INTERCOMM, a transaction monitor that is not CICS, starts an FlyBatch batch run
 and then shows its result and golden fingerprint. This part cannot be
 reproduced from the repository, because INTERCOMM's licence keeps its code
 out.
@@ -119,6 +125,6 @@ the work is making what exists easy for someone else to check.
   Appendix D what each result does not prove.
 * `THIRD_PARTY_NOTICES.md`: third-party components and data terms.
 
-ONFLY is a personal project by Mert Efe Şensoy and is not affiliated with or
+FlyBatch is a personal project by Mert Efe Şensoy and is not affiliated with or
 endorsed by IBM or by any organisation whose data, software or tools it uses;
 the trademark notices are in `README.md` and `THIRD_PARTY_NOTICES.md`.

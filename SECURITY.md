@@ -4,10 +4,10 @@
 
 Report it privately through GitHub's private vulnerability reporting: the
 repository's **Security** tab, then **Report a vulnerability**
-(https://github.com/mertefesensoy/ONFLY/security/advisories/new). Please do
+(https://github.com/mertefesensoy/FlyBatch/security/advisories/new). Please do
 not open a public issue for it (SRS D-582).
 
-ONFLY has one maintainer and no security team. [`SUPPORT.md`](SUPPORT.md)
+FlyBatch has one maintainer and no security team. [`SUPPORT.md`](SUPPORT.md)
 says how the project is supported.
 
 ## What is in scope
@@ -30,7 +30,7 @@ was not meant to.
 ## What is not in scope
 
 - `third_party/`: vendored upstream code, reported to its upstream.
-- The emulators, the TK5 system, the compilers and other tools ONFLY uses
+- The emulators, the TK5 system, the compilers and other tools FlyBatch uses
   but does not include (listed in
   [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md)).
 - Whether the model is scientifically right: open an ordinary issue.

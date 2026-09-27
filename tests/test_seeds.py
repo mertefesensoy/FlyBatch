@@ -333,6 +333,19 @@ class TestCriterionHasOneImplementation(unittest.TestCase):
         self.assertIn("40 Hz", note)
 
 
+class TestNetworkPathIsRelative(unittest.TestCase):
+    """D-635 (P-41 item 22): the sweep record names its network relative to
+    the tree.  seeds.json from 2026-09-16 holds the owner's absolute path
+    and stays as evidence; a new sweep must not add another."""
+
+    def test_the_record_stores_the_network_through_repo_rel(self):
+        with io.open(os.path.join(ROOT, "prep", "seeds.py"),
+                     encoding="utf-8") as fh:
+            src = fh.read()
+        self.assertIn('"network": cal.repo_rel(a.network)', src)
+        self.assertNotIn('"network": a.network', src)
+
+
 if __name__ == "__main__":
     # D-555: skips are reported through onfres so that make test counts them.
     sys.exit(onfres.unittest_main("test_seeds"))

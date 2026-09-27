@@ -1,6 +1,6 @@
-# Contributing to ONFLY
+# Contributing to FlyBatch
 
-ONFLY is a personal project by Mert Efe Şensoy with one maintainer. This
+FlyBatch is a personal project by Mert Efe Şensoy with one maintainer. This
 file says how the project is run, how to take part, and the terms under which
 contributions are accepted.
 
@@ -23,7 +23,7 @@ and the owner records the answer.
 ## Where to start
 
 - **A question:** GitHub Discussions.
-- **Something ONFLY does wrong:** an issue, using the bug report form.
+- **Something FlyBatch does wrong:** an issue, using the bug report form.
 - **Results from your own machine**, matching or not: an issue, using the
   replication report form. A report is a candidate for the determinism matrix
   (SRS Section 8.3), never an entry by itself.
@@ -93,7 +93,7 @@ another.
 Under section D.6 of GitHub's Terms of Service, "Contributions Under
 Repository License", a contribution to this repository is licensed under the
 terms of the path it changes: the MIT licence in [`LICENSE`](LICENSE) for
-ONFLY's own files, and the terms
+FlyBatch's own files, and the terms
 [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) names for the paths it
 lists (SRS D-581). No commit sign-off is required.
 

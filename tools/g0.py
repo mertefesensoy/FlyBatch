@@ -386,12 +386,38 @@ def json_quote(cmd):
 # ---------------------------------------------------------------- store
 
 
+def tilde(value):
+    """`value` with the user's home directory shown as `~` (D-635).
+
+    The inventory is committed, and the paths it captures (the interpreter,
+    the COBOL compiler, a probed virtual environment) mostly sit under the
+    home directory, which is a personal folder layout and no part of the
+    Gate G0 evidence.  Strings are masked in either slash form, at any depth
+    of a dict or list; other values pass through unchanged.
+    """
+    if isinstance(value, dict):
+        return dict((k, tilde(v)) for k, v in value.items())
+    if isinstance(value, list):
+        return [tilde(v) for v in value]
+    if not isinstance(value, str):
+        return value
+    home = os.path.expanduser("~")
+    for form in (home, home.replace("\\", "/")):
+        if len(form) > 1:
+            value = value.replace(form, "~")
+    return value
+
+
 def merge(name, data, path=OUT):
-    """Write one section into the inventory, keeping the others."""
+    """Write one section into the inventory, keeping the others.
+
+    Only the section written now is masked by tilde(): the sections already
+    in the file are evidence recorded before D-635 and are kept as they are.
+    """
     doc = {}
     if os.path.exists(path):
         doc = json.loads(io.open(path, encoding="utf-8").read())
-    doc[name] = data
+    doc[name] = tilde(data)
     doc["_generated"] = time.strftime("%Y-%m-%dT%H:%M:%S")
     d = os.path.dirname(path)
     if d and not os.path.isdir(d):

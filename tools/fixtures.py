@@ -56,8 +56,9 @@ and are marked `"distributed": true` in the manifest (D-551, D-557).
 `NOT DISTRIBUTED (regenerate with prep/emit.py)` and does not fail.  One
 that is present is still verified like any other.
 
-The documented download source is the release of the first tag, `v0.5.0`
-(D-544): https://github.com/mertefesensoy/ONFLY/releases/download/v0.5.0/
+The documented download source is the release of the first tag, `v0.5.1`
+(D-634, which amended D-544's `v0.5.0`):
+https://github.com/mertefesensoy/FlyBatch/releases/download/v0.5.1/
 followed by the file name.  No release exists yet (slice G publishes it),
 and this module downloads nothing: fetch the files with `curl -fsSLO`,
 check them with `sha256sum -c SHA256SUMS`, and place them with `--from`.

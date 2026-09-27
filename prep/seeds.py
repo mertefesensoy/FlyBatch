@@ -747,7 +747,7 @@ def main():
         "decisions": ["D-135", "D-165", "D-166", "D-202", "D-341", "D-351",
                       "D-352"],
         "closes": "TBD-06 (seeds per rate)",
-        "network": a.network.replace("\\", "/"),
+        "network": cal.repo_rel(a.network),
         "sim_ms": cal.SIM_MS,
         "seeds": seeds,
         "per_rate": {str(r): per_rate[r] for r in VAL_RATES},
