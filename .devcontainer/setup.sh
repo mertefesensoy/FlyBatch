@@ -15,6 +15,14 @@
 # them before the first `make`.  `make test-no2c` never compiles it.
 set -eu
 
+# Inside a container the checkout can belong to a different user from the
+# one running git: the CI job runs as root over a tree the runner owns.
+# git then refuses to read the tree ("dubious ownership"), and every check
+# that lists the tracked files fails under ONFLY_NOSKIP=1 (first seen in
+# the devcontainer job's first run, 2026-10-20).  Trusting this one
+# directory affects only this container's git configuration.
+git config --global --add safe.directory "$(pwd)"
+
 python -m pip install -r requirements.txt
 
 if [ "${FLYBATCH_NO_NETWORKS:-}" = "1" ]; then
