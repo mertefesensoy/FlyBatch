@@ -27,7 +27,8 @@ x86-64 laptop.
 - A dev container for GitHub Codespaces, pinned by digest, fetches and
   checks the two networks; a sixth CI job runs it on every push (D-678).
 - The tester round for `v0.5.1` is public: one issue per setup, and a
-  tracking issue (D-676, D-683, D-687).
+  tracking issue, #4. With them, 26 contributor issues, 12 of the 41 labelled
+  `good first issue`: #4 to #44 (D-676, D-683, D-687).
 - The Pages site has a descriptive title and description, a canonical link
   and a link card; `CITATION.cff` and `.zenodo.json` cite Shiu et al. by DOI
   (D-688).

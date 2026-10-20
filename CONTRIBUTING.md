@@ -8,7 +8,9 @@ and report what happened, matching or not.
 
 ## Ways in
 
-- **Test it on your setup.** The tester matrix has one issue per setup
+- **Test it on your setup.** The
+  [tester matrix](https://github.com/mertefesensoy/FlyBatch/issues/4) has
+  one issue per setup
   (Windows, other Linux distributions, macOS, arm64, other compilers,
   Python versions, and reading tasks that need no build). Pick one, say in
   a comment that you are taking it, and follow

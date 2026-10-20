@@ -97,10 +97,10 @@ is as of this change.
 | 2 | The live view GIF on the first screen, under the long no-access statement P-41 3.2 keeps there | Done (README) |
 | 3 | The rename note moved to the repository map | Done (README) |
 | 4 | A "Get involved" section with three ways in | Done (README) |
-| 5 | A dev container, one click from the README | Done (D-678); proven when its CI job first runs |
+| 5 | A dev container, one click from the README | Done (D-678); its CI job is green (run 39389113975) |
 | 6 | A build without SoftFloat 2c | Done as a subset (D-679); the full switch is P-52 |
 | 7 | `make quick` as the first command | In the README's dev container paragraph; its time is a finding (F11) |
-| 8 | Issues to pick up | Drafted, to be filed after the owner reads them (D-683) |
+| 8 | Issues to pick up | Filed after the owner read them: #4 (the tester matrix) to #44 (D-683, D-687) |
 | 9 | A first reply within 3 days for first contributions | Done (SUPPORT.md, README, CONTRIBUTING.md; D-680) |
 | 10 | Named credit | Done in CONTRIBUTING.md (D-681, D-684) |
 | 11 | CONTRIBUTING.md opening with a welcome | Done (D-685, D-686) |
@@ -262,8 +262,11 @@ the Retro Computing Roundtable podcast after the release.
 2. Anything about a site that refused automated reads (the Fly Research
    Portal, SciCrunch, Curlie on the day), or about link types beyond the
    page HTML that was read.
-3. That the dev container works: it was not run here, because Docker is
-   not on the development host. Its CI job proves it on the first push.
+3. That the dev container works in a Codespace or on a contributor's own
+   Docker: it was never run on the development host, which has no Docker.
+   Its CI job ran the same image and script on GitHub's `ubuntu-latest`
+   and was green on its second run (the first exposed a git ownership
+   check, now handled in `setup.sh`).
 4. Linux timings: every time in Sections 2 and 4 is from one Windows host,
    with other work running for some of them.
 5. 2027 dates marked as following a 2026 pattern, and anything after

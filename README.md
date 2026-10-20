@@ -38,7 +38,7 @@ FlyBatch has one maintainer and no outside contributors yet. Three ways in:
 
 | If you have | Do this |
 |---|---|
-| An hour and a computer | Run the tester task on your own setup and report what you get, matching or not, as [`docs/testers.md`](docs/testers.md) describes. The setups nobody has tried yet, such as macOS, Linux on arm64 and other compilers, each have an issue labelled [`help wanted`](https://github.com/mertefesensoy/FlyBatch/labels/help%20wanted). |
+| An hour and a computer | Run the tester task on your own setup and report what you get, matching or not, as [`docs/testers.md`](docs/testers.md) describes. The setups nobody has tried yet, such as macOS, Linux on arm64 and other compilers, each have an issue, all listed in the [tester matrix](https://github.com/mertefesensoy/FlyBatch/issues/4). |
 | An afternoon | Pick an issue labelled [`good first issue`](https://github.com/mertefesensoy/FlyBatch/contribute). Each one says what done looks like and how to check it. |
 | A question or an idea | Ask in [Discussions](https://github.com/mertefesensoy/FlyBatch/discussions). |
 

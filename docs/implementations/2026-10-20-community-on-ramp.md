@@ -147,11 +147,25 @@ from Git Bash, unless stated.
    answered 302 to the Nature article. `tools/lint_name.py --message` passed
    on every new file, and the U+2014 count is 0 in every added or edited
    file and in the added SRS and P-41 lines.
-5. **The dev container:** not run. Docker is not on the development host,
-   and no Codespace was opened. The `devcontainer` CI job runs it on the
-   first push; until that job is green, the README's sentence that CI
-   builds the container is a statement of what the job does, not of a
-   result.
+5. **The dev container:** not run on the development host, which has no
+   Docker, and no Codespace was opened. Its CI job ran it on GitHub's
+   `ubuntu-latest`. The first run (39388255760, commit `617e3c3`) got
+   through the image's toolchain (gcc 14.2.0, GNU Make 4.4.1, Python
+   3.13.16) and `setup.sh`, which fetched both networks and verified them
+   against `SHA256SUMS` and `MANIFEST.json`, then failed at `liclint`: the
+   job runs as root over a checkout the runner owns, git refused to read
+   it ("dubious ownership"), and strict mode turned the skip into a
+   failure. `setup.sh` now marks the checkout safe in the container's own
+   git configuration (commit `c46d9bd`). The second run (39389113975) was
+   green in all six jobs; in `devcontainer`, strict `test-nonet` closed
+   `ONFLY test: 23 PASS, 0 SKIP, 0 PENDING, 2 EXEMPT`.
+6. **The issues:** after `main` was fast-forwarded to `c46d9bd`, the 41
+   texts the owner read were filed as #4 to #44 by a script that recorded
+   each number as it was created, then replaced every cross-reference
+   token with its number. `gh issue list` counts 41 open issues, 12 of
+   them `good first issue`; no token is left in any body; GitHub's
+   `/contribute` page no longer says the repository has no good first
+   issues.
 
 What this does not prove: anything on Linux, macOS or arm64; that the dev
 container builds; that any newcomer will find the new text clearer; that
