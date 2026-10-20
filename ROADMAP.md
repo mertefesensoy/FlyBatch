@@ -33,11 +33,12 @@ Hercules. macOS and arm64 are untested, and no clang result is recorded.
 
 ## 2. A build without SoftFloat 2c
 
-`make test-no2c` already runs every check that never compiles Berkeley
-SoftFloat Release 2c, whose terms ask the user to indemnify its author (SRS
-D-679). It does not test the engine. A switch that drops 2c from the engine
-targets too, so an engine contributor never compiles it, is approved in
-principle and needs its plan (SRS P-52).
+Done (SRS D-690 to D-693). `NO2C=1` builds and compares the engine on
+SoftFloat 3e and native only, and never compiles Berkeley SoftFloat Release
+2c, whose terms ask the user to indemnify its author. `make test-no2c` is
+`make NO2C=1 test-nonet`, its closing line says it is not the full suite,
+and a CI job, `no2c-linux`, runs it on every push and then runs the engine
+targets again with the 2c sources deleted.
 
 ## 3. MVS 3.8j and Hercules
 

@@ -5,7 +5,8 @@
 # provides, and since D-663 the `golden` job reproduces the 19 golden
 # fingerprints there from the networks a release publishes (P-41 G5).
 # Those are not the recorded toolchains, so a green run is a smoke test and
-# never evidence for the determinism matrix of SRS 8.3.
+# never evidence for the determinism matrix of SRS 8.3.  Since D-693 a
+# seventh job, `no2c-linux`, runs the engine without SoftFloat 2c.
 #
 # Supply chain (P-41 F6): every action is pinned to a full commit SHA, with
 # its release tag in a comment; the token is read-only; checkout keeps no
@@ -142,6 +143,69 @@ jobs:
         env:
           ONFLY_NOSKIP: "1"
         run: make ONFPLAT=x86l PYTHON=python test-nonet
+
+  # P-52, D-693: `make NO2C=1 test-nonet` on Linux x86-64, strict.  NO2C=1
+  # builds and compares the engine on SOFT3E and NATIVE only and never
+  # compiles SoftFloat 2c (D-690); each 2c half left out prints a counted
+  # ONFRES NO2C marker (D-691).  The closing line is pinned, so a target
+  # that loses its marker or gains one fails here.  Then the 2c sources are
+  # deleted and the eight NONET targets that reach 2c run again, to show
+  # they need no 2c file.  A smoke test on GitHub's gcc, never Section 8.3
+  # evidence (D-586, VL-142).
+  no2c-linux:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97  # v7.0.0
+        with:
+          python-version: "3.13"
+      - name: Toolchain
+        run: |
+          gcc -v
+          make --version | head -1
+          python -VV
+      - name: Pinned packages
+        run: |
+          python -m pip install -r requirements.txt
+          python -m pip freeze
+      - name: make NO2C=1 test-nonet, strict, closing line pinned
+        env:
+          ONFLY_NOSKIP: "1"
+        run: |
+          set -o pipefail
+          make ONFPLAT=x86l PYTHON=python NO2C=1 test-nonet 2>&1 \
+            | tee "$RUNNER_TEMP/no2c.log"
+          last=$(tail -1 "$RUNNER_TEMP/no2c.log")
+          want="ONFLY test NO2C=1: 16 PASS, 0 SKIP, 0 PENDING, 2 EXEMPT, 7 NO2C ("
+          case "$last" in
+            "$want"*) echo "closing line as pinned" ;;
+            *) echo "unexpected closing line: $last"; exit 1 ;;
+          esac
+          if find build | grep -E '_2c\.exe|obj2c|onflyeng2[lmv]?\.o|tst2c|tstc2c'; then
+            echo "a SoftFloat 2c object was built under NO2C=1"
+            exit 1
+          fi
+      - name: The eight engine targets again, with no SoftFloat 2c file present
+        env:
+          ONFLY_NOSKIP: "1"
+          NO2C: "1"
+          ONFPLAT: x86l
+        run: |
+          set -o pipefail
+          rm -rf third_party/SoftFloat-2c softfloat/c2c build
+          test ! -e third_party/SoftFloat-2c
+          test ! -e softfloat/c2c
+          python tools/testrun.py make c04mvs tt02 c2c shim fp kernel syn eng \
+            2>&1 | tee "$RUNNER_TEMP/no2c-bare.log"
+          last=$(tail -1 "$RUNNER_TEMP/no2c-bare.log")
+          want="ONFLY test NO2C=1: 1 PASS, 0 SKIP, 0 PENDING, 0 EXEMPT, 7 NO2C ("
+          case "$last" in
+            "$want"*) echo "closing line as pinned" ;;
+            *) echo "unexpected closing line: $last"; exit 1 ;;
+          esac
 
   # D-678: the dev container, proven rather than assumed.  The same image,
   # pinned by the same digest as .devcontainer/devcontainer.json, runs the

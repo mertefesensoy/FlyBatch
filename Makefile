@@ -611,9 +611,16 @@ generated/onf32v.h: tools/gen32v.py
 # mismatch there with agreement here is a platform difference, which is
 # what TT-02 is for.  `make tt02` still runs the full 260,376-case stream;
 # this is the 4,500-vector sample MVS can hold (VL-29).
+# Not part of `test`; it is 2c and nothing else, so under NO2C=1 it
+# refuses rather than compile 2c (D-694).
+ifeq ($(NO2C),1)
+tf2:
+	$(error tf2 builds only SoftFloat 2c, which NO2C=1 never compiles (D-694))
+else
 tf2: $(BUILD) generated/onf2cnm.h generated/onftfv.h
 	$(CC) $(C2CFLAGS) $(SF2CINC) -Igenerated 	  -include generated/onf2cnm.h 	  -o $(BUILD)/tsttf2.exe tests/tsttf2.c $(SF2CSRC)
 	$(PYTHON) tools/lastln.py $(BUILD)/tsttf2.exe
+endif
 
 generated/onftfv.h: tools/gentf2.py
 	$(PYTHON) tools/gentf2.py --per-op 750
@@ -940,16 +947,21 @@ runner: $(BUILD) $(GENERATED)
 # subcircuit can be run on every float backend this host has rather than on
 # the native one alone.  ACC-2 claims "every platform and backend" and the
 # v1.1 compensating table had only ever been decoded by the native build;
-# these two are what let that claim be tested instead of assumed.
+# these two are what let that claim be tested instead of assumed.  Under
+# NO2C=1 the SoftFloat 2c runner is not built (D-694).
 runners: $(BUILD) $(GENERATED) runner
 	$(CC) $(SFFLAGS) $(INC) $(SFINC) -o $(BUILD)/runnet_soft.exe \
 	  tools/runnet.c engine/src/onfdec.c engine/src/onfcrc.c \
 	  engine/src/onffpc.c engine/src/onffps.c engine/src/onfker.c \
 	  engine/src/onfrnd.c engine/src/onfstm.c $(SFSRCS) $(ONFSF)
+ifeq ($(NO2C),1)
+	@echo "runners: NO2C=1, so the SoftFloat 2c runner is not built (D-694)"
+else
 	$(CC) $(C2CFLAGS) $(SF2CFLAGS) $(INC) -o $(BUILD)/runnet_2c.exe \
 	  tools/runnet.c engine/src/onfdec.c engine/src/onfcrc.c \
 	  engine/src/onffpc.c engine/src/onffp2.c engine/src/onfker.c \
 	  engine/src/onfrnd.c engine/src/onfstm.c $(SF2CSRC)
+endif
 
 # Section 8.1 runs bottom-up: "A level may start only when the level below it
 # passes on the platform concerned."  So the L0 toolchain tests, TT-01 and

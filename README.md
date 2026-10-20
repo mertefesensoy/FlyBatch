@@ -51,9 +51,11 @@ straight away; in a GitHub Codespace, nothing is installed on your own
 machine. CI builds the same container on every push.
 
 **If you do not accept SoftFloat 2c's terms** (see [Licence](#licence)),
-`make test-no2c` runs only the checks that never compile it: the lints, the
-checks of the recorded evidence, the record layout and the decoder. It does
-not test the engine.
+add `NO2C=1`: `make test-no2c` (which is `make NO2C=1 test-nonet`) and
+`make NO2C=1 quick` build and test the engine on SoftFloat 3e and native
+only, and never compile 2c. Their closing line starts `ONFLY test NO2C=1:`,
+because that is not the full suite: CI builds all three backends on your
+pull request.
 
 An issue labelled `good first issue`, and your first pull request, get a
 first reply within 3 days; everything else within 14 days
@@ -260,7 +262,8 @@ and part of the x86-64 test suite, contains Berkeley SoftFloat Release 2c,
 whose terms restrict use to
 those who accept all losses without recompense and who indemnify its author
 and the International Computer Science Institute; read them in
-`THIRD_PARTY_NOTICES.md` before you build it.
+`THIRD_PARTY_NOTICES.md` before you build it. `NO2C=1` builds the x86-64
+test suite without it (SRS D-690).
 
 INTERCOMM, the monitor behind the 3270 demonstration, is under Tetragon LLC's
 terms with a non-commercial clause and is not included.

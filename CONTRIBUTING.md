@@ -126,15 +126,20 @@ check exists.
 
 ## Before you open a pull request
 
-**Read the SoftFloat 2c terms first.** Every build of the engine, including
-`test-nonet` and `quick`, compiles Berkeley SoftFloat Release 2c, which is
-not BSD-licensed: its terms restrict use to those who accept all losses
-without recompense and who indemnify its author and the International
-Computer Science Institute. They are in
+**Read the SoftFloat 2c terms first.** By default every build of the
+engine, including `test-nonet` and `quick`, compiles Berkeley SoftFloat
+Release 2c, which is not BSD-licensed: its terms restrict use to those who
+accept all losses without recompense and who indemnify its author and the
+International Computer Science Institute. They are in
 [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md), section 3. If you do
-not accept them, `make test-no2c` runs the checks that never compile 2c:
-the lints, the checks of the recorded evidence, the record layout and the
-decoder (SRS D-679). It does not test the engine.
+not accept them, add `NO2C=1`: `make test-no2c` (which is
+`make NO2C=1 test-nonet`) and `make NO2C=1 quick` build and compare the
+engine on SoftFloat 3e and native only, and nothing of 2c is compiled,
+linked, run or derived (SRS D-690 to D-692). Each 2c half left out is
+counted, and the closing line starts `ONFLY test NO2C=1:`, because this is
+not the full suite: an engine change that passes it can still change a
+SoftFloat 2c result. CI builds all three backends on your pull request,
+and the full suite runs before an engine change is merged.
 
 Run the tests in strict mode, so that a missing package or file fails
 instead of passing quietly:
@@ -143,6 +148,8 @@ instead of passing quietly:
 
     mingw32-make testfloat                          (Windows, MinGW)
     ONFLY_NOSKIP=1 mingw32-make test-nonet
+
+Without SoftFloat 2c, use `test-no2c` in place of `test-nonet`.
 
 On Windows, run these from Git Bash or an MSYS2 shell, not cmd.exe or
 PowerShell, in a clone at a short path such as `C:\src\flybatch`: the

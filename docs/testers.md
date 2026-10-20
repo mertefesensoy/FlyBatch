@@ -25,8 +25,10 @@ contains Berkeley SoftFloat Release 2c, whose terms restrict use to those who
 accept all losses without recompense and who indemnify its author and the
 International Computer Science Institute. They are in
 `THIRD_PARTY_NOTICES.md`, section 3. If you do not accept them, stop here and
-do Task B instead, or run `make test-no2c`, which never compiles 2c but does
-not test the engine either (SRS D-679).
+do Task B instead, or run `make test-no2c`, which never compiles 2c and tests
+the engine on SoftFloat 3e and native only (SRS D-692). Its closing line
+starts `ONFLY test NO2C=1:`. Post it as that: it is not the full result this
+round asks for, and it cannot stand for the SoftFloat 2c row.
 
 1. Clone the release candidate into a new directory:
 

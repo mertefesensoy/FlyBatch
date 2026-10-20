@@ -689,6 +689,20 @@ def dry(make, target, *assign):
     return p.returncode, p.stdout.decode("utf-8", "replace")
 
 
+def runs_make(text, name, seen):
+    """True if target NAME, or anything it depends on, has a recipe that
+    names $(MAKE), which GNU make executes even under -n."""
+    if name in seen:
+        return False
+    seen.add(name)
+    for prereqs, recipe in rules(text, name):
+        if "$(MAKE)" in recipe:
+            return True
+        if any(runs_make(text, w, seen) for w in prereqs):
+            return True
+    return False
+
+
 def expect_no2c(full):
     """The full dry run's commands as NO2C=1 must give them: a 2c build or
     run is gone, and a comparator keeps its other programs."""
@@ -754,6 +768,29 @@ def t_dryrun(make):
           not marks_bad, marks_bad)
     check("the markers printed are exactly onfres's nine halves",
           seen == halves and len(seen) == 9, sorted(seen))
+    # D-694: under NO2C=1 no target at all names 2c, not only the test
+    # targets; `tf2`, which is 2c and nothing else, refuses instead.  The
+    # targets whose recipes, or whose prerequisites' recipes, name $(MAKE)
+    # cannot be dry-run and are pinned, so a new one is noticed.
+    text = io.open(os.path.join(ROOT, "Makefile"), encoding="utf-8").read()
+    every = sorted(set(re.findall(r"^([a-z][\w-]*)\s*:(?!=)", text, re.M)))
+    calls = [n for n in every if runs_make(text, n, set())]
+    check("the targets that run make are the seven expected",
+          calls == ["all", "onfres", "quick", "test", "test-no2c",
+                    "test-nonet", "testfloat"], calls)
+    others, refused = [], None
+    for n in every:
+        if n in calls or n in tests:
+            continue
+        rc, out = dry(make, n, "NO2C=1")
+        if n == "tf2":
+            refused = rc != 0 and "D-694" in out
+        elif rc or any(TWO_C_RUN.search(c) for c in commands(out)):
+            others.append(n)
+    check("with NO2C=1, no other Makefile target names 2c (D-694)",
+          not others, others)
+    check("and tf2, which is 2c and nothing else, refuses (D-694)",
+          refused is True, "refused=%r" % refused)
     rc, out = dry(make, "layout", "NO2C=yes")
     check("NO2C=yes stops make before anything is built",
           rc != 0 and "NO2C is 'yes'" in out, "rc=%d %r" % (rc, out[-90:]))

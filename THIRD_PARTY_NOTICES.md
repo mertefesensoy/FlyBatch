@@ -90,7 +90,8 @@ files under `softfloat/c2c/` are a derivative work: each says so at its head
 and reproduces the notice, as clause (2) requires.
 
 **Every SOFT2C build includes SoftFloat 2c and inherits these terms.** That
-is every MVS build of FlyBatch, and the SOFT2C third of the x86 `make test`.
+is every MVS build of FlyBatch, and the SOFT2C third of the x86 `make test`
+unless `NO2C=1` is given, which builds no SOFT2C program (SRS D-690).
 Whoever builds it accepts the use restriction and the indemnity below.
 
 The legal notice, verbatim from `third_party/SoftFloat-2c/softfloat/README.txt`:

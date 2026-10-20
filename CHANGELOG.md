@@ -21,9 +21,12 @@ x86-64 laptop.
   credited and how they may use AI tools; `ROADMAP.md` lists the open
   areas; the first reply on a `good first issue` or a first pull request
   comes within 3 days (P-51, D-677, D-680 to D-686).
-- `make test-no2c` runs the 15 checks that never compile Berkeley SoftFloat
-  Release 2c, for anyone who does not accept its terms; it does not test
-  the engine (D-679).
+- `NO2C=1` builds and tests the engine on SoftFloat 3e and native without
+  compiling Berkeley SoftFloat Release 2c, for anyone who does not accept
+  its terms; `make test-no2c` is now `make NO2C=1 test-nonet` (D-679,
+  D-690, D-692). Each 2c half left out is counted, and the closing line
+  reads `ONFLY test NO2C=1:`, never the full suite's form (D-691). A
+  seventh CI job, `no2c-linux`, runs it on every push (D-693).
 - A dev container for GitHub Codespaces, pinned by digest, fetches and
   checks the two networks; a sixth CI job runs it on every push (D-678).
 - The tester round for `v0.5.1` is public: one issue per setup, and a
