@@ -145,6 +145,26 @@ SF2CINC = -Isoftfloat/c2c -I$(SF2C)
 # it.  Everything else stays as strict as the rest of the build.
 C2CFLAGS = -std=c89 -pedantic -Wall -O2
 
+# --- NO2C=1: the engine without SoftFloat 2c (P-52, D-690 to D-693) -------
+# SoftFloat 2c's terms ask its users to accept all losses and to indemnify
+# its author (THIRD_PARTY_NOTICES.md, section 3).  NO2C=1 is for a
+# contributor who will not: each target of `test` that builds a 2c program
+# builds and compares SOFT3E and NATIVE only, and prints an `ONFRES NO2C`
+# marker where its 2c half would have run (tools/onfres.py, D-691), so the
+# closing line says the run is not the full suite.  Nothing of 2c is then
+# compiled, linked, run or derived (D-690).  Only the value 1 turns it on;
+# unset, empty and 0 build everything, and any other value stops here,
+# because a mistyped switch must never compile 2c quietly.
+ifneq ($(filter-out 0 1,$(NO2C)),)
+$(error NO2C is '$(NO2C)'; expected 1, 0 or unset (P-52))
+endif
+
+# The 2c prerequisites, and a 2c program named as an argument: both are
+# empty under NO2C=1, so make neither derives the 2c sources nor builds
+# their name map, and a comparator compares the two other backends.
+SF2CDEP = $(if $(filter 1,$(NO2C)),,$(SF2CSRC) generated/onf2cnm.h)
+WITH2C  = $(if $(filter 1,$(NO2C)),,$(1))
+
 INC     = -Iengine/include -Igenerated
 
 # The engine units tests/tstsyn.c links, backend excluded.  Named once
@@ -286,7 +306,7 @@ units: $(BUILD)
 # demonstrates NR-09's bit-identity condition on this host; NR-09 admission is
 # NOT complete until TestFloat vectors (TT-02) and golden-suite fingerprints
 # also pass.
-fp: $(BUILD) softfloat/onfsub.c softfloat/onfprim.c $(SF2CSRC) generated/onf2cnm.h
+fp: $(BUILD) softfloat/onfsub.c softfloat/onfprim.c $(SF2CDEP)
 	$(CC) $(SFFLAGS) $(INC) $(SFINC) -o $(BUILD)/tstfp_soft.exe \
 	  tests/tstfp.c engine/src/onffpc.c engine/src/onffps.c engine/src/onfrnd.c \
 	  $(SFSRCS) $(ONFSF)
@@ -294,12 +314,16 @@ fp: $(BUILD) softfloat/onfsub.c softfloat/onfprim.c $(SF2CSRC) generated/onf2cnm
 	$(CC) $(SFFLAGS) $(NATFLAGS) $(INC) -o $(BUILD)/tstfp_nat.exe \
 	  tests/tstfp.c engine/src/onffpc.c engine/src/onffpn.c engine/src/onfrnd.c
 	$(PYTHON) tests/run_fp.py $(BUILD)/tstfp_nat.exe
+ifeq ($(NO2C),1)
+	$(PYTHON) tools/onfres.py no2c fp/SOFT2C
+else
 	$(CC) $(C2CFLAGS) $(SF2CFLAGS) $(INC) -o $(BUILD)/tstfp_2c.exe  \
 	  tests/tstfp.c engine/src/onffpc.c engine/src/onffp2.c  \
 	  engine/src/onfrnd.c $(SF2CSRC)
 	$(PYTHON) tests/run_fp.py $(BUILD)/tstfp_2c.exe
+endif
 	$(PYTHON) tools/cmpback.py $(BUILD)/tstfp_soft.exe  \
-	  $(BUILD)/tstfp_nat.exe $(BUILD)/tstfp_2c.exe
+	  $(BUILD)/tstfp_nat.exe $(call WITH2C,$(BUILD)/tstfp_2c.exe)
 
 # --- L2: the kernel against the Python oracle ------------------------------
 # Runs the same synthetic network through both float backends and then compares
@@ -307,7 +331,7 @@ fp: $(BUILD) softfloat/onfsub.c softfloat/onfprim.c $(SF2CSRC) generated/onf2cnm
 # rows 1, 2 and 3 of the Section 8.3 determinism matrix -- the three x86 rows.
 # Rows 4 to 8 need Linux s390x, MVS 3.8j and z/OS, none of which is available
 # on this host.
-kernel: $(BUILD) softfloat/onfsub.c $(SF2CSRC) generated/onf2cnm.h
+kernel: $(BUILD) softfloat/onfsub.c $(SF2CDEP)
 	$(CC) $(SFFLAGS) $(INC) $(SFINC) -o $(BUILD)/tstker_soft.exe \
 	  tests/tstker.c engine/src/onfker.c engine/src/onffpc.c \
 	  engine/src/onffps.c engine/src/onfrnd.c engine/src/onfstm.c \
@@ -317,13 +341,17 @@ kernel: $(BUILD) softfloat/onfsub.c $(SF2CSRC) generated/onf2cnm.h
 	  tests/tstker.c engine/src/onfker.c engine/src/onffpc.c \
 	  engine/src/onffpn.c engine/src/onfrnd.c engine/src/onfstm.c
 	$(PYTHON) tests/run_ker.py $(BUILD)/tstker_nat.exe
+ifeq ($(NO2C),1)
+	$(PYTHON) tools/onfres.py no2c kernel/SOFT2C
+else
 	$(CC) $(C2CFLAGS) $(SF2CFLAGS) $(INC) -o $(BUILD)/tstker_2c.exe  \
 	  tests/tstker.c engine/src/onfker.c engine/src/onffpc.c  \
 	  engine/src/onffp2.c engine/src/onfrnd.c engine/src/onfstm.c  \
 	  $(SF2CSRC)
 	$(PYTHON) tests/run_ker.py $(BUILD)/tstker_2c.exe
+endif
 	$(PYTHON) tools/cmpback.py $(BUILD)/tstker_soft.exe  \
-	  $(BUILD)/tstker_nat.exe $(BUILD)/tstker_2c.exe
+	  $(BUILD)/tstker_nat.exe $(call WITH2C,$(BUILD)/tstker_2c.exe)
 
 # --- TE-01..TE-08: network integrity checks ------------------------------
 # Each case corrupts exactly one thing and requires the engine to report the
@@ -350,7 +378,7 @@ decode: $(BUILD) $(GENERATED)
 # maximum by D-138, which closed TBD-06's duration items.  Changing one
 # would change every fingerprint.  (Brought up to date 2026-09-25 by P-41
 # slice D, D-531: this comment still described the Phase B harness.)
-golden: $(BUILD) $(GENERATED) softfloat/onfsub.c $(SF2CSRC) generated/onf2cnm.h
+golden: $(BUILD) $(GENERATED) softfloat/onfsub.c $(SF2CDEP)
 	$(CC) $(SFFLAGS) $(INC) $(SFINC) -o $(BUILD)/tstgld_soft.exe \
 	  tests/tstgld.c engine/src/onfreq.c generated/onfcom.c \
 	  engine/src/onfdec.c engine/src/onfcrc.c \
@@ -364,6 +392,9 @@ golden: $(BUILD) $(GENERATED) softfloat/onfsub.c $(SF2CSRC) generated/onf2cnm.h
 	  engine/src/onffpc.c engine/src/onffpn.c engine/src/onfker.c \
 	  engine/src/onfrnd.c engine/src/onfstm.c engine/src/onffpr.c
 	$(PYTHON) tests/run_gld.py $(BUILD)/tstgld_nat.exe
+ifeq ($(NO2C),1)
+	$(PYTHON) tools/onfres.py no2c golden/SOFT2C
+else
 	$(CC) $(C2CFLAGS) $(SF2CFLAGS) $(INC) -o $(BUILD)/tstgld_2c.exe  \
 	  tests/tstgld.c engine/src/onfreq.c generated/onfcom.c \
 	  engine/src/onfdec.c engine/src/onfcrc.c  \
@@ -371,8 +402,9 @@ golden: $(BUILD) $(GENERATED) softfloat/onfsub.c $(SF2CSRC) generated/onf2cnm.h
 	  engine/src/onfrnd.c engine/src/onfstm.c engine/src/onffpr.c  \
 	  $(SF2CSRC)
 	$(PYTHON) tests/run_gld.py $(BUILD)/tstgld_2c.exe
+endif
 	$(PYTHON) tools/cmpgld.py $(BUILD)/tstgld_soft.exe  \
-	  $(BUILD)/tstgld_nat.exe $(BUILD)/tstgld_2c.exe
+	  $(BUILD)/tstgld_nat.exe $(call WITH2C,$(BUILD)/tstgld_2c.exe)
 # FR-SIM-10 (D-366, D-367, D-368): the same nineteen requests driven in
 # chunks must give byte-identical GOLD and GOUT lines.  D-369 fixes the
 # sweep at K in {1, 7, 250, 100000} on all three backends and measures the
@@ -383,7 +415,7 @@ golden: $(BUILD) $(GENERATED) softfloat/onfsub.c $(SF2CSRC) generated/onf2cnm.h
 # onfcont clamps on the first call (D-367) and the driver loop ends after
 # one iteration.
 	$(PYTHON) tools/cmpchk.py $(BUILD)/tstgld_soft.exe \
-	  $(BUILD)/tstgld_nat.exe $(BUILD)/tstgld_2c.exe \
+	  $(BUILD)/tstgld_nat.exe $(call WITH2C,$(BUILD)/tstgld_2c.exe) \
 	  --chunks 1,7,250,100000
 
 # --- FR-LOD-02/04/05, FR-SIM-01 and IR-COM-05 over an EMBEDDED network ---
@@ -395,7 +427,7 @@ golden: $(BUILD) $(GENERATED) softfloat/onfsub.c $(SF2CSRC) generated/onf2cnm.h
 # All three backends, then a byte-for-byte comparison: a fingerprint that
 # depended on which float library produced it would not be a fingerprint.
 syn: $(BUILD) $(GENERATED) generated/onfsynt.h softfloat/onfsub.c \
-     $(SF2CSRC) generated/onf2cnm.h
+     $(SF2CDEP)
 	$(PYTHON) tools/gensyn.py --check
 	$(CC) $(SFFLAGS) $(INC) $(SFINC) -o $(BUILD)/tstsyn_soft.exe \
 	  tests/tstsyn.c $(ENGSRC) generated/onfcom.c \
@@ -404,12 +436,16 @@ syn: $(BUILD) $(GENERATED) generated/onfsynt.h softfloat/onfsub.c \
 	$(CC) $(SFFLAGS) $(NATFLAGS) $(INC) -o $(BUILD)/tstsyn_nat.exe \
 	  tests/tstsyn.c $(ENGSRC) generated/onfcom.c engine/src/onffpn.c
 	$(PYTHON) tests/run_syn.py $(BUILD)/tstsyn_nat.exe
+ifeq ($(NO2C),1)
+	$(PYTHON) tools/onfres.py no2c syn/SOFT2C
+else
 	$(CC) $(C2CFLAGS) $(SF2CFLAGS) $(INC) -o $(BUILD)/tstsyn_2c.exe \
 	  tests/tstsyn.c $(ENGSRC) generated/onfcom.c \
 	  engine/src/onffp2.c $(SF2CSRC)
 	$(PYTHON) tests/run_syn.py $(BUILD)/tstsyn_2c.exe
+endif
 	$(PYTHON) tools/cmpback.py $(BUILD)/tstsyn_soft.exe \
-	  $(BUILD)/tstsyn_nat.exe $(BUILD)/tstsyn_2c.exe
+	  $(BUILD)/tstsyn_nat.exe $(call WITH2C,$(BUILD)/tstsyn_2c.exe)
 
 # --- C-04: external identifier lengths -----------------------------------
 # ONFLY's own externals must stay within 8 characters and be unique ignoring
@@ -435,7 +471,12 @@ c04: $(BUILD) $(GENERATED) $(IVEC) softfloat/onfsub.c
 #
 # This compiles the 2c unit the way tools/mvs2c.py presents it to GCCMVS --
 # same source, same rename prologue -- so a name that would be rejected on
-# MVS is rejected here first, without a lab job.
+# MVS is rejected here first, without a lab job.  It is 2c and nothing
+# else, so NO2C=1 leaves all of it out (D-690).
+ifeq ($(NO2C),1)
+c04mvs:
+	$(PYTHON) tools/onfres.py no2c c04mvs/SOFT2C
+else
 c04mvs: $(BUILD) $(GENERATED) generated/onf2cnm.h $(SF2CSRC)
 	$(PYTHON) tools/mkobjs.py $(BUILD)/obj2c \
 	  $(CC) $(C2CFLAGS) $(SF2CFLAGS) $(INC) -- \
@@ -443,6 +484,7 @@ c04mvs: $(BUILD) $(GENERATED) generated/onf2cnm.h $(SF2CSRC)
 	  engine/src/onfcrc.c engine/src/onfrnd.c engine/src/onfstm.c \
 	  engine/src/onfker.c engine/src/onfdec.c engine/src/onffpr.c
 	$(PYTHON) tools/lint_c04.py --enforce-all $(BUILD)/obj2c
+endif
 
 # --- TT-02: Berkeley TestFloat vectors (NR-14, and one NR-09 condition) ---
 # Needs testfloat_gen, which needs a complete softfloat.a.  That library is
@@ -530,16 +572,20 @@ tt01: $(BUILD) $(IVEC)
 	  -o $(BUILD)/tstint.exe tests/tstint.c softfloat/onfint.c
 	$(PYTHON) tests/run_tt01.py $(BUILD)/tstint.exe
 
-tt02: $(BUILD) softfloat/onfsub.c $(SF2CSRC) generated/onf2cnm.h $(TFPREREQ)
+tt02: $(BUILD) softfloat/onfsub.c $(SF2CDEP) $(TFPREREQ)
 	$(CC) $(SFFLAGS) $(INC) $(SFINC) -o $(BUILD)/tstflt_soft.exe \
 	  tests/tstflt.c engine/src/onffpc.c engine/src/onffps.c \
 	  $(SFSRCS) $(ONFSF)
 	$(CC) $(SFFLAGS) $(NATFLAGS) $(INC) -o $(BUILD)/tstflt_nat.exe \
 	  tests/tstflt.c engine/src/onffpc.c engine/src/onffpn.c
+ifeq ($(NO2C),1)
+	$(PYTHON) tools/onfres.py no2c tt02/SOFT2C
+else
 	$(CC) $(C2CFLAGS) $(SF2CFLAGS) $(INC) -o $(BUILD)/tstflt_2c.exe \
 	  tests/tstflt.c engine/src/onffpc.c engine/src/onffp2.c $(SF2CSRC)
+endif
 	$(PYTHON) tests/run_tt02.py $(BUILD)/tstflt_soft.exe \
-	  $(BUILD)/tstflt_nat.exe $(BUILD)/tstflt_2c.exe $(TFGEN)
+	  $(BUILD)/tstflt_nat.exe $(call WITH2C,$(BUILD)/tstflt_2c.exe) $(TFGEN)
 
 # --- TT-01/32: the 32-bit integer self-test (D-118, NR-14) ---------------
 # NR-14 requires an integer self-test for each width the platform's engine
@@ -588,7 +634,12 @@ generated/onftfv.h: tools/gentf2.py
 # -include applies the C-04 renames (D-111) to the vendored unit without
 # editing it.  They are used on x86 as well as MVS deliberately: a
 # mechanism exercised only on the platform that is hard to test is a
-# mechanism nobody has tested.
+# mechanism nobody has tested.  It is 2c and nothing else, so NO2C=1
+# leaves all of it out (D-690).
+ifeq ($(NO2C),1)
+c2c:
+	$(PYTHON) tools/onfres.py no2c c2c/SOFT2C
+else
 c2c: $(BUILD) generated/onf2cnm.h generated/onf2cv.h $(TFPREREQ)
 	$(PYTHON) softfloat/derive2c.py --check
 	$(PYTHON) tools/gen2cnm.py --check
@@ -600,6 +651,7 @@ c2c: $(BUILD) generated/onf2cnm.h generated/onf2cv.h $(TFPREREQ)
 	  -include generated/onf2cnm.h \
 	  -o $(BUILD)/tst2c.exe tests/tst2c.c $(SF2CSRC)
 	$(PYTHON) tools/lastln.py $(BUILD)/tst2c.exe
+endif
 
 generated/onf3enm.h: tools/gen3enm.py
 	$(PYTHON) tools/gen3enm.py
@@ -748,8 +800,7 @@ ENGREQ = engine/src/onfdec.c engine/src/onfcrc.c engine/src/onffpc.c \
 ENGVFY = engine/src/onfdec.c engine/src/onfcrc.c engine/src/onffpc.c \
          engine/src/onffpr.c
 
-eng: $(BUILD) $(GENERATED) $(IVEC) softfloat/onfsub.c $(SF2CSRC) \
-     generated/onf2cnm.h
+eng: $(BUILD) $(GENERATED) $(IVEC) softfloat/onfsub.c $(SF2CDEP)
 	$(PYTHON) tests/run_plim.py $(CC)
 	$(CC) $(CFLAGS) $(INC) -Isoftfloat -c \
 	  -o $(BUILD)/onflyeng.o engine/src/onflyeng.c
@@ -799,6 +850,9 @@ eng: $(BUILD) $(GENERATED) $(IVEC) softfloat/onfsub.c $(SF2CSRC) \
 	  $(BUILD)/onflyengv_nat.exe \
 	  --limit $(TE08LO)=$(BUILD)/onflyengl_nat.exe \
 	  --limit $(TE08HI)=$(BUILD)/onflyengm_nat.exe
+ifeq ($(NO2C),1)
+	$(PYTHON) tools/onfres.py no2c eng/SOFT2C
+else
 	$(CC) $(C2CFLAGS) $(SF2CFLAGS) $(INC) -Isoftfloat -c \
 	  -o $(BUILD)/onflyeng2.o engine/src/onflyeng.c
 	$(CC) $(C2CFLAGS) $(SF2CFLAGS) $(INC) -o $(BUILD)/onflyeng_2c.exe \
@@ -823,6 +877,7 @@ eng: $(BUILD) $(GENERATED) $(IVEC) softfloat/onfsub.c $(SF2CSRC) \
 	  $(BUILD)/onflyengv_2c.exe \
 	  --limit $(TE08LO)=$(BUILD)/onflyengl_2c.exe \
 	  --limit $(TE08HI)=$(BUILD)/onflyengm_2c.exe
+endif
 
 # --- FR-BAT-01 STEP2 and TX-01: the request/response loop (D-221) ----------
 # Drives the Section 8.4 suite through ONFREQ -> ONFLYENG -> ONFRSP on every
@@ -831,8 +886,11 @@ eng: $(BUILD) $(GENERATED) $(IVEC) softfloat/onfsub.c $(SF2CSRC) \
 # here as well as SOFT3E and NATIVE: it is the library MVS uses and had never
 # run the record path at all.
 req: eng
+ifeq ($(NO2C),1)
+	$(PYTHON) tools/onfres.py no2c req/SOFT2C
+endif
 	$(PYTHON) tests/run_req.py $(BUILD)/onflyeng_soft.exe \
-	  $(BUILD)/onflyeng_nat.exe $(BUILD)/onflyeng_2c.exe
+	  $(BUILD)/onflyeng_nat.exe $(call WITH2C,$(BUILD)/onflyeng_2c.exe)
 	$(PYTHON) tests/test_txcmp.py
 # TU-11 (IR-STM-01..04), added by D-380.  Two guards, and they prove
 # different things: the ONFRSP dataset must be byte-identical with and
@@ -841,7 +899,7 @@ req: eng
 # that can tell the real run from a plausible animation beside it.  Measured
 # at about 25 s over the three backends on this host.
 	$(PYTHON) tests/test_strm.py $(BUILD)/onflyeng_soft.exe \
-	  $(BUILD)/onflyeng_nat.exe $(BUILD)/onflyeng_2c.exe
+	  $(BUILD)/onflyeng_nat.exe $(call WITH2C,$(BUILD)/onflyeng_2c.exe)
 
 # --- Gate G4: ONFLYDRV through the GnuCOBOL IBM-dialect proxy (VL-02) ------
 # D-152 installs GnuCOBOL on this host; D-156 keeps this target OUT of
@@ -902,10 +960,18 @@ runners: $(BUILD) $(GENERATED) runner
 # having printed no `ONFRES SKIP` line; the run ends with a counted line,
 #   ONFLY test: <p> PASS, <s> SKIP, <q> PENDING, <e> EXEMPT (...)
 # where SKIP, PENDING and EXEMPT count checks (tools/onfres.py, D-548).  A
-# target already made is passed to later sub-makes as `-o`, so `fp` (for
-# `shim`) and `eng` (for `req`) are not run twice.  With ONFLY_NOSKIP=1 any
-# skip not in D-548's exemption table fails its target.  `onfres` runs first
-# so that the counting is itself tested before anything is counted.
+# target already made is passed to later sub-makes as `-o`, so `eng` (for
+# `req`) is not run twice.  `fp` is: the list names `shim` before it, so
+# `fp`'s recipe runs inside `shim`'s sub-make and again as `fp`, a cost
+# D-549 accepted.  With ONFLY_NOSKIP=1 any skip not in D-548's exemption
+# table fails its target.  `onfres` runs first so that the counting is
+# itself tested before anything is counted.
+#
+# With NO2C=1 (D-691) each 2c half left out prints an `ONFRES NO2C`
+# marker.  It demotes only the target it names, it is counted once
+# however many sub-makes print it, and the run closes
+#   ONFLY test NO2C=1: <p> PASS, <s> SKIP, <q> PENDING, <e> EXEMPT, <n> NO2C
+# so that no NO2C run can be read as the full suite.
 #
 # What the suite covers, as the fixed echo that used to close this target
 # said it: the NR-05, licence, name, notices, col80, C-04 and C-04/MVS lints,
@@ -938,22 +1004,22 @@ NONET = onfres lint liclint namelint ntclint col80 c04 c04mvs sub mvsjcc \
 test-nonet:
 	$(PYTHON) tools/testrun.py "$(MAKE)" $(NONET)
 
-# D-679.  The subset of NONET that never compiles Berkeley SoftFloat 2c,
-# whose terms ask the user to accept all losses and indemnify its author
-# (THIRD_PARTY_NOTICES.md, section 3).  It is for a contributor who will
-# not accept those terms: the lints, the Python checks of the recorded
-# evidence, the layout, the integer units and the decoder with the native
-# kernel.  It is NOT the engine's test: fp, kernel, syn, eng, golden and
-# `quick` all build a 2c engine and compare it with the other two backends,
-# so a change to the engine still needs `test-nonet`.  A full switch that
-# drops 2c from those targets too is a later proposal (P-52).
-# tests/test_onfres.py reads this Makefile to hold the list to NONET's
-# order and to prove that no target here reaches 2c.
-NO2C = onfres lint liclint namelint ntclint col80 c04 sub mvsjcc ic3270 \
-       tt01 sfs layout units decode
+# D-679, D-692.  The subset of NONET that never had a Berkeley SoftFloat 2c
+# half: the lints, the Python checks of the recorded evidence, the layout,
+# the integer units and the decoder with the native kernel.  D-679 named
+# this list NO2C; D-692 gave that name to the switch, since a command-line
+# NO2C=1 overrides any assignment of it.  tests/test_onfres.py reads this
+# Makefile to hold the list to NONET's order and to prove that no target
+# here reaches 2c.
+FREE2C = onfres lint liclint namelint ntclint col80 c04 sub mvsjcc ic3270 \
+         tt01 sfs layout units decode
 
+# D-692.  For a contributor who does not accept SoftFloat 2c's terms (see
+# the NO2C block at the top): NONET with NO2C=1, so the engine is built and
+# compared on SOFT3E and NATIVE and 2c is never compiled.  It is not the
+# full suite, and its closing line says so (D-691).
 test-no2c:
-	$(PYTHON) tools/testrun.py "$(MAKE)" $(NO2C)
+	$(MAKE) --no-print-directory NO2C=1 test-nonet
 
 # P-41 E9.  Build the engine and check the committed Section 8.4
 # fingerprints, with no lab: needs only the two distributed networks.

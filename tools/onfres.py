@@ -38,8 +38,24 @@ so that the same check skipped for a missing Python package is an ordinary
 SKIP and still fails strict mode.  `tests/test_onfres.py` asserts every
 entry cites a row that exists in SRS Appendix A.1.
 
-Contract: pure functions over their arguments, plus `skip()`'s one write
-to `out` and its possible `sys.exit(1)`.  No state is kept between calls.
+THE NO2C MARKER (D-691)
+
+`make NO2C=1` builds and compares the engine on SOFT3E and NATIVE only,
+for a contributor who does not accept Berkeley SoftFloat 2c's terms
+(P-52, D-690).  Each 2c half it leaves out prints
+
+    ONFRES NO2C <target>/SOFT2C: <reason> [D-691]
+
+from a Makefile recipe, through this file's command line:
+`python tools/onfres.py no2c <check>`.  It is its own kind, never an
+exemption: an exemption is a skip no clone can clear (D-548), and this one
+is cleared by accepting the terms.  Under strict mode it fails like an
+unexempt skip unless BOTH hold: `NO2C=1` is in the environment, and the
+check is one of the nine halves in NO2C_HALVES.
+
+Contract: pure functions over their arguments, plus the one write to `out`
+that `skip()` and `no2c()` make and their possible `sys.exit(1)`.  No
+state is kept between calls.
 """
 import os
 import sys
@@ -65,6 +81,22 @@ EXEMPT = {
     # FR-LOD-04's limit as ONF_MEMLIM since D-567, so TE-08 runs through the
     # whole program in tests/run_eng.py and has nothing left to be exempt for.
 }
+
+#: The decision every NO2C marker cites.
+NO2C_ROW = "D-691"
+
+#: What a NO2C marker says after its check name.
+NO2C_REASON = "NO2C=1, SoftFloat 2c not built"
+
+#: The 2c halves NO2C=1 may leave out: one per target of `make test` whose
+#: own recipe builds or checks a 2c program (P-52 S1).  `shim` has none of
+#: its own; it reaches 2c only through `fp`.  tests/test_onfres.py holds
+#: this set to the markers make's dry runs actually print.
+NO2C_HALVES = frozenset([
+    "c04mvs/SOFT2C", "tt02/SOFT2C", "c2c/SOFT2C", "fp/SOFT2C",
+    "kernel/SOFT2C", "syn/SOFT2C", "eng/SOFT2C", "req/SOFT2C",
+    "golden/SOFT2C",
+])
 
 
 def strict(env=None):
@@ -107,6 +139,41 @@ def skip(check, reason, out=None, env=None, indent=""):
         out.flush()
         sys.exit(1)
     return "EXEMPT" if check in EXEMPT else "SKIP"
+
+
+def no2c_on(env=None):
+    """True when `NO2C` is exactly "1" in `env` (default: os.environ)."""
+    env = os.environ if env is None else env
+    return env.get("NO2C") == "1"
+
+
+def no2cline(check, reason, env=None):
+    """(line, fatal) for a 2c half that NO2C=1 left out.  Writes nothing.
+
+    `fatal` is True only in strict mode, and then only when NO2C=1 is not
+    in `env` or `check` is not one of NO2C_HALVES (D-691).
+    """
+    line = "%s NO2C %s: %s [%s]" % (PREFIX, check, reason, NO2C_ROW)
+    allowed = no2c_on(env) and check in NO2C_HALVES
+    return line, strict(env) and not allowed
+
+
+def no2c(check, reason=NO2C_REASON, out=None, env=None):
+    """Print the NO2C marker; exit 1 if strict mode fails it (D-691).
+
+    Returns "NO2C" when it returns at all.
+    """
+    out = sys.stdout if out is None else out
+    line, fatal = no2cline(check, reason, env)
+    out.write(line + "\n")
+    if fatal:
+        out.write("%s FAIL %s: ONFLY_NOSKIP=1 lets a NO2C marker through "
+                  "only with NO2C=1 set and a declared 2c half (%s)\n"
+                  % (PREFIX, check, NO2C_ROW))
+        out.flush()
+        sys.exit(1)
+    out.flush()
+    return "NO2C"
 
 
 def _test_name(prefix, test):
@@ -160,3 +227,16 @@ def unittest_main(prefix, module="__main__", out=None, stream=None,
                   "failure (D-548)\n" % (PREFIX, check))
     out.flush()
     return 0 if prog.result.wasSuccessful() and not fatal else 1
+
+
+def main(argv):
+    """`onfres.py no2c CHECK`: the NO2C marker, for a Makefile recipe."""
+    if len(argv) == 3 and argv[1] == "no2c":
+        no2c(argv[2])
+        return 0
+    sys.stderr.write("usage: python tools/onfres.py no2c CHECK\n")
+    return 2
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv))

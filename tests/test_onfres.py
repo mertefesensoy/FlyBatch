@@ -25,6 +25,14 @@ pinned is that a failing target stops the run with its status, that a
 skipped target is not counted as a PASS, and that a target already made is
 passed to later sub-makes with `-o` rather than run twice.
 
+`NO2C=1` (P-52, D-690 to D-692) builds and compares the engine on SOFT3E
+and NATIVE only, for a contributor who does not accept Berkeley SoftFloat
+2c's terms.  Each 2c half it leaves out prints an `ONFRES NO2C` marker
+(D-691).  What is pinned: the marker's form and its two-condition strict
+rule; that the runner demotes only the target a marker names and closes
+in a form 11.8 cannot mistake for the full suite; and, from make's own dry
+runs, that the switch removes every 2c command and changes nothing else.
+
 Run:
 
     python tests/test_onfres.py [MAKE]
@@ -138,6 +146,81 @@ def t_onfres():
           len(onfres.EXEMPT) == 5, "%d entries" % len(onfres.EXEMPT))
     check("eng/TE-08 is no longer exempt (D-575)",
           "eng/TE-08" not in onfres.EXEMPT, "")
+
+
+# --- D-691: the NO2C marker and its two-condition strict rule --------------
+
+def t_no2c():
+    halves = sorted(getattr(onfres, "NO2C_HALVES", ()))
+    check("onfres declares the nine 2c halves NO2C=1 may leave out",
+          len(halves) == 9
+          and all(h.endswith("/SOFT2C") for h in halves), halves)
+    if not hasattr(onfres, "no2cline") or not halves:
+        check("onfres has no2cline() and no2c() (D-691)", False)
+        return
+    rows = set(re.findall(r"^\| (D-\d+) \|",
+                          io.open(SRS, encoding="utf-8").read(), re.M))
+    check("the NO2C marker cites D-691, a real A.1 row",
+          onfres.NO2C_ROW == "D-691" and onfres.NO2C_ROW in rows,
+          onfres.NO2C_ROW)
+    name = halves[0]
+    text, fatal = onfres.no2cline(name, "why", env={})
+    check("a NO2C line has the counted form",
+          text == "ONFRES NO2C %s: why [D-691]" % name, repr(text))
+    check("a NO2C marker is not fatal without ONFLY_NOSKIP",
+          fatal is False)
+    cases = [
+        ("declared, NO2C=1, strict: let through", name,
+         {"NO2C": "1", "ONFLY_NOSKIP": "1"}, False),
+        ("undeclared, NO2C=1, strict: fails", "demo/SOFT2C",
+         {"NO2C": "1", "ONFLY_NOSKIP": "1"}, True),
+        ("declared, NO2C unset, strict: fails", name,
+         {"ONFLY_NOSKIP": "1"}, True),
+        ("declared, NO2C=yes, strict: fails (only 1)", name,
+         {"NO2C": "yes", "ONFLY_NOSKIP": "1"}, True),
+    ]
+    for label, check_id, env, want in cases:
+        got = onfres.no2cline(check_id, "why", env=env)[1]
+        check("NO2C rule: " + label, got is want, "fatal=%r" % got)
+
+    buf = io.StringIO()
+    kind = onfres.no2c(name, "why", out=buf,
+                       env={"NO2C": "1", "ONFLY_NOSKIP": "1"})
+    check("no2c() prints one line and returns NO2C when let through",
+          kind == "NO2C" and buf.getvalue() == text + "\n",
+          repr(buf.getvalue()))
+    buf = io.StringIO()
+    try:
+        onfres.no2c(name, "why", out=buf, env={"ONFLY_NOSKIP": "1"})
+        code = None
+    except SystemExit as exc:
+        code = exc.code
+    check("no2c() exits 1 when strict mode fails it, citing D-691",
+          code == 1 and "D-691" in buf.getvalue(), "code=%r" % code)
+
+    # The Makefile prints the marker from a recipe line, so the CLI is
+    # what a NO2C=1 run actually executes.
+    env = dict(os.environ)
+    for k in ("NO2C", "ONFLY_NOSKIP"):
+        env.pop(k, None)
+    tool = os.path.join(ROOT, "tools", "onfres.py")
+
+    def cli(args, extra):
+        e = dict(env)
+        e.update(extra)
+        p = subprocess.run([sys.executable, tool] + args, env=e,
+                           stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        return p.returncode, p.stdout.decode("utf-8", "replace")
+
+    rc, out = cli(["no2c", name], {"NO2C": "1", "ONFLY_NOSKIP": "1"})
+    check("`onfres.py no2c CHECK` prints the marker and exits 0",
+          rc == 0 and out.splitlines()[:1] == [onfres.no2cline(
+              name, onfres.NO2C_REASON, env={})[0]], "rc=%d %r" % (rc, out))
+    rc, _ = cli(["no2c", name], {"ONFLY_NOSKIP": "1"})
+    check("and exits 1 when strict mode is on and NO2C=1 is not",
+          rc == 1, "rc=%d" % rc)
+    rc, _ = cli(["bogus"], {})
+    check("and exits 2 on a usage error", rc == 2, "rc=%d" % rc)
 
 
 # --- onfres.unittest_main: unittest's own skips are counted too ------------
@@ -266,10 +349,37 @@ def t_testrun_scan():
           line == "ONFLY test: 3 PASS, 1 SKIP, 0 PENDING, 2 EXEMPT "
                   "(PASS counts targets; SKIP, PENDING and EXEMPT count "
                   "checks; D-548, D-549)", repr(line))
+    check("and matches the form 11.8 reads", COUNTED.match(line) is not None)
 
+    # D-691.
+    check("scan finds a NO2C marker",
+          testrun.scan("ONFRES NO2C fp/SOFT2C: why [D-691]")
+          == ("NO2C", "fp/SOFT2C"))
+    try:
+        same = testrun.closing(3, 1, 0, 2, 0) == line
+        line = testrun.closing(1, 0, 0, 2, 3)
+    except TypeError as exc:
+        same, line = False, "TypeError: %s" % exc
+    check("no NO2C marker leaves the closing line byte for byte", same)
+    check("NO2C markers give the closing line its own form",
+          line == "ONFLY test NO2C=1: 1 PASS, 0 SKIP, 0 PENDING, 2 EXEMPT, "
+                  "3 NO2C (SoftFloat 2c not built: not the full suite; "
+                  "PASS counts targets; SKIP, PENDING, EXEMPT and NO2C "
+                  "count checks; D-548, D-549, D-691)", repr(line))
+    check("which 11.8's pattern does not match",
+          COUNTED.match(line) is None, repr(line[:24]))
+
+
+#: The counted closing line that 11.8 reads (D-548, D-549).  A NO2C=1 run
+#: must never print a line of this form (D-691).
+COUNTED = re.compile(r"^ONFLY test: \d+ PASS", re.M)
 
 MAKEFILE = """\
-.PHONY: good exempt skipper later bad needsgood
+.PHONY: good exempt skipper later bad needsgood twoc needstwoc
+twoc:
+\t@echo "ONFRES NO2C twoc/SOFT2C: not built [D-691]"
+needstwoc: twoc
+\t@echo needstwoc-ran
 good:
 \t@echo good-ran
 exempt:
@@ -304,6 +414,7 @@ def t_testrun_make(make):
         env.pop("MAKEFLAGS", None)
         env.pop("MAKELEVEL", None)
         env.pop("ONFLY_NOSKIP", None)
+        env.pop("NO2C", None)
 
         def drive(targets):
             p = subprocess.run([sys.executable,
@@ -331,6 +442,27 @@ def t_testrun_make(make):
         check("nothing after the failure runs", "later-ran" not in out)
         check("and the failure is named",
               "FAILED bad" in out, repr(out.rstrip().splitlines()[-1]))
+
+        # D-691.  The dependent target is named FIRST, as TESTS names
+        # `shim` before `fp`: in the other order it would get `-o twoc`,
+        # the marker would never print in its sub-make, and this case
+        # would prove nothing about prerequisites.
+        rc, out = drive(["needstwoc", "twoc"])
+        last = out.rstrip().splitlines()[-1]
+        verdict = dict(
+            (m.group(2), m.group(1)) for m in re.finditer(
+                r"^  (\w+)\s+(needstwoc|twoc)\b", out, re.M))
+        check("a NO2C run exits 0", rc == 0, "rc=%d" % rc)
+        check("the marker printed in both sub-makes",
+              out.count("ONFRES NO2C twoc/SOFT2C") == 2,
+              "x%d" % out.count("ONFRES NO2C twoc/SOFT2C"))
+        check("it demotes only the target it names",
+              verdict == {"needstwoc": "PASS", "twoc": "NO2C"}, verdict)
+        check("it is counted once, and the line names the switch",
+              last.startswith("ONFLY test NO2C=1: 1 PASS, 0 SKIP, "
+                              "0 PENDING, 0 EXEMPT, 1 NO2C ("), repr(last))
+        check("no line of a NO2C run has 11.8's counted form",
+              COUNTED.search(out) is None, "")
     finally:
         for name in os.listdir(d):
             os.remove(os.path.join(d, name))
@@ -366,28 +498,65 @@ def t_makefile():
     check("NONET is the 23 targets measured network-free",
           len(nonet) == 23, "%d" % len(nonet))
 
-    # D-679: test-no2c is the subset of NONET that never compiles Berkeley
-    # SoftFloat 2c, for a contributor who does not accept 2c's terms.  It is
-    # pinned by reading the Makefile, not by a list written here: no NO2C
-    # target, and no target or variable it depends on, may name the 2c
-    # sources, flags or derivation.  `shim` is the case that shows why the
-    # walk goes through prerequisites: its own recipe never names 2c, but
-    # it depends on `fp`, which builds a 2c test program.
-    no2c = make_list("NO2C")
-    check("the Makefile defines NO2C", bool(no2c), repr(no2c))
-    if not no2c:
+    # D-679, D-692: FREE2C is the subset of NONET that never had a Berkeley
+    # SoftFloat 2c half.  D-679 named it NO2C; D-692 gave that name to the
+    # switch, because a command-line NO2C=1 overrides any assignment of it.
+    # It is pinned by reading the Makefile, not by a list written here: no
+    # FREE2C target, and no target or variable it depends on, may name the
+    # 2c sources, flags or derivation.  `shim` is the case that shows why
+    # the walk goes through prerequisites: its own recipe never names 2c,
+    # but it depends on `fp`, which builds a 2c test program.
+    free = make_list("FREE2C")
+    check("the Makefile defines FREE2C (D-692)", bool(free), repr(free))
+    check("and no longer assigns NO2C, the switch's name (D-692)",
+          make_list("NO2C") is None, repr(make_list("NO2C")))
+    if not free:
         return
-    check("NO2C is NONET's targets in NONET's order",
-          no2c == [t for t in nonet if t in no2c]
-          and set(no2c) <= set(nonet), " ".join(no2c))
+    check("FREE2C is NONET's targets in NONET's order",
+          free == [t for t in nonet if t in free]
+          and set(free) <= set(nonet), " ".join(free))
     text = io.open(os.path.join(ROOT, "Makefile"), encoding="utf-8").read()
-    touched = [t for t in no2c if uses_2c(text, t, set())]
-    check("no NO2C target compiles SoftFloat 2c, directly or through a "
+    touched = [t for t in free if uses_2c(text, t, set())]
+    check("no FREE2C target compiles SoftFloat 2c, directly or through a "
           "prerequisite", not touched, touched)
     check("the walk finds 2c where it is: shim through fp, and c2c",
           uses_2c(text, "shim", set()) and uses_2c(text, "c2c", set()))
-    left = [t for t in nonet if t not in no2c and not uses_2c(text, t, set())]
-    check("every NONET target free of 2c is in NO2C", not left, left)
+    left = [t for t in nonet if t not in free
+            and not uses_2c(text, t, set())]
+    check("every NONET target free of 2c is in FREE2C", not left, left)
+    # The dry-run walk below cannot run a target whose recipe names
+    # $(MAKE): GNU make executes such a line even under -n.  `onfres` is
+    # the one such target in TESTS, and the walk leaves it out.
+    runs = [t for t in tests if t != "onfres" and any(
+        "$(MAKE)" in r for _, r in rules(text, t))]
+    check("no TESTS recipe but onfres's names $(MAKE)", not runs, runs)
+
+
+# A recipe with a conditional inside it, as D-690's nine are written.  The
+# walk must read BOTH branches: the 2c lines sit in the `else` one.
+FIXTURE = """\
+both: dep
+\t@echo plain
+ifeq ($(NO2C),1)
+\t@echo none
+else
+\t$(CC) $(SF2CFLAGS) -o x_2c.exe x.c
+endif
+\t@echo after
+# a comment among the recipe lines
+\t@echo last
+dep:
+\t@echo dep
+"""
+
+
+def t_walk_fixture():
+    body = " ".join(r for _, r in rules(FIXTURE, "both"))
+    check("the text walk reads both branches of a recipe conditional",
+          uses_2c(FIXTURE, "both", set()), repr(body[:60]))
+    check("and the recipe lines after it, past a comment",
+          "after" in body and "last" in body and "dep" not in body,
+          repr(body[-40:]))
 
 
 # The marks of SoftFloat 2c in the Makefile: its flags and sources
@@ -397,10 +566,17 @@ def t_makefile():
 TWO_C = re.compile(r"SF2C|onf2c|derive2c|SoftFloat-2c|softfloat/c2c")
 
 
+#: Lines GNU make reads among a rule's recipe lines without ending the
+#: recipe: blank lines, comments, and conditional directives (D-690 puts
+#: a recipe's 2c lines in the `else` branch of an `ifeq`).
+BETWEEN = re.compile(r"^(\s*$|#|(ifeq|ifneq|ifdef|ifndef)\b|else\b|endif\b)")
+
+
 def rules(text, name):
     """(prerequisite words, recipe text) for every rule whose target is
-    NAME.  A recipe is the run of tab-indented lines after the rule line,
-    with lines continued by a backslash."""
+    NAME.  A recipe is the tab-indented lines after the rule line, with
+    lines continued by a backslash, read through BETWEEN lines and BOTH
+    branches of a conditional, until any other line."""
     out = []
     lines = text.split("\n")
     head = re.compile(r"^%s\s*:(?!=)(.*)$" % re.escape(name))
@@ -416,9 +592,12 @@ def rules(text, name):
             pre = pre[:-1] + " " + lines[i]
         body = []
         i += 1
-        while i < len(lines) and (lines[i].startswith("\t")
-                                  or (body and body[-1].endswith("\\"))):
-            body.append(lines[i])
+        while i < len(lines):
+            line = lines[i]
+            if line.startswith("\t") or (body and body[-1].endswith("\\")):
+                body.append(line)
+            elif not BETWEEN.match(line):
+                break
             i += 1
         out.append((pre.split(), "\n".join(body)))
     return out
@@ -443,10 +622,154 @@ def uses_2c(text, name, seen):
     return False
 
 
+# --- D-690, D-691: what NO2C=1 makes make do, read from make itself --------
+#
+# The text walk above parses the Makefile; this asks make.  Each TESTS
+# target is dry-run (`make -n -B`) with and without NO2C=1, and the two
+# command lists are compared.  It is the main proof of P-52: the switch
+# removes every 2c command, prints a marker for each 2c half, and leaves
+# every SOFT3E and NATIVE command exactly as the full build has it.
+
+#: P-52 S1: the TESTS targets whose dry run names SoftFloat 2c.  Fixed
+#: here, so that a target which gains a 2c half fails this walk until it
+#: is handled.  `shim` reaches 2c only through `fp`.
+TEN = ("c04mvs", "tt02", "c2c", "shim", "fp", "kernel", "syn", "eng",
+       "req", "golden")
+
+#: The two of them that are 2c and nothing else: under NO2C=1 they run
+#: their marker and nothing more, not even their prerequisites.
+WHOLE = ("c04mvs", "c2c")
+
+#: 2c in an EXPANDED command: its sources, flags, name map and vectors and
+#: their generators, its derivation, the backend's adapter and programs.
+TWO_C_RUN = re.compile(r"softfloat/c2c|SoftFloat-2c|derive2c|gen2c|onf2c"
+                       r"|ONF_FP_SOFT2C|onffp2\.c|_2c\.exe|tstc2c|tst2c"
+                       r"|obj2c")
+TWO_C_EXE = re.compile(r"\S*_2c\.exe")
+MARKER = re.compile(r"tools/onfres\.py no2c (\S+)")
+
+
+def commands(text):
+    """A dry run's commands: backslash continuations joined and runs of
+    whitespace collapsed, since dropping one argument moves make's line
+    split."""
+    out, cur = [], ""
+    for line in text.splitlines():
+        if line.endswith("\\"):
+            cur += line[:-1] + " "
+            continue
+        cmd = " ".join((cur + line).split())
+        cur = ""
+        if cmd:
+            out.append(cmd)
+    if cur.strip():
+        out.append(" ".join(cur.split()))
+    return out
+
+
+def dry(make, target, *assign):
+    """(status, output) of `make -n -B TARGET` in this checkout.
+
+    MAKEFLAGS, MAKELEVEL and NO2C are removed, so an outer NO2C=1 run
+    cannot make the "full" side NO2C too; ONFPLAT, PYTHON and CC are passed
+    on the command line when the outer run set them.  TFPREREQ= keeps the
+    TestFloat build, whose recipe names $(MAKE), out of the dry run (it is
+    SoftFloat 3e's, not 2c's).  ONFLY_DRYRUN stops a nested test_onfres
+    from walking again, should a recipe ever run it.
+    """
+    env = dict(os.environ)
+    for k in ("MAKEFLAGS", "MAKELEVEL", "MFLAGS", "NO2C", "ONFLY_NOSKIP"):
+        env.pop(k, None)
+    env["ONFLY_DRYRUN"] = "1"
+    cmd = [make, "-n", "-B", "--no-print-directory", "TFPREREQ="]
+    cmd += ["%s=%s" % (k, os.environ[k]) for k in ("ONFPLAT", "PYTHON", "CC")
+            if k in os.environ]
+    p = subprocess.run(cmd + list(assign) + [target], cwd=ROOT, env=env,
+                       stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    return p.returncode, p.stdout.decode("utf-8", "replace")
+
+
+def expect_no2c(full):
+    """The full dry run's commands as NO2C=1 must give them: a 2c build or
+    run is gone, and a comparator keeps its other programs."""
+    out = []
+    for c in full:
+        s = " ".join(TWO_C_EXE.sub("", c).split())
+        if TWO_C_RUN.search(s):
+            continue
+        if s != c and ".exe" not in s:
+            continue
+        out.append(s)
+    return out
+
+
+def t_dryrun(make):
+    why = None
+    if os.environ.get("ONFLY_DRYRUN") == "1":
+        why = "run inside one of this walk's own dry runs"
+    elif not make:
+        why = "no MAKE program given on the command line"
+    if why:
+        text, fatal = onfres.skipline("onfres/no2c-dry-run", why)
+        print("  " + text)
+        if fatal:
+            check("NO2C dry-run walk (strict mode requires a MAKE)", False)
+        return
+    halves = set(getattr(onfres, "NO2C_HALVES", ()))
+    tests = [t for t in make_list("TESTS") or [] if t != "onfres"]
+    named, leaks, drift, same, marks_bad, seen = [], [], [], [], [], set()
+    for t in tests:
+        rc1, out1 = dry(make, t)
+        rc2, out2 = dry(make, t, "NO2C=1")
+        if rc1 or rc2:
+            check("dry run of %s exits 0 both ways" % t, False,
+                  "rc=%d,%d %r" % (rc1, rc2, out2[-120:]))
+            continue
+        full, sw = commands(out1), commands(out2)
+        if any(TWO_C_RUN.search(c) for c in full):
+            named.append(t)
+        if any(TWO_C_RUN.search(c) for c in sw):
+            leaks.append(t)
+        marks = [m.group(1) for c in sw for m in MARKER.finditer(c)]
+        seen.update(marks)
+        want = [] if t in WHOLE else expect_no2c(full)
+        if [c for c in sw if not MARKER.search(c)] != want:
+            drift.append(t)
+        if t not in TEN and sw == full:
+            same.append(t)
+        own = "%s/SOFT2C" % t
+        if (bool(marks) != (t in TEN) or not set(marks) <= halves
+                or (own in marks) != (own in halves)):
+            marks_bad.append((t, marks))
+    check("without NO2C=1, exactly P-52's ten targets name 2c",
+          named == [t for t in tests if t in TEN] and len(named) == 10,
+          named)
+    check("with NO2C=1, no TESTS target names 2c", not leaks, leaks)
+    check("with NO2C=1, every other command is the full build's, less "
+          "its 2c programs; c04mvs and c2c run only their marker",
+          not drift, drift)
+    check("the %d targets free of 2c dry-run identically both ways"
+          % (len(tests) - 10), len(same) == len(tests) - 10, len(same))
+    check("each target with a 2c half prints its declared NO2C marker",
+          not marks_bad, marks_bad)
+    check("the markers printed are exactly onfres's nine halves",
+          seen == halves and len(seen) == 9, sorted(seen))
+    rc, out = dry(make, "layout", "NO2C=yes")
+    check("NO2C=yes stops make before anything is built",
+          rc != 0 and "NO2C is 'yes'" in out, "rc=%d %r" % (rc, out[-90:]))
+    rc0, zero = dry(make, "fp", "NO2C=0")
+    rc1, full = dry(make, "fp")
+    check("NO2C=0 is the full build", rc0 == 0 and zero == full,
+          "rc=%d" % rc0)
+
+
 def main(argv):
     make = argv[1] if len(argv) > 1 else None
     t_onfres()
+    t_no2c()
     t_makefile()
+    t_walk_fixture()
+    t_dryrun(make)
     t_unittest()
     t_lastln()
     t_testrun_scan()

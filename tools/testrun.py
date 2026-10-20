@@ -18,8 +18,25 @@ a line of the sub-make's output.
 
 A target that fails stops the run, as make itself would, and its status is
 the runner's.  A target already made is passed to every later sub-make as
-`-o <target>`, so that a phony prerequisite (`shim` needs `fp`, `req` needs
-`eng`) is not run a second time and its markers are not counted twice.
+`-o <target>`, so that a phony prerequisite made earlier in the list (`req`
+needs `eng`) is not run a second time and its markers are not counted
+twice.  One made LATER still runs inside the earlier target's sub-make:
+`shim` comes before `fp` in TESTS, so `fp` runs twice (D-549).
+
+THE NO2C KIND (D-691)
+
+With `NO2C=1` each SoftFloat 2c half left out prints `ONFRES NO2C
+<target>/SOFT2C`.  Such a marker demotes a sub-make's target only when the
+check name's prefix before `/` equals that target, so `fp`'s marker inside
+`shim`'s sub-make leaves `shim` a PASS: its own comparison ran whole.  A
+SKIP still demotes whatever sub-make prints it, and wins over NO2C.  The
+NO2C count is of distinct check names, so `fp/SOFT2C` counts once though
+it prints twice.  A run that saw any NO2C marker closes
+
+    ONFLY test NO2C=1: <p> PASS, <s> SKIP, <q> PENDING, <e> EXEMPT, <n> NO2C
+
+and never with a line matching `^ONFLY test: <n> PASS`, the form 11.8
+reads; a run that saw none closes exactly as before.
 
 Contract: `python tools/testrun.py MAKE TARGET...`.  Output: every byte the
 sub-makes write, unchanged, then a per-target table, the checks that did
@@ -32,7 +49,8 @@ import re
 import subprocess
 import sys
 
-MARK = re.compile(r"\bONFRES (SKIP|EXEMPT|PENDING) (\S+): ")
+MARK = re.compile(r"\bONFRES (SKIP|EXEMPT|PENDING|NO2C) (\S+): ")
+KINDS = ("SKIP", "PENDING", "EXEMPT", "NO2C")
 
 
 def scan(line):
@@ -41,11 +59,27 @@ def scan(line):
     return (m.group(1), m.group(2)) if m else None
 
 
-def closing(npass, nskip, npend, nexempt):
-    """The closing line, the one 11.8 reads."""
-    return ("ONFLY test: %d PASS, %d SKIP, %d PENDING, %d EXEMPT "
-            "(PASS counts targets; SKIP, PENDING and EXEMPT count checks; "
-            "D-548, D-549)" % (npass, nskip, npend, nexempt))
+def closing(npass, nskip, npend, nexempt, nno2c=0):
+    """The closing line: the one 11.8 reads, or with NO2C markers its
+    NO2C=1 form, which 11.8's pattern does not match (D-691)."""
+    if not nno2c:
+        return ("ONFLY test: %d PASS, %d SKIP, %d PENDING, %d EXEMPT "
+                "(PASS counts targets; SKIP, PENDING and EXEMPT count "
+                "checks; D-548, D-549)" % (npass, nskip, npend, nexempt))
+    return ("ONFLY test NO2C=1: %d PASS, %d SKIP, %d PENDING, %d EXEMPT, "
+            "%d NO2C (SoftFloat 2c not built: not the full suite; PASS "
+            "counts targets; SKIP, PENDING, EXEMPT and NO2C count checks; "
+            "D-548, D-549, D-691)"
+            % (npass, nskip, npend, nexempt, nno2c))
+
+
+def verdict(target, marks):
+    """PASS, SKIP or NO2C for a target whose sub-make exited 0."""
+    if any(k == "SKIP" for k, _ in marks):
+        return "SKIP"
+    if any(k == "NO2C" and c.split("/")[0] == target for k, c in marks):
+        return "NO2C"
+    return "PASS"
 
 
 def make_one(make, target, done, sink):
@@ -74,7 +108,13 @@ def report(rows, marks, say):
         say("  %-6s %-10s %s" % (verdict, target, extra))
     if marks:
         say("ONFLY test: checks that did not run")
+        listed = set()
         for kind, check in marks:
+            # A NO2C marker can print in two sub-makes (`fp` inside
+            # `shim`'s); it is listed, like it is counted, once.
+            if kind == "NO2C" and check in listed:
+                continue
+            listed.add(check)
             say("  %-7s %s" % (kind, check))
 
 
@@ -94,24 +134,25 @@ def main(argv):
     for target in targets:
         status, marks = make_one(make, target, done, sink)
         allmarks += marks
-        counts = [(k, sum(1 for m in marks if m[0] == k))
-                  for k in ("SKIP", "PENDING", "EXEMPT")]
+        counts = [(k, sum(1 for m in marks if m[0] == k)) for k in KINDS]
         if status != 0:
             rows.append((target, "FAIL", counts))
             report(rows, allmarks, say)
             say("ONFLY test: FAILED %s (exit %d); later targets not run"
                 % (target, status))
             return status
-        skipped = dict(counts)["SKIP"] > 0
-        rows.append((target, "SKIP" if skipped else "PASS", counts))
-        if not skipped:
+        kind = verdict(target, marks)
+        rows.append((target, kind, counts))
+        if kind == "PASS":
             npass += 1
         done.append(target)
 
     report(rows, allmarks, say)
     total = dict((k, sum(1 for m in allmarks if m[0] == k))
                  for k in ("SKIP", "PENDING", "EXEMPT"))
-    say(closing(npass, total["SKIP"], total["PENDING"], total["EXEMPT"]))
+    nno2c = len(set(c for k, c in allmarks if k == "NO2C"))
+    say(closing(npass, total["SKIP"], total["PENDING"], total["EXEMPT"],
+                nno2c))
     return 0
 
 
