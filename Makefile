@@ -184,7 +184,7 @@ GENERATED = generated/onfcom.h generated/onfcom.c generated/ONFCOM.cpy generated
 # from tools/genint.py instead.
 IVEC = generated/onfivec.h
 
-.PHONY: all test test-nonet quick onfres generate lint liclint namelint ntclint reglint netpic demo-linux demo-windows clean units layout fp kernel decode golden syn tt01 tt0132 tt02 c2c tf2 sfs shim testfloat c04 c04mvs col80 prep runner eng req sub mvsrun names fixtures fixtures-check
+.PHONY: all test test-nonet test-no2c quick onfres generate lint liclint namelint ntclint reglint netpic demo-linux demo-windows clean units layout fp kernel decode golden syn tt01 tt0132 tt02 c2c tf2 sfs shim testfloat c04 c04mvs col80 prep runner eng req sub mvsrun names fixtures fixtures-check
 
 all: test
 
@@ -937,6 +937,23 @@ NONET = onfres lint liclint namelint ntclint col80 c04 c04mvs sub mvsjcc \
 
 test-nonet:
 	$(PYTHON) tools/testrun.py "$(MAKE)" $(NONET)
+
+# D-679.  The subset of NONET that never compiles Berkeley SoftFloat 2c,
+# whose terms ask the user to accept all losses and indemnify its author
+# (THIRD_PARTY_NOTICES.md, section 3).  It is for a contributor who will
+# not accept those terms: the lints, the Python checks of the recorded
+# evidence, the layout, the integer units and the decoder with the native
+# kernel.  It is NOT the engine's test: fp, kernel, syn, eng, golden and
+# `quick` all build a 2c engine and compare it with the other two backends,
+# so a change to the engine still needs `test-nonet`.  A full switch that
+# drops 2c from those targets too is a later proposal (P-52).
+# tests/test_onfres.py reads this Makefile to hold the list to NONET's
+# order and to prove that no target here reaches 2c.
+NO2C = onfres lint liclint namelint ntclint col80 c04 sub mvsjcc ic3270 \
+       tt01 sfs layout units decode
+
+test-no2c:
+	$(PYTHON) tools/testrun.py "$(MAKE)" $(NO2C)
 
 # P-41 E9.  Build the engine and check the committed Section 8.4
 # fingerprints, with no lab: needs only the two distributed networks.

@@ -13,6 +13,25 @@ x86-64 laptop.
 
 ## Unreleased
 
+### 2026-10-20
+
+- Easier to join: the README opens with a summary line, the live view and a
+  "Get involved" section; CONTRIBUTING.md opens with a welcome, says what
+  needs no decision, who reviews pull requests, how contributors are
+  credited and how they may use AI tools; `ROADMAP.md` lists the open
+  areas; the first reply on a `good first issue` or a first pull request
+  comes within 3 days (P-51, D-677, D-680 to D-686).
+- `make test-no2c` runs the 15 checks that never compile Berkeley SoftFloat
+  Release 2c, for anyone who does not accept its terms; it does not test
+  the engine (D-679).
+- A dev container for GitHub Codespaces, pinned by digest, fetches and
+  checks the two networks; a sixth CI job runs it on every push (D-678).
+- The tester round for `v0.5.1` is public: one issue per setup, and a
+  tracking issue (D-676, D-683, D-687).
+- The Pages site has a descriptive title and description, a canonical link
+  and a link card; `CITATION.cff` and `.zenodo.json` cite Shiu et al. by DOI
+  (D-688).
+
 ### 2026-09-27
 
 - A GCCMVS code-generation fault, found in 2026-09 and worked around then,

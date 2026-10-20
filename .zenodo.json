@@ -32,7 +32,17 @@
       "resource_type": "software"
     },
     {
+      "identifier": "https://mertefesensoy.github.io/FlyBatch/",
+      "relation": "isDocumentedBy",
+      "resource_type": "other"
+    },
+    {
       "identifier": "10.1016/j.cell.2026.08.015",
+      "relation": "cites",
+      "resource_type": "publication-article"
+    },
+    {
+      "identifier": "10.1038/s41586-024-07763-9",
       "relation": "cites",
       "resource_type": "publication-article"
     },

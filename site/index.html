@@ -3,8 +3,23 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>FlyBatch</title>
-<meta name="description" content="The sugar-to-feeding circuit of the male fruit fly, 501 neurons from the MaleCNS v1.0 connectome, in a portable C89 engine with a COBOL batch driver, giving the same fingerprints on x86-64, Linux s390x under QEMU and MVS 3.8j under Hercules. It has not run on IBM Z hardware.">
+<title>FlyBatch: a fruit fly circuit in C89 and COBOL, from x86-64 to emulated MVS 3.8j</title>
+<!-- SRS D-688: a description short enough that a search result keeps its
+     no-access sentence (CAN-01, CAN-03), a canonical address, and a link
+     card whose image carries the MaleCNS attribution inside it (P-41 7.1
+     rule 10): the D-666 social preview, docs/media/social-preview.png. -->
+<meta name="description" content="A 501-neuron fruit fly subcircuit (MaleCNS v1.0) in C89 with a COBOL batch driver, run on x86-64 and emulated MVS 3.8j. It has not run on IBM Z hardware.">
+<link rel="canonical" href="https://mertefesensoy.github.io/FlyBatch/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="FlyBatch">
+<meta property="og:title" content="FlyBatch: a fruit fly circuit in C89 and COBOL, from x86-64 to emulated MVS 3.8j">
+<meta property="og:description" content="A 501-neuron fruit fly subcircuit (MaleCNS v1.0) in C89 with a COBOL batch driver, run on x86-64 and emulated MVS 3.8j. It has not run on IBM Z hardware.">
+<meta property="og:url" content="https://mertefesensoy.github.io/FlyBatch/">
+<meta property="og:image" content="https://mertefesensoy.github.io/FlyBatch/media/social-preview.png">
+<meta property="og:image:width" content="1280">
+<meta property="og:image:height" content="640">
+<meta property="og:image:alt" content="The FlyBatch logo and name beside a drawing of the 501-neuron subcircuit, with the line: the sugar-to-feeding circuit of the male fruit fly, a 501-neuron subcircuit of the MaleCNS v1.0 connectome, in a portable C89 engine with a COBOL batch driver.">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="style.css">
 <!-- SRS D-657: a fruit fly on a stack of punched cards, the fly as a batch job. -->
 <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
@@ -35,7 +50,7 @@
   <div class="wrap hero-grid">
     <div>
       <p class="kicker">A fruit fly circuit as a batch job</p>
-      <h1>One fruit fly circuit. The same answer on a laptop, on emulated s390x and on emulated MVS 3.8j.</h1>
+      <h1>FlyBatch: one fruit fly circuit. The same answer on a laptop, on emulated s390x and on emulated MVS 3.8j.</h1>
       <!-- CAN-01 -->
       <p class="lead">FlyBatch simulates the sugar-to-feeding circuit of the male fruit fly: a 501-neuron subcircuit taken from the MaleCNS v1.0 connectome, run with the leaky integrate-and-fire model of Shiu et al. (2024) in a portable C89 engine with a COBOL batch driver.</p>
       <p class="cta">

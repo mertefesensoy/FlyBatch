@@ -1,0 +1,18 @@
+// FlyBatch dev container (SRS D-678): Linux x86-64, Python 3.13, the
+// image's gcc and make.  The image is pinned by digest, as the workflows
+// pin actions to full SHAs, and the `devcontainer` CI job runs the same
+// image and setup script on every push.  A green job is a smoke test on
+// that image's gcc, never determinism-matrix evidence (SRS D-586, VL-142).
+{
+  "name": "FlyBatch",
+  "image": "mcr.microsoft.com/devcontainers/python:3.13-trixie@sha256:5ea7e72d3c1beb6aefdfea8001483345c39af4898e22f2c543deb6a00802ede4",
+  "postCreateCommand": "sh .devcontainer/setup.sh",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-vscode.cpptools"
+      ]
+    }
+  }
+}

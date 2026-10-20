@@ -10,6 +10,8 @@
   <a href="https://github.com/mertefesensoy/FlyBatch/releases"><img src="https://img.shields.io/github/v/release/mertefesensoy/FlyBatch?include_prereleases" alt="Latest release, pre-releases included"></a>
 </p>
 
+<p align="center"><em>A 501-neuron subcircuit of the fruit fly's sugar-to-feeding circuit, in C89 and COBOL, with identical golden fingerprints from x86-64 to emulated MVS 3.8j.</em></p>
+
 FlyBatch simulates the sugar-to-feeding circuit of the male fruit fly: a
 501-neuron subcircuit taken from the MaleCNS v1.0 connectome, run with the
 leaky integrate-and-fire model of Shiu et al. (2024) in a portable C89 engine
@@ -25,16 +27,40 @@ emulator.
 > running under QEMU, both on one x86-64 laptop. Nothing here has run on
 > z/OS or on IBM CICS Transaction Server.
 
-The specification, every decision and every verification limit are in
-[`docs/ONFLY-SRS.md`](docs/ONFLY-SRS.md). A shorter account is
-[`docs/overview.md`](docs/overview.md), and [`docs/README.md`](docs/README.md)
-suggests where to start reading.
+![Spikes spreading through the subcircuit over 60 ms, with MN9 crossing threshold](docs/media/onfly-live-short.gif)
 
-FlyBatch was called ONFLY until 2026-09-27 (SRS D-637). The engine and
-the COBOL driver keep their MVS program names, ONFLYENG and ONFLYDRV,
-the messages keep their ONF prefix, and the specification keeps its file
-name, because those names are written into the job control, the
-requirements and every recorded listing (D-638).
+The live view: spikes drawn over the neurons' positions while the engine
+streams them, here 60 ms of sugar at 40 Hz on x86-64.
+
+## Get involved
+
+FlyBatch has one maintainer and no outside contributors yet. Three ways in:
+
+| If you have | Do this |
+|---|---|
+| An hour and a computer | Run the tester task on your own setup and report what you get, matching or not, as [`docs/testers.md`](docs/testers.md) describes. The setups nobody has tried yet, such as macOS, Linux on arm64 and other compilers, each have an issue labelled [`help wanted`](https://github.com/mertefesensoy/FlyBatch/labels/help%20wanted). |
+| An afternoon | Pick an issue labelled [`good first issue`](https://github.com/mertefesensoy/FlyBatch/contribute). Each one says what done looks like and how to check it. |
+| A question or an idea | Ask in [Discussions](https://github.com/mertefesensoy/FlyBatch/discussions). |
+
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/mertefesensoy/FlyBatch)
+
+**The quickest start is a dev container.** It installs the pinned Python
+packages and fetches and checks the two network files, so
+`make ONFPLAT=x86l PYTHON=python quick` checks the 19 golden fingerprints
+straight away; in a GitHub Codespace, nothing is installed on your own
+machine. CI builds the same container on every push.
+
+**If you do not accept SoftFloat 2c's terms** (see [Licence](#licence)),
+`make test-no2c` runs only the checks that never compile it: the lints, the
+checks of the recorded evidence, the record layout and the decoder. It does
+not test the engine.
+
+An issue labelled `good first issue`, and your first pull request, get a
+first reply within 3 days; everything else within 14 days
+([`SUPPORT.md`](SUPPORT.md)). Testers and contributors are credited by name,
+with their consent. [`CONTRIBUTING.md`](CONTRIBUTING.md) says how, and
+[`ROADMAP.md`](ROADMAP.md) lists the open areas one maintainer cannot cover
+alone.
 
 ## What it looks like
 
@@ -51,7 +77,11 @@ platforms, the engine and its float layer, one timestep of the model, the
 MVS job and the determinism matrix. [`docs/FAQ.md`](docs/FAQ.md) answers the
 questions people ask first, and [`docs/writeup.md`](docs/writeup.md) tells
 the story of the byte comparison and the compiler fault it found; every
-paragraph in both cites the evidence it rests on.
+paragraph in both cites the evidence it rests on. The specification, every
+decision and every verification limit are in
+[`docs/ONFLY-SRS.md`](docs/ONFLY-SRS.md); a shorter account is
+[`docs/overview.md`](docs/overview.md), and [`docs/README.md`](docs/README.md)
+suggests where to start reading.
 
 **One golden request, three floating-point builds.** The same request, G-16,
 through the native, SoftFloat 3e and SoftFloat 2c engines, each printing the
@@ -64,11 +94,6 @@ from `tools/demo/demo.sh` (the replayable recording is
 [`docs/media/demo-linux.cast`](docs/media/demo-linux.cast)). The same script
 recorded by VHS on Windows with the recorded MinGW gcc 6.3.0 toolchain is
 [`docs/media/demo-windows.gif`](docs/media/demo-windows.gif).
-
-**The model running.** The live view draws spikes over the neurons' positions
-while the engine streams them, here 60 ms of sugar at 40 Hz on x86-64:
-
-![Spikes spreading through the subcircuit over 60 ms, with MN9 crossing threshold](docs/media/onfly-live-short.gif)
 
 **On emulated MVS 3.8j.** The same request type answered through a 3270
 transaction under INTERCOMM, a transaction monitor that is not CICS, and the
@@ -201,6 +226,12 @@ JCC. macOS and arm64 are untested.
 
 ## Repository map
 
+FlyBatch was called ONFLY until 2026-09-27 (SRS D-637). The engine and
+the COBOL driver keep their MVS program names, ONFLYENG and ONFLYDRV,
+the messages keep their ONF prefix, and the specification keeps its file
+name, because those names are written into the job control, the
+requirements and every recorded listing (D-638).
+
 | Path | What it holds |
 |---|---|
 | `engine/` | The C89 engine, ONFLYENG |
@@ -259,6 +290,11 @@ A.1), and the agent's own proposals are kept apart (Appendix A.2) until the
 owner decides them. A result is recorded only from a command actually run, with
 its output, its platform and what it does not prove (Appendix D). Commits carry
 the owner's name alone (D-478).
+
+Pull requests from people are reviewed by people: the owner reads, decides
+and merges every pull request, and once a platform has a steward, the
+steward reviews that platform's pull requests first (D-682). The CI checks
+run on every pull request.
 
 ## Citing
 

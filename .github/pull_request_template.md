@@ -21,6 +21,9 @@
 - [ ] Nothing under `third_party/` is edited, and nothing under `generated/`
       is edited by hand.
 - [ ] `make test-nonet` (or `test`) passes with `ONFLY_NOSKIP=1`.
-- [ ] A meaningful change carries an implementation doc from
-      `docs/implementations/_TEMPLATE.md`.
+- [ ] A change to code, tests, the build, CI or a recorded result carries an
+      implementation doc from `docs/implementations/_TEMPLATE.md`; a wording
+      or link fix says here what was checked instead (SRS D-685).
+- [ ] If AI tools helped with this change, it says so here, and I can
+      explain every line (SRS D-686).
 - [ ] I contribute this under the terms in `CONTRIBUTING.md`.

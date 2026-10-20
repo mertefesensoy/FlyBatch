@@ -1,9 +1,11 @@
 # Testing the FlyBatch release candidate
 
-Thank you for testing. This page is for the few people invited to try
-FlyBatch's release candidate, `v0.5.1-rc.1`, before its first release. It is
-public so that anyone can follow the same steps; only the invitations are
-private (SRS D-626, P-41 W1a).
+Thank you for testing. This page is for anyone who tries FlyBatch's release
+candidate, `v0.5.1-rc.1`, before its first release. Each setup worth testing
+(a platform, a compiler, a Python version, or a reading task) has its own
+issue labelled `help wanted`, and one tracking issue lists them all: pick
+one, say in it that you are taking it, and follow the task it names (SRS
+D-676, P-41 W1a).
 
 You get **one task**, A or B. Each takes about an hour. Report what you
 find as an issue, even if everything worked: a clean result from someone
@@ -23,7 +25,8 @@ contains Berkeley SoftFloat Release 2c, whose terms restrict use to those who
 accept all losses without recompense and who indemnify its author and the
 International Computer Science Institute. They are in
 `THIRD_PARTY_NOTICES.md`, section 3. If you do not accept them, stop here and
-do Task B instead.
+do Task B instead, or run `make test-no2c`, which never compiles 2c but does
+not test the engine either (SRS D-679).
 
 1. Clone the release candidate into a new directory:
 
@@ -107,8 +110,9 @@ Look for any sentence that:
   emulation, or correctness where only agreement was shown;
 * is unclear to someone who has not read the specification.
 
-Report what you find as an ordinary issue, quoting the sentence and the
-file. "Nothing found" is a useful report too.
+Report what you find as a comment on the reading issue you took from the
+tester matrix, quoting the sentence and the file. "Nothing found" is a
+useful report too.
 
 ## Questions
 

@@ -16,8 +16,11 @@ rm -rf "$out"
 mkdir -p "$out/media" "$out/diagrams"
 cp "$here/index.html" "$here/style.css" "$here/favicon.svg" \
    "$here/favicon-32.png" "$here/apple-touch-icon.png" "$out/"
+# social-preview.png is linked by an absolute og:image address, which the
+# check below does not see, so it is listed here by name (D-688).
 for f in srext-network.png demo-linux.gif demo-windows.gif \
-         mvs-report-g17.png mvs-3270-g17.png onfly-mvs-live.gif; do
+         mvs-report-g17.png mvs-3270-g17.png onfly-mvs-live.gif \
+         social-preview.png; do
     cp "$root/docs/media/$f" "$out/media/"
 done
 cp "$root"/docs/diagrams/*.svg "$out/diagrams/"

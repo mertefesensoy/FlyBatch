@@ -8,7 +8,24 @@ authors:
   - family-names: Şensoy
     given-names: Mert Efe
 repository-code: "https://github.com/mertefesensoy/FlyBatch"
+url: "https://mertefesensoy.github.io/FlyBatch/"
 license: MIT
+keywords:
+  - c89
+  - cobol
+  - computational-neuroscience
+  - connectome
+  - deterministic-simulation
+  - drosophila
+  - hercules
+  - jcl
+  - mainframe
+  - mvs
+  - mvs38j
+  - s390x
+  - softfloat
+  - spiking-neural-network
+  - tk5
 abstract: >-
   FlyBatch simulates the sugar-to-feeding circuit of the male fruit fly: a
   501-neuron subcircuit taken from the MaleCNS v1.0 connectome, run with the
@@ -49,6 +66,7 @@ references:
     start: 210
     end: 219
     year: 2024
+    doi: 10.1038/s41586-024-07763-9
   - type: article
     authors:
       - family-names: Dorkenwald

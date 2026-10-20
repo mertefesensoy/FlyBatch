@@ -366,6 +366,82 @@ def t_makefile():
     check("NONET is the 23 targets measured network-free",
           len(nonet) == 23, "%d" % len(nonet))
 
+    # D-679: test-no2c is the subset of NONET that never compiles Berkeley
+    # SoftFloat 2c, for a contributor who does not accept 2c's terms.  It is
+    # pinned by reading the Makefile, not by a list written here: no NO2C
+    # target, and no target or variable it depends on, may name the 2c
+    # sources, flags or derivation.  `shim` is the case that shows why the
+    # walk goes through prerequisites: its own recipe never names 2c, but
+    # it depends on `fp`, which builds a 2c test program.
+    no2c = make_list("NO2C")
+    check("the Makefile defines NO2C", bool(no2c), repr(no2c))
+    if not no2c:
+        return
+    check("NO2C is NONET's targets in NONET's order",
+          no2c == [t for t in nonet if t in no2c]
+          and set(no2c) <= set(nonet), " ".join(no2c))
+    text = io.open(os.path.join(ROOT, "Makefile"), encoding="utf-8").read()
+    touched = [t for t in no2c if uses_2c(text, t, set())]
+    check("no NO2C target compiles SoftFloat 2c, directly or through a "
+          "prerequisite", not touched, touched)
+    check("the walk finds 2c where it is: shim through fp, and c2c",
+          uses_2c(text, "shim", set()) and uses_2c(text, "c2c", set()))
+    left = [t for t in nonet if t not in no2c and not uses_2c(text, t, set())]
+    check("every NONET target free of 2c is in NO2C", not left, left)
+
+
+# The marks of SoftFloat 2c in the Makefile: its flags and sources
+# (SF2CFLAGS, SF2CSRC, SF2CINC), its name map (generated/onf2cnm.h), its
+# derivation (softfloat/derive2c.py into softfloat/c2c) and its upstream
+# directory.  C2CFLAGS is not one: it is the plain C89 flag set.
+TWO_C = re.compile(r"SF2C|onf2c|derive2c|SoftFloat-2c|softfloat/c2c")
+
+
+def rules(text, name):
+    """(prerequisite words, recipe text) for every rule whose target is
+    NAME.  A recipe is the run of tab-indented lines after the rule line,
+    with lines continued by a backslash."""
+    out = []
+    lines = text.split("\n")
+    head = re.compile(r"^%s\s*:(?!=)(.*)$" % re.escape(name))
+    i = 0
+    while i < len(lines):
+        m = head.match(lines[i])
+        if not m:
+            i += 1
+            continue
+        pre = m.group(1)
+        while pre.endswith("\\") and i + 1 < len(lines):
+            i += 1
+            pre = pre[:-1] + " " + lines[i]
+        body = []
+        i += 1
+        while i < len(lines) and (lines[i].startswith("\t")
+                                  or (body and body[-1].endswith("\\"))):
+            body.append(lines[i])
+            i += 1
+        out.append((pre.split(), "\n".join(body)))
+    return out
+
+
+def uses_2c(text, name, seen):
+    """True if target NAME, or anything it depends on, names SoftFloat 2c.
+    A `$(VAR)` prerequisite is expanded through make_list; every word is
+    then checked against TWO_C and followed as a target in its own right."""
+    if name in seen:
+        return False
+    seen.add(name)
+    for prereqs, recipe in rules(text, name):
+        if TWO_C.search(recipe):
+            return True
+        for word in prereqs:
+            v = re.match(r"^\$\((\w+)\)$", word)
+            words = (make_list(v.group(1)) or []) if v else [word]
+            for w in words:
+                if TWO_C.search(w) or uses_2c(text, w, seen):
+                    return True
+    return False
+
 
 def main(argv):
     make = argv[1] if len(argv) > 1 else None

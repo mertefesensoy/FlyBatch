@@ -15,6 +15,9 @@ channel below is answered by the maintainer personally.
 | A conduct report | Email, as [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) says |
 
 The maintainer aims to answer each issue within **14 days** (SRS D-580).
+An issue labelled `good first issue`, and the first pull request of anyone
+who has not contributed before, get a first reply within **3 days** (SRS
+D-680). A first reply says what happens next; it is not always a decision.
 
 ## What is supported
 
