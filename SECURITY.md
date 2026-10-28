@@ -37,5 +37,5 @@ was not meant to.
 
 ## Supported versions
 
-There is no release yet. Until the first one, only the `main` branch is
-supported.
+The latest release, `v0.5.1`, and the `main` branch are supported (SRS
+D-695).

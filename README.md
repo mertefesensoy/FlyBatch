@@ -7,7 +7,7 @@
   <a href="https://github.com/mertefesensoy/FlyBatch/actions/workflows/ci.yml"><img src="https://github.com/mertefesensoy/FlyBatch/actions/workflows/ci.yml/badge.svg" alt="CI status" title="CI runs the checks that need no network file, and checks the 19 golden fingerprints, on GitHub's own gcc: a smoke test, not the determinism matrix (SRS VL-142)"></a>
   <a href="https://mertefesensoy.github.io/FlyBatch/"><img src="https://github.com/mertefesensoy/FlyBatch/actions/workflows/pages.yml/badge.svg" alt="Site deploy status"></a>
   <a href="LICENSE"><img src="https://img.shields.io/github/license/mertefesensoy/FlyBatch" alt="Licence: MIT"></a>
-  <a href="https://github.com/mertefesensoy/FlyBatch/releases"><img src="https://img.shields.io/github/v/release/mertefesensoy/FlyBatch?include_prereleases" alt="Latest release, pre-releases included"></a>
+  <a href="https://github.com/mertefesensoy/FlyBatch/releases"><img src="https://img.shields.io/github/v/release/mertefesensoy/FlyBatch" alt="Latest release"></a>
 </p>
 
 <p align="center"><em>A 501-neuron subcircuit of the fruit fly's sugar-to-feeding circuit, in C89 and COBOL, with identical golden fingerprints from x86-64 to emulated MVS 3.8j.</em></p>
@@ -158,9 +158,8 @@ python tests/run_mvsjcc.py
 
 **2. Build and run the x86-64 suite.** The suite needs the two network
 files, `srext` (171,768 bytes) and `path` (951,200 bytes), which are not in
-git. They are published as assets of the release candidate `v0.5.1-rc.1`
-for its testers, and will be of the first release, `v0.5.1` (SRS D-626,
-D-634); their digests are in
+git. They are published as assets of the first release, `v0.5.1` (SRS
+D-634, D-695); their digests are in
 [`data/networks/MANIFEST.json`](data/networks/MANIFEST.json).
 [`REPLICATING.md`](REPLICATING.md) gives the commands to fetch, check and
 place them and to run the suite on Windows with MinGW gcc 6.3.0 or on Linux
@@ -302,8 +301,8 @@ run on every pull request.
 ## Citing
 
 Please cite FlyBatch as its citation file, [`CITATION.cff`](CITATION.cff),
-gives it (GitHub shows it as "Cite this repository"), with the commit you used;
-no release is archived yet. Cite the work it builds on too: the MaleCNS
+gives it (GitHub shows it as "Cite this repository"), with the release,
+`v0.5.1`, or the commit you used. Cite the work it builds on too: the MaleCNS
 connectome (Berg, S. et al., *Cell* 189:5504-5526.e15, 2026,
 doi:10.1016/j.cell.2026.08.015) and the model (Shiu, P. K. et al., *Nature*
 634:210-219, 2024).

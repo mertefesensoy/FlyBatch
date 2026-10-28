@@ -1,11 +1,10 @@
-# Testing the FlyBatch release candidate
+# Testing a FlyBatch release
 
-Thank you for testing. This page is for anyone who tries FlyBatch's release
-candidate, `v0.5.1-rc.1`, before its first release. Each setup worth testing
-(a platform, a compiler, a Python version, or a reading task) has its own
-issue labelled `help wanted`, and one tracking issue lists them all: pick
-one, say in it that you are taking it, and follow the task it names (SRS
-D-676, P-41 W1a).
+Thank you for testing. This page is for anyone who tries FlyBatch's first
+release, `v0.5.1`. Each setup worth testing (a platform, a compiler, a
+Python version, or a reading task) has its own issue labelled `help wanted`,
+and one tracking issue lists them all: pick one, say in it that you are
+taking it, and follow the task it names (SRS D-676, D-695, P-41 W1a).
 
 You get **one task**, A or B. Each takes about an hour. Report what you
 find as an issue, even if everything worked: a clean result from someone
@@ -30,11 +29,11 @@ the engine on SoftFloat 3e and native only (SRS D-692). Its closing line
 starts `ONFLY test NO2C=1:`. Post it as that: it is not the full result this
 round asks for, and it cannot stand for the SoftFloat 2c row.
 
-1. Clone the release candidate into a new directory:
+1. Clone the release into a new directory:
 
-       git clone https://github.com/mertefesensoy/FlyBatch.git flybatch-rc
-       cd flybatch-rc
-       git checkout v0.5.1-rc.1
+       git clone https://github.com/mertefesensoy/FlyBatch.git flybatch-rel
+       cd flybatch-rel
+       git checkout v0.5.1
 
 2. Make a fresh virtual environment and install `requirements.txt` into it,
    nothing else:
@@ -44,18 +43,18 @@ round asks for, and it cannot stand for the SoftFloat 2c row.
        python -m pip install -r requirements.txt
 
 3. Download the two network files and their checksums from the
-   pre-release, into a directory of your choice, check them, and place them.
+   release, into a directory of your choice, check them, and place them.
    Read `NETWORKS-NOTICE.md` first: it carries the files' attribution and
    licence.
 
-       R=https://github.com/mertefesensoy/FlyBatch/releases/download/v0.5.1-rc.1
+       R=https://github.com/mertefesensoy/FlyBatch/releases/download/v0.5.1
        mkdir ../nets && cd ../nets
        curl -fsSLO $R/onfnet-malecns-v1.0-srext.bin
        curl -fsSLO $R/onfnet-malecns-v1.0-path.bin
        curl -fsSLO $R/SHA256SUMS
        curl -fsSLO $R/NETWORKS-NOTICE.md
        sha256sum -c SHA256SUMS
-       cd ../flybatch-rc
+       cd ../flybatch-rel
        python tools/fixtures.py --from ../nets
        python tools/fixtures.py --check
 

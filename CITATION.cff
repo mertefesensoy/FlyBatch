@@ -1,9 +1,11 @@
 cff-version: 1.2.0
 message: >-
-  If you use FlyBatch (called ONFLY until 2026-09-27), please cite it as below, with the commit you used, and
+  If you use FlyBatch (called ONFLY until 2026-09-27), please cite it as below, with the release or commit you used, and
   cite the connectome and the model it builds on, listed under references.
 title: FlyBatch
 type: software
+version: 0.5.1
+date-released: "2026-10-29"
 authors:
   - family-names: Şensoy
     given-names: Mert Efe

@@ -21,7 +21,7 @@ the SRS, and the file itself stays as it was written.
 **What is not here.** The two network binaries (`srext`, 171,768 bytes, and
 `path`, 951,200 bytes) are listed in `.gitignore`: they are distributed beside
 the code as release assets with a `SHA256SUMS`, not in git (SRS D-545), and
-no release has been published yet. Until one is, `make test` runs only where
+the first release, `v0.5.1`, carries them (D-695). `make test` runs only where
 the two files have been staged, with `python tools/fixtures.py --from <dir>`;
 `networks/MANIFEST.json` holds their digests and marks them
 `"distributed": true`. `hop2` and `full` are not distributed; they are

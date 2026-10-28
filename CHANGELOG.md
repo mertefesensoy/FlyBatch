@@ -1,7 +1,7 @@
 # Changelog
 
-FlyBatch has no release yet, so every entry sits under **Unreleased**, newest
-first. Each entry names the decision rows of the specification,
+Entries are grouped by release, newest first; work after the latest release
+sits under **Unreleased**. Each entry names the decision rows of the specification,
 [`docs/ONFLY-SRS.md`](docs/ONFLY-SRS.md), that record it, and the date is
 the day the work was recorded as complete. The phase letters are labels, not
 an order (SRS Section 9.2).
@@ -12,6 +12,21 @@ Hercules emulator, and every s390x result from Linux under QEMU, both on one
 x86-64 laptop.
 
 ## Unreleased
+
+Nothing yet.
+
+## 0.5.1, 2026-10-29
+
+The first release. The engine prints version 0.5.1 (D-573, D-634); every
+entry below, back to the start of the project, is part of it.
+
+### 2026-10-29
+
+- The first release, `v0.5.1`, with the two networks, `SHA256SUMS` and
+  `NETWORKS-NOTICE.md` as assets, the same files the release candidate
+  `v0.5.1-rc.1` carried. The tester matrix, #4, stays open and now tests
+  this release; README, `REPLICATING.md`, `docs/testers.md` and
+  `SECURITY.md` point at it, and `CITATION.cff` carries its version (D-695).
 
 ### 2026-10-20
 
